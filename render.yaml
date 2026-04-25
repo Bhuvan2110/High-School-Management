@@ -29,12 +29,12 @@ services:
         value: highschool_db
 
   # ── Frontend Static Site ─────────────────────────────────────
-  - type: static_site
+  - type: static
     name: hs-mgmt-web
     env: static
     plan: free
     region: oregon
-    publishDir: frontend
+    staticPublishPath: frontend
     headers:
       - path: /*
         name: Cache-Control
