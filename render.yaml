@@ -29,7 +29,7 @@ services:
         value: highschool_db
 
   # ── Frontend Static Site ─────────────────────────────────────
-  - type: web
+  - type: static_site
     name: hs-mgmt-web
     env: static
     plan: free
