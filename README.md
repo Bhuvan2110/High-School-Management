@@ -75,16 +75,18 @@ DB_NAME=highschool_db
 JWT_SECRET=your-long-secure-secret
 CORS_ORIGIN=https://your-frontend-domain.com
 ```
-#### 🚀 Quick Deploy to Render
+#### 🚀 Deploy to Vercel (Frontend)
 
-I have included a `render.yaml` blueprint. To deploy the entire stack:
+1.  Connect your repository to **[Vercel](https://vercel.com)**.
+2.  Vercel will detect `vercel.json` and deploy your static frontend automatically.
+3.  Your app will be live at `https://highschool-mgmt-frontend.vercel.app`.
 
-1.  Push this code to your **GitHub** or **GitLab** repository.
-2.  Go to **[dashboard.render.com](https://dashboard.render.com)**.
-3.  Click **Blueprints** → **New Blueprint Instance**.
-4.  Connect your repository.
-5.  Render will automatically detect the `render.yaml` and set up the Backend and Frontend.
-6.  **Note**: You will need to manually provide your MySQL connection details (Host, User, Password) in the Render dashboard under Environment Variables for the `hs-mgmt-api` service.
+#### 🚀 Deploy to Koyeb (Backend)
+
+1.  Create a new Web Service on **[Koyeb](https://www.koyeb.com)**.
+2.  Select your repository and the `backend` folder.
+3.  Koyeb will use the `Dockerfile` to build and deploy your Node.js API.
+4.  Your API will be live at `https://your-service-name.koyeb.app`.
 
 ### Step 2 — Database Setup
 ```sql
