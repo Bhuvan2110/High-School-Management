@@ -33,8 +33,9 @@ services:
     name: hs-mgmt-web
     env: static
     plan: free
-    region: oregon
-    staticPublishPath: frontend
+    buildCommand: npm install && npm run build
+    #region: oregon
+    staticPublishPath: frontend/dist
     headers:
       - path: /*
         name: Cache-Control
