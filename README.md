@@ -75,18 +75,7 @@ DB_NAME=highschool_db
 JWT_SECRET=your-long-secure-secret
 CORS_ORIGIN=https://your-frontend-domain.com
 ```
-#### 🚀 Deploy to Vercel (Frontend)
 
-1.  Connect your repository to **[Vercel](https://vercel.com)**.
-2.  Vercel will detect `vercel.json` and deploy your static frontend automatically.
-3.  Your app will be live at `https://highschool-mgmt-frontend.vercel.app`.
-
-#### 🚀 Deploy to Koyeb (Backend)
-
-1.  Create a new Web Service on **[Koyeb](https://www.koyeb.com)**.
-2.  Select your repository and the `backend` folder.
-3.  Koyeb will use the `Dockerfile` to build and deploy your Node.js API.
-4.  Your API will be live at `https://your-service-name.koyeb.app`.
 
 ### Step 2 — Database Setup
 ```sql

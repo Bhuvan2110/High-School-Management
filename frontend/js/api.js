@@ -2,11 +2,7 @@
 // Central API client — all fetch calls go through here
 // Handles token refresh, error extraction, and base URL
 
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:5000/api'
-  : window.location.hostname.includes('onrender.com')
-    ? 'https://hs-mgmt-api.onrender.com/api'
-    : 'https://cool-parts-smash.loca.lt/api';
+const API_BASE = 'http://localhost:5000/api';
 
 // ── Core fetch wrapper ──────────────────────────────────────
 async function apiFetch(endpoint, options = {}) {
