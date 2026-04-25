@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — High School Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- ── Sidebar ───────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div style="font-size:1.5rem;margin-bottom:8px">🏫</div>
+      <div class="school-name">High School<br/>Management</div>
+      <div class="school-tagline">Admin Panel</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+
+      <div class="nav-section-label">Management</div>
+      <a href="#" class="nav-item" onclick="showSection('users')">
+        <span class="nav-icon">👥</span> Users
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('classes')">
+        <span class="nav-icon">🏛️</span> Classes & Sections
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('subjects')">
+        <span class="nav-icon">📚</span> Subjects
+      </a>
+
+      <div class="nav-section-label">Reports</div>
+      <a href="#" class="nav-item" onclick="showSection('audit')">
+        <span class="nav-icon">📋</span> Audit Logs
+      </a>
+
+      <div class="nav-section-label">System</div>
+      <a href="#" class="nav-item" id="logoutBtn">
+        <span class="nav-icon">🚪</span> Logout
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">AD</div>
+        <div class="user-info">
+          <div class="user-name">Admin</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ──────────────────────────────────────────────── -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-title" id="topbarTitle">Dashboard Overview</div>
+      <div class="topbar-right">
+        <button class="topbar-btn" title="Notifications">
+          🔔 <span class="badge-dot"></span>
+        </button>
+        <div class="user-avatar" style="width:38px;height:38px;font-size:.82rem">AD</div>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <!-- ── DASHBOARD SECTION ──────────────────────────────── -->
+      <section id="sec-dashboard" class="section fade-in">
+        <div class="page-header">
+          <div class="breadcrumb"><span>Home</span></div>
+          <h2>Dashboard Overview</h2>
+          <p>Welcome back! Here's what's happening in your school today.</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-icon navy">👥</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statStudents">—</div>
+              <div class="stat-label">Total Students</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal">👩‍🏫</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statTeachers">—</div>
+              <div class="stat-label">Teachers</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon gold">📚</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statSubjects">—</div>
+              <div class="stat-label">Active Subjects</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon coral">🏛️</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statSections">—</div>
+              <div class="stat-label">Sections</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="card">
+            <div class="card-header">
+              <h3>Quick Actions</h3>
+            </div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <button class="btn btn-primary w-100" onclick="showSection('subjects');UI.openModal('addSubjectModal')">
+                ➕ Add New Subject
+              </button>
+              <button class="btn btn-outline w-100" onclick="showSection('classes')">
+                🏛️ Manage Sections
+              </button>
+              <button class="btn btn-outline w-100" onclick="showSection('users')">
+                👥 Manage Users
+              </button>
+              <button class="btn btn-outline w-100" onclick="showSection('audit')">
+                📋 View Audit Logs
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>System Status</h3>
+            </div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:.88rem;color:var(--text-mid)">API Server</span>
+                  <span class="badge badge-active" id="apiStatus">Checking...</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:.88rem;color:var(--text-mid)">Database</span>
+                  <span class="badge badge-active" id="dbStatus">Checking...</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:.88rem;color:var(--text-mid)">Auth System</span>
+                  <span class="badge badge-active">✅ Active</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:.88rem;color:var(--text-mid)">Encryption</span>
+                  <span class="badge badge-warning">⏳ Phase 4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── USERS SECTION ─────────────────────────────────── -->
+      <section id="sec-users" class="section fade-in" style="display:none">
+        <div class="page-header d-flex justify-between align-center">
+          <div>
+            <div class="breadcrumb"><span>Management</span> › <span>Users</span></div>
+            <h2>User Management</h2>
+            <p>View and manage all Admin, Teacher, and Student accounts.</p>
+          </div>
+          <button class="btn btn-gold" onclick="UI.openModal('addUserModal')">➕ Add User</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="filter-bar" style="margin:0;flex:1">
+              <div class="search-input-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="userSearch" placeholder="Search by name or email..." oninput="filterUsers()" />
+              </div>
+              <select class="filter-select" id="roleFilter" onchange="filterUsers()">
+                <option value="">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTable">
+                <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">
+                  Loading users...
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CLASSES & SECTIONS SECTION ──────────────────────── -->
+      <section id="sec-classes" class="section fade-in" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb"><span>Management</span> › <span>Classes</span></div>
+          <h2>Classes &amp; Sections</h2>
+          <p>Manage class sections and student assignments.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" id="classCards">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ── SUBJECTS SECTION ──────────────────────────────── -->
+      <section id="sec-subjects" class="section fade-in" style="display:none">
+        <div class="page-header d-flex justify-between align-center">
+          <div>
+            <div class="breadcrumb"><span>Management</span> › <span>Subjects</span></div>
+            <h2>Subject Management</h2>
+            <p>Only Admins can add, edit, or delete subjects.</p>
+          </div>
+          <button class="btn btn-gold" onclick="UI.openModal('addSubjectModal')">➕ Add Subject</button>
+        </div>
+
+        <div id="subjectAlert"></div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>All Subjects</h3>
+            <span class="badge badge-active" id="subjectCount">—</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Subject Name</th>
+                  <th>Status</th>
+                  <th>Created By</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subjectsTable">
+                <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">Loading subjects...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── AUDIT LOG SECTION ─────────────────────────────── -->
+      <section id="sec-audit" class="section fade-in" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb"><span>Reports</span> › <span>Audit Logs</span></div>
+          <h2>Audit Logs</h2>
+          <p>All sensitive actions recorded for security and compliance.</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="empty-state">
+              <div class="empty-icon">📋</div>
+              <h4>Audit Logs</h4>
+              <p>Audit log viewer will be fully active from Phase 2 once more actions are recorded.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- ── ADD SUBJECT MODAL ──────────────────────────────────────── -->
+<div class="modal-overlay" id="addSubjectModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📚 Add New Subject</h3>
+      <button class="modal-close" onclick="UI.closeModal('addSubjectModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="subjectModalAlert"></div>
+      <div class="form-group">
+        <label class="form-label">Subject Name</label>
+        <input type="text" id="newSubjectName" class="form-control" placeholder="e.g. Mathematics, Science, English..." maxlength="100" />
+        <div class="form-error" id="newSubjectNameErr">Subject name is required</div>
+      </div>
+      <div style="background:var(--gold-pale);border-radius:var(--radius-md);padding:12px 14px;font-size:.82rem;color:var(--text-mid)">
+        ⚠️ <strong>Admin Rule:</strong> Only Admins can add subjects. Students will be able to select from this list only.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="UI.closeModal('addSubjectModal')">Cancel</button>
+      <button class="btn btn-gold" id="addSubjectBtn" onclick="addSubject()">Add Subject</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD USER MODAL ────────────────────────────────────────── -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>👤 Add New User</h3>
+      <button class="modal-close" onclick="UI.closeModal('addUserModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="userModalAlert"></div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="newUserName" class="form-control" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="newUserEmail" class="form-control" placeholder="user@school.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <select id="newUserRole" class="form-control">
+          <option value="">Select role...</option>
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="newUserPassword" class="form-control" placeholder="Min 8 chars with uppercase, number, symbol" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="UI.closeModal('addUserModal')">Cancel</button>
+      <button class="btn btn-primary" id="addUserBtn" onclick="addUser()">Create User</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+  // ── Auth guard ──────────────────────────────────────────────
+  const currentUser = Auth.requireRole('admin');
+  if (currentUser) initSidebar(currentUser);
+
+  // ── Section navigation ──────────────────────────────────────
+  const sections = ['dashboard','users','classes','subjects','audit'];
+  const titles   = { dashboard:'Dashboard Overview', users:'User Management', classes:'Classes & Sections', subjects:'Subject Management', audit:'Audit Logs' };
+
+  function showSection(name) {
+    sections.forEach(s => {
+      document.getElementById(`sec-${s}`).style.display = s === name ? 'block' : 'none';
+    });
+    document.getElementById('topbarTitle').textContent = titles[name] || name;
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    event?.currentTarget?.classList.add('active');
+
+    if (name === 'users')    loadUsers();
+    if (name === 'subjects') loadSubjects();
+    if (name === 'classes')  loadClasses();
+  }
+
+  // ── Health check ────────────────────────────────────────────
+  async function checkHealth() {
+    try {
+      const res = await apiFetch('/health');
+      if (res.ok) {
+        document.getElementById('apiStatus').textContent = res.data.status === 'ok' ? '✅ Online' : '❌ Error';
+        document.getElementById('dbStatus').textContent  = res.data.db === 'connected' ? '✅ Connected' : '❌ Disconnected';
+      }
+    } catch {
+      document.getElementById('apiStatus').textContent = '❌ Offline';
+      document.getElementById('dbStatus').textContent  = '❌ Unknown';
+    }
+  }
+  checkHealth();
+
+  // ── Load stats (real API) ─────────────────────────────────────
+  async function loadStats() {
+    const res = await apiFetch('/admin/stats');
+    if (res?.data?.success) {
+      const d = res.data.data;
+      document.getElementById('statStudents').textContent = d.students;
+      document.getElementById('statTeachers').textContent = d.teachers;
+      document.getElementById('statSubjects').textContent = d.subjects;
+      document.getElementById('statSections').textContent = d.sections;
+    }
+  }
+  loadStats();
+
+  // ── Load users (real API) ────────────────────────────────────
+  let allUsers = [];
+  async function loadUsers() {
+    const tbody = document.getElementById('usersTable');
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)"><span class="spinner dark"></span> Loading...</td></tr>`;
+    const res = await apiFetch('/admin/users?limit=100');
+    if (!res?.data?.success) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--coral)">Failed to load users. Check your connection.</td></tr>`;
+      return;
+    }
+    allUsers = res.data.data.users;
+    renderUsers(allUsers);
+  }
+
+  function renderUsers(users) {
+    const tbody = document.getElementById('usersTable');
+    if (!users.length) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👥</div><h4>No users found</h4></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = users.map(u => `
+      <tr data-id="${u.id}" data-role="${u.role}">
+        <td><strong>${u.name}</strong></td>
+        <td>${u.email}</td>
+        <td><span class="badge badge-${u.role}">${u.role}</span></td>
+        <td><span class="badge ${u.is_active ? 'badge-active' : 'badge-inactive'}">${u.is_active ? 'Active' : 'Inactive'}</span></td>
+        <td>${UI.formatDate(u.created_at)}</td>
+        <td style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="toggleStatus('${u.id}','${u.is_active}')">
+            ${u.is_active ? '⛔ Deactivate' : '✅ Activate'}
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="showResetPassword('${u.id}','${u.name}')">🔑 Reset PW</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function filterUsers() {
+    const search = document.getElementById('userSearch').value.toLowerCase();
+    const role   = document.getElementById('roleFilter').value;
+    const rows   = document.querySelectorAll('#usersTable tr[data-id]');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      const rowRole = row.getAttribute('data-role');
+      const visible = text.includes(search) && (!role || rowRole === role);
+      row.style.display = visible ? '' : 'none';
+    });
+  }
+
+  async function addUser() {
+    const name     = document.getElementById('newUserName').value.trim();
+    const email    = document.getElementById('newUserEmail').value.trim();
+    const role     = document.getElementById('newUserRole').value;
+    const password = document.getElementById('newUserPassword').value;
+    if (!name || !email || !role || !password) {
+      UI.showAlert('userModalAlert', 'All fields are required', 'error'); return;
+    }
+    UI.setLoading('addUserBtn', true, 'Create User');
+    const result = await AuthAPI.register({ name, email, password, role });
+    UI.setLoading('addUserBtn', false, 'Create User');
+    if (result?.data?.success) {
+      UI.showAlert('userModalAlert', 'User created successfully!', 'success');
+      setTimeout(() => UI.closeModal('addUserModal'), 1500);
+      loadUsers();
+    } else {
+      UI.showAlert('userModalAlert', result?.data?.message || 'Failed to create user', 'error');
+    }
+  }
+
+  // ── Load classes ─────────────────────────────────────────────
+  function loadClasses() {
+    const container = document.getElementById('classCards');
+    const classes = [
+      { name: 'Class 8', sections: ['A','B','C'], color: 'var(--navy)' },
+      { name: 'Class 9', sections: ['A','B','C'], color: 'var(--teal)' },
+      { name: 'Class 10',sections: ['A','B','C'], color: 'var(--gold)' },
+    ];
+    container.innerHTML = classes.map(c => `
+      <div class="card">
+        <div class="card-header" style="background:${c.color};border-radius:var(--radius-lg) var(--radius-lg) 0 0">
+          <h3 style="color:white;font-family:var(--font-display)">${c.name}</h3>
+          <span class="badge" style="background:rgba(255,255,255,.2);color:white">${c.sections.length} Sections</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            ${c.sections.map(s => `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--off-white);border-radius:var(--radius-md)">
+                <span style="font-weight:600;color:var(--navy)">Section ${s}</span>
+                <span style="font-size:.8rem;color:var(--text-muted)">0 students</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-outline btn-sm">Manage Students</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── Load & manage subjects (real API) ───────────────────────
+  let subjects = [];
+  async function loadSubjects() {
+    const tbody = document.getElementById('subjectsTable');
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px"><span class="spinner dark"></span></td></tr>`;
+    const res = await apiFetch('/subjects?all=true');
+    if (!res?.data?.success) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--coral);padding:24px">Failed to load subjects.</td></tr>`;
+      return;
+    }
+    subjects = res.data.data.subjects;
+    renderSubjects();
+  }
+
+  function renderSubjects() {
+    const tbody = document.getElementById('subjectsTable');
+    document.getElementById('subjectCount').textContent = `${subjects.filter(s=>s.is_active).length} active`;
+    if (!subjects.length) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📚</div><h4>No subjects yet</h4><p>Add the first subject using the button above.</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = subjects.map((s, i) => `
+      <tr>
+        <td><strong>${i+1}</strong></td>
+        <td><strong>${s.subject_name}</strong></td>
+        <td><span class="badge ${s.is_active ? 'badge-active' : 'badge-inactive'}">${s.is_active ? '✅ Active' : '⛔ Inactive'}</span></td>
+        <td><span class="badge badge-admin">${s.created_by_name || 'Admin'}</span></td>
+        <td>${UI.formatDate(s.created_at) || 'Seeded'}</td>
+        <td style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm" onclick="editSubject(${s.id},'${s.subject_name}')">✏️ Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteSubject(${s.id},'${s.subject_name}')">🗑️</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function addSubject() {
+    const name = document.getElementById('newSubjectName').value.trim();
+    if (!name) {
+      document.getElementById('newSubjectNameErr').classList.add('visible');
+      document.getElementById('newSubjectName').classList.add('error');
+      return;
+    }
+    UI.setLoading('addSubjectBtn', true, 'Add Subject');
+    const res = await apiFetch('/subjects', { method: 'POST', body: { subject_name: name } });
+    UI.setLoading('addSubjectBtn', false, 'Add Subject');
+    if (res?.data?.success) {
+      document.getElementById('newSubjectName').value = '';
+      UI.closeModal('addSubjectModal');
+      UI.showAlert('subjectAlert', `✅ Subject "${name}" added successfully!`, 'success');
+      loadSubjects(); loadStats();
+    } else {
+      UI.showAlert('subjectModalAlert', res?.data?.message || 'Failed to add subject', 'error');
+    }
+  }
+
+  async function editSubject(id, currentName) {
+    const newName = prompt('Edit subject name:', currentName);
+    if (!newName || !newName.trim() || newName.trim() === currentName) return;
+    const res = await apiFetch(`/subjects/${id}`, { method: 'PUT', body: { subject_name: newName.trim() } });
+    if (res?.data?.success) {
+      UI.showAlert('subjectAlert', `✅ Subject renamed to "${newName.trim()}"`, 'success');
+      loadSubjects();
+    } else {
+      UI.showAlert('subjectAlert', res?.data?.message || 'Failed to update subject', 'error');
+    }
+  }
+
+  async function deleteSubject(id, name) {
+    if (!confirm(`Delete subject "${name}"?\n\nIf students have selected it, it will be deactivated (not permanently deleted).`)) return;
+    const res = await apiFetch(`/subjects/${id}`, { method: 'DELETE' });
+    if (res?.data?.success) {
+      UI.showAlert('subjectAlert', `✅ ${res.data.message}`, 'success');
+      loadSubjects(); loadStats();
+    } else {
+      UI.showAlert('subjectAlert', res?.data?.message || 'Failed to delete', 'error');
+    }
+  }
+
+  async function toggleStatus(userId, isActive) {
+    const confirm_msg = isActive === 'true'
+      ? 'Deactivate this user? They will not be able to log in.'
+      : 'Reactivate this user?';
+    if (!confirm(confirm_msg)) return;
+    const res = await apiFetch(`/admin/users/${userId}/status`, { method: 'PATCH' });
+    if (res?.data?.success) loadUsers();
+    else alert(res?.data?.message || 'Action failed');
+  }
+
+  function showResetPassword(userId, name) {
+    const pw = prompt(`Enter new password for ${name}:\n(Min 8 characters)`);
+    if (!pw || pw.length < 8) { alert('Password must be at least 8 characters'); return; }
+    apiFetch(`/admin/users/${userId}/reset-password`, {
+      method: 'POST', body: { new_password: pw }
+    }).then(res => {
+      if (res?.data?.success) alert('Password reset successfully');
+      else alert(res?.data?.message || 'Failed');
+    });
+  }
+</script>
+</body>
+</html>

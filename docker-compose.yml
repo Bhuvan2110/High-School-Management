@@ -1,0 +1,61 @@
+# docker-compose.yml
+# Run the entire stack with: docker-compose up
+# Requires Docker Desktop installed
+
+version: '3.9'
+
+services:
+  # ── MySQL Database ──────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: hs_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: highschool_db
+      MYSQL_USER: hsuser
+      MYSQL_PASSWORD: hspassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Node.js Backend ────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hs_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: highschool_db
+      DB_USER: hsuser
+      DB_PASSWORD: hspassword
+      JWT_ACCESS_SECRET: docker_dev_access_secret_replace_in_production_abc123
+      JWT_REFRESH_SECRET: docker_dev_refresh_secret_replace_in_production_xyz456
+      JWT_ACCESS_EXPIRES: 15m
+      JWT_REFRESH_EXPIRES: 7d
+      CORS_ORIGIN: http://localhost:3000
+      BCRYPT_SALT_ROUNDS: 12
+      COOKIE_SECRET: docker_cookie_secret_replace
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+volumes:
+  mysql_data:

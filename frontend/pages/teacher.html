@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Dashboard — High School Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div style="font-size:1.5rem;margin-bottom:8px">🏫</div>
+      <div class="school-name">High School<br/>Management</div>
+      <div class="school-tagline">Teacher Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <div class="nav-section-label">Academic</div>
+      <a href="#" class="nav-item" onclick="showSection('subjects')">
+        <span class="nav-icon">📚</span> My Subjects
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('attendance')">
+        <span class="nav-icon">📅</span> Attendance
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('marks')">
+        <span class="nav-icon">📝</span> Marks Entry
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('materials')">
+        <span class="nav-icon">📁</span> Study Materials
+      </a>
+      <div class="nav-section-label">System</div>
+      <a href="#" class="nav-item" id="logoutBtn">
+        <span class="nav-icon">🚪</span> Logout
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">TC</div>
+        <div class="user-info">
+          <div class="user-name">Teacher</div>
+          <div class="user-role">Teacher</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-title" id="topbarTitle">Teacher Dashboard</div>
+      <div class="topbar-right">
+        <button class="topbar-btn">🔔 <span class="badge-dot"></span></button>
+        <div class="user-avatar" style="width:38px;height:38px;font-size:.82rem">TC</div>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- Dashboard -->
+      <section id="sec-dashboard" class="section fade-in">
+        <div class="page-header">
+          <h2>Welcome, Teacher!</h2>
+          <p>Manage your classes, mark attendance, and upload study materials.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon gold">📚</div>
+            <div class="stat-info">
+              <div class="stat-value">0</div>
+              <div class="stat-label">Assigned Subjects</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal">👨‍🎓</div>
+            <div class="stat-info">
+              <div class="stat-value">0</div>
+              <div class="stat-label">Students</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon navy">📁</div>
+            <div class="stat-info">
+              <div class="stat-value">0</div>
+              <div class="stat-label">Materials Uploaded</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon coral">📅</div>
+            <div class="stat-info">
+              <div class="stat-value">—</div>
+              <div class="stat-label">Today's Sessions</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="empty-state">
+              <div class="empty-icon">👩‍🏫</div>
+              <h4>Teacher Dashboard — Phase 3</h4>
+              <p>Full teacher functionality (attendance marking, marks entry, material uploads) will be live in Phase 3.</p>
+              <button class="btn btn-primary" onclick="showSection('subjects')">View My Subjects</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Subjects -->
+      <section id="sec-subjects" class="section fade-in" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb"><span>Academic</span> › <span>My Subjects</span></div>
+          <h2>My Subjects</h2>
+          <p>Subjects assigned to you by the Admin.</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="empty-state">
+              <div class="empty-icon">📚</div>
+              <h4>No subjects assigned yet</h4>
+              <p>The Admin will assign subjects and classes to you. Check back after setup.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Attendance -->
+      <section id="sec-attendance" class="section fade-in" style="display:none">
+        <div class="page-header">
+          <h2>Mark Attendance</h2>
+          <p>Mark daily attendance for your classes. (Phase 3)</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="empty-state">
+              <div class="empty-icon">📅</div>
+              <h4>Attendance Module</h4>
+              <p>Attendance marking will be available in Phase 3.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Marks -->
+      <section id="sec-marks" class="section fade-in" style="display:none">
+        <div class="page-header">
+          <h2>Marks Entry</h2>
+          <p>Enter subject-wise marks for your students. (Phase 3)</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="empty-state">
+              <div class="empty-icon">📝</div>
+              <h4>Marks Entry Module</h4>
+              <p>Marks entry will be available in Phase 3.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Materials -->
+      <section id="sec-materials" class="section fade-in" style="display:none">
+        <div class="page-header">
+          <h2>Study Materials</h2>
+          <p>Upload notes, assignments, and reference materials. (Phase 3)</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="empty-state">
+              <div class="empty-icon">📁</div>
+              <h4>Material Upload</h4>
+              <p>File upload will be available in Phase 3.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+  const currentUser = Auth.requireRole('teacher');
+  if (currentUser) initSidebar(currentUser);
+
+  const sections = ['dashboard','subjects','attendance','marks','materials'];
+  const titles   = { dashboard:'Teacher Dashboard', subjects:'My Subjects', attendance:'Mark Attendance', marks:'Marks Entry', materials:'Study Materials' };
+
+  function showSection(name) {
+    sections.forEach(s => document.getElementById(`sec-${s}`).style.display = s === name ? 'block' : 'none');
+    document.getElementById('topbarTitle').textContent = titles[name];
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    event?.currentTarget?.classList.add('active');
+  }
+</script>
+</body>
+</html>
