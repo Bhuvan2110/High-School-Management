@@ -30,8 +30,12 @@ app.use(helmet({
 }));
 
 // ── CORS ──────────────────────────────────────────────────────
+const allowedOrigins = process.env.CORS_ORIGIN 
+  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+  : ['http://localhost:3000'];
+
 app.use(cors({
-  origin:      process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : 'http://localhost:3000',
+  origin:      allowedOrigins,
   credentials: true,      // allow cookies to be sent cross-origin
   methods:     ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -64,13 +68,28 @@ app.set('trust proxy', 1);
 app.use('/api/health', healthRoutes);
 app.use('/api/auth',   authRoutes);
 
-const adminRoutes   = require('./routes/admin');
-const subjectRoutes = require('./routes/subjects');
-const studentRoutes = require('./routes/students');
+const adminRoutes        = require('./routes/admin');
+const subjectRoutes      = require('./routes/subjects');
+const studentRoutes      = require('./routes/students');
+const teacherRoutes      = require('./routes/teachers');
+const attendanceRoutes   = require('./routes/attendance');
+const marksRoutes        = require('./routes/marks');
+const materialRoutes     = require('./routes/materials');
+const notificationRoutes = require('./routes/notifications');
 
-app.use('/api/admin',    adminRoutes);
-app.use('/api/subjects', subjectRoutes);
-app.use('/api/students', studentRoutes);
+app.use('/api/admin',         adminRoutes);
+app.use('/api/subjects',      subjectRoutes);
+app.use('/api/students',      studentRoutes);
+app.use('/api/teachers',      teacherRoutes);
+app.use('/api/attendance',    attendanceRoutes);
+app.use('/api/marks',         marksRoutes);
+app.use('/api/materials',     materialRoutes);
+app.use('/api/notifications', notificationRoutes);
+
+// Serve uploaded files (with auth check handled in controller)
+const path = require('path');
+app.use('/uploads', require('./middleware/auth').verifyToken,
+  express.static(path.join(__dirname, 'uploads')));
 
 // ── 404 & Error handlers (must be last) ───────────────────────
 app.use(notFoundHandler);

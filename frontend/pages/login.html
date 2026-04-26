@@ -1,626 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Login — High School Management System</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    :root {
-      --navy: #0D1B2A; --navy-light: #1A2E45; --gold: #C9952A; --gold-light: #E8B84B;
-      --gold-pale: #FDF3DC; --teal: #1A7F74; --coral: #C0392B; --coral-light: #FDECEA;
-      --white: #FFFFFF; --off-white: #F7F9FC; --border: #D1DCE8;
-      --text-dark: #0D1B2A; --text-mid: #3D566E; --text-muted: #7A93AB;
-      --font-display: 'Playfair Display', Georgia, serif;
-      --font-body: 'DM Sans', sans-serif;
-      --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px;
-      --shadow-lg: 0 8px 40px rgba(13,27,42,.18);
-      --transition: .2s cubic-bezier(.4,0,.2,1);
+    :root{
+      --navy:#0D1B2A; --navy-light:#1A2E45; --gold:#C9952A; --gold-light:#E8B84B;
+      --gold-pale:#FDF3DC; --teal:#1A7F74; --teal-light:#E0F4F2;
+      --coral:#C0392B; --coral-light:#FDECEA;
+      --white:#FFFFFF; --off-white:#F7F9FC; --border:#D1DCE8;
+      --text-dark:#0D1B2A; --text-mid:#3D566E; --text-muted:#7A93AB;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-body:'DM Sans',sans-serif;
+      --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:24px;
+      --shadow-lg:0 8px 40px rgba(13,27,42,.18);
+      --tr:.2s cubic-bezier(.4,0,.2,1);
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
-
-    body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
-      background: var(--off-white);
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+    body{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
 
     /* ── Left panel ── */
-    .left-panel {
-      background: var(--navy);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 48px;
-      position: relative;
-      overflow: hidden;
-    }
-    .left-panel::before {
-      content: '';
-      position: absolute;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,149,42,.18) 0%, transparent 70%);
-      top: -100px; right: -100px;
-      pointer-events: none;
-    }
-    .left-panel::after {
-      content: '';
-      position: absolute;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(26,127,116,.15) 0%, transparent 70%);
-      bottom: -60px; left: -40px;
-      pointer-events: none;
-    }
-    .panel-brand { position: relative; z-index: 1; }
-    .brand-icon {
-      width: 52px; height: 52px;
-      background: var(--gold);
-      border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-    .brand-name {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      color: var(--white);
-      line-height: 1.2;
-    }
-    .brand-sub {
-      font-size: .85rem;
-      color: var(--gold);
-      margin-top: 6px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
+    .left{background:var(--navy);display:flex;flex-direction:column;justify-content:space-between;padding:48px;position:relative;overflow:hidden}
+    .left::before{content:'';position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(201,149,42,.18) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
+    .left::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(26,127,116,.15) 0%,transparent 70%);bottom:-60px;left:-40px;pointer-events:none}
+    .brand{position:relative;z-index:1}
+    .brand-icon{width:52px;height:52px;background:var(--gold);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px}
+    .brand-name{font-family:var(--font-display);font-size:2rem;color:var(--white);line-height:1.2}
+    .brand-sub{font-size:.82rem;color:var(--gold);margin-top:6px;letter-spacing:.08em;text-transform:uppercase}
+    .features{position:relative;z-index:1}
+    .feat{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px}
+    .feat-dot{width:36px;height:36px;border-radius:50%;background:rgba(201,149,42,.15);border:1.5px solid rgba(201,149,42,.3);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;margin-top:2px}
+    .feat h4{color:var(--white);font-size:.88rem;font-weight:600;margin-bottom:2px}
+    .feat p{color:rgba(255,255,255,.5);font-size:.78rem;line-height:1.5}
+    .panel-footer{position:relative;z-index:1}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:5px 14px;border-radius:20px;font-size:.74rem;font-weight:600;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+    .chip.a{border-color:rgba(201,149,42,.4);color:var(--gold)}
+    .chip.t{border-color:rgba(26,127,116,.4);color:#4ecdc4}
+    .chip.s{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
+    .chips-label{font-size:.7rem;color:rgba(255,255,255,.3);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase}
 
-    .panel-features { position: relative; z-index: 1; }
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    .feature-dot {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: rgba(201,149,42,.15);
-      border: 1.5px solid rgba(201,149,42,.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: .95rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .feature-text h4 { color: var(--white); font-size: .9rem; font-weight: 600; margin-bottom: 2px; }
-    .feature-text p  { color: rgba(255,255,255,.5); font-size: .8rem; line-height: 1.5; }
+    /* ── Right panel ── */
+    .right{display:flex;align-items:flex-start;justify-content:center;padding:40px 40px;background:var(--white);overflow-y:auto}
+    .card{width:100%;max-width:460px;padding-top:8px}
 
-    .panel-footer { position: relative; z-index: 1; }
-    .role-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-    .role-chip {
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: .75rem;
-      font-weight: 600;
-      border: 1.5px solid rgba(255,255,255,.15);
-      color: rgba(255,255,255,.6);
-    }
-    .role-chip.admin   { border-color: rgba(201,149,42,.4); color: var(--gold); }
-    .role-chip.teacher { border-color: rgba(26,127,116,.4); color: #4ecdc4; }
-    .role-chip.student { border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.7); }
-    .panel-footer-label { font-size: .72rem; color: rgba(255,255,255,.35); margin-bottom: 8px; letter-spacing: .08em; text-transform: uppercase; }
+    .login-header{margin-bottom:24px}
+    .enc-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(26,127,116,.1);border:1px solid rgba(26,127,116,.22);color:var(--teal);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:600;margin-bottom:10px}
+    .login-header h2{font-family:var(--font-display);font-size:1.85rem;color:var(--navy);margin-bottom:4px}
+    .login-header p{font-size:.88rem;color:var(--text-muted)}
 
-    /* ── Right panel / login form ── */
-    .right-panel {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 48px 40px;
-      background: var(--white);
-    }
-    .login-card { width: 100%; max-width: 420px; }
+    /* tabs */
+    .tabs{display:flex;background:var(--off-white);border-radius:var(--radius-md);padding:4px;margin-bottom:22px}
+    .tab{flex:1;padding:9px;border:none;background:transparent;border-radius:7px;font-family:var(--font-body);font-size:.88rem;font-weight:600;color:var(--text-muted);cursor:pointer;transition:all var(--tr)}
+    .tab.active{background:var(--white);color:var(--navy);box-shadow:0 1px 6px rgba(13,27,42,.1)}
 
-    .login-header { margin-bottom: 36px; }
-    .login-header h2 {
-      font-family: var(--font-display);
-      font-size: 1.9rem;
-      color: var(--navy);
-      margin-bottom: 6px;
+    /* form elements */
+    .fg{margin-bottom:15px}
+    .fg label{display:block;font-size:.74rem;font-weight:700;color:var(--text-mid);margin-bottom:5px;letter-spacing:.05em;text-transform:uppercase}
+    .iw{position:relative}
+    .ii{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.9rem;pointer-events:none}
+    input.fc,select.fc,textarea.fc{
+      width:100%;padding:10px 14px 10px 38px;border:1.5px solid var(--border);
+      border-radius:var(--radius-md);font-family:var(--font-body);font-size:.9rem;
+      color:var(--text-dark);background:var(--white);outline:none;
+      transition:border-color var(--tr),box-shadow var(--tr);
     }
-    .login-header p { font-size: .9rem; color: var(--text-muted); }
+    input.fc:focus,select.fc:focus,textarea.fc:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,149,42,.13)}
+    input.fc.err,select.fc.err{border-color:var(--coral)}
+    input.fc::placeholder{color:var(--text-muted)}
+    select.fc{cursor:pointer;appearance:auto}
+    select.fc:disabled{opacity:.5;cursor:not-allowed;background:var(--off-white)}
+    .fc.no-icon{padding-left:14px}
+    .pw-eye{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--text-muted);padding:0;transition:color var(--tr)}
+    .pw-eye:hover{color:var(--navy)}
+    .fhint{font-size:.73rem;color:var(--text-muted);margin-top:3px}
+    .ferr{font-size:.73rem;color:var(--coral);margin-top:3px;display:none}
+    .ferr.show{display:block}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-    /* Tab switcher (Login / Register) */
-    .tabs {
-      display: flex;
-      background: var(--off-white);
-      border-radius: var(--radius-md);
-      padding: 4px;
-      margin-bottom: 28px;
-    }
-    .tab-btn {
-      flex: 1;
-      padding: 9px;
-      border: none;
-      background: transparent;
-      border-radius: 7px;
-      font-family: var(--font-body);
-      font-size: .88rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-    .tab-btn.active {
-      background: var(--white);
-      color: var(--navy);
-      box-shadow: 0 1px 6px rgba(13,27,42,.1);
-    }
+    /* section separator */
+    .sep{display:flex;align-items:center;gap:8px;font-size:.7rem;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin:18px 0 12px}
+    .sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--border)}
 
-    /* Form */
-    .form-group { margin-bottom: 18px; }
-    .form-label {
-      display: block;
-      font-size: .78rem;
-      font-weight: 600;
-      color: var(--text-mid);
-      margin-bottom: 6px;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-    .input-wrap { position: relative; }
-    .input-icon {
-      position: absolute;
-      left: 13px; top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: .9rem;
-      pointer-events: none;
-    }
-    .form-control {
-      width: 100%;
-      padding: 11px 14px 11px 40px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
-      font-family: var(--font-body);
-      font-size: .92rem;
-      color: var(--text-dark);
-      background: var(--white);
-      outline: none;
-      transition: all var(--transition);
-    }
-    .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,149,42,.14); }
-    .form-control.error { border-color: var(--coral); }
-    .form-control::placeholder { color: var(--text-muted); }
-    select.form-control { cursor: pointer; }
-    .pw-toggle {
-      position: absolute;
-      right: 12px; top: 50%;
-      transform: translateY(-50%);
-      background: none; border: none;
-      cursor: pointer; font-size: .9rem;
-      color: var(--text-muted);
-      transition: color var(--transition);
-      padding: 0;
-    }
-    .pw-toggle:hover { color: var(--navy); }
-    .form-error { font-size: .76rem; color: var(--coral); margin-top: 4px; display: none; }
-    .form-error.show { display: block; }
+    /* multi-select chips */
+    .chip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;max-height:180px;overflow-y:auto;padding-right:2px}
+    .chip-grid::-webkit-scrollbar{width:4px}
+    .chip-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+    .sel-chip{display:flex;align-items:center;gap:8px;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:all .15s;font-size:.82rem;color:var(--text-mid);user-select:none;background:var(--white)}
+    .sel-chip:hover{border-color:var(--gold);background:var(--gold-pale)}
+    .sel-chip.on{border-color:var(--gold);background:var(--gold-pale);color:var(--navy);font-weight:600}
+    .sel-chip input[type=checkbox]{display:none}
+    .chip-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;font-size:.65rem;color:transparent}
+    .sel-chip.on .chip-check{border-color:var(--gold);background:var(--gold);color:var(--navy)}
 
-    .alert-box {
-      padding: 11px 14px;
-      border-radius: var(--radius-md);
-      font-size: .86rem;
-      margin-bottom: 18px;
-      display: none;
-      align-items: center;
-      gap: 8px;
-      animation: slideDown .2s ease;
-    }
-    .alert-box.show { display: flex; }
-    .alert-success { background: #e6f9f0; color: #1a5c3a; border: 1px solid #b3e8cf; }
-    .alert-error   { background: var(--coral-light); color: #7a1a14; border: 1px solid #f5c6c2; }
+    /* alert */
+    .alert{padding:11px 14px;border-radius:var(--radius-md);font-size:.85rem;display:none;align-items:center;gap:8px;margin-bottom:14px;animation:sld .2s ease}
+    .alert.show{display:flex}
+    .alert.success{background:#e6f9f0;color:#1a5c3a;border:1px solid #b3e8cf}
+    .alert.error{background:var(--coral-light);color:#7a1a14;border:1px solid #f5c6c2}
+    .alert.info{background:#e8f0f8;color:var(--navy);border:1px solid #bfd4e8}
 
-    .submit-btn {
-      width: 100%;
-      padding: 13px;
-      background: var(--navy);
-      color: var(--white);
-      border: none;
-      border-radius: var(--radius-md);
-      font-family: var(--font-body);
-      font-size: .95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all var(--transition);
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 8px;
-    }
-    .submit-btn:hover:not(:disabled) {
-      background: var(--navy-light);
-      box-shadow: 0 4px 16px rgba(13,27,42,.22);
-      transform: translateY(-1px);
-    }
-    .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    /* submit button */
+    .sbtn{width:100%;padding:12px;background:var(--navy);color:var(--white);border:none;border-radius:var(--radius-md);font-family:var(--font-body);font-size:.93rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;transition:all var(--tr)}
+    .sbtn:hover:not(:disabled){background:var(--navy-light);box-shadow:0 4px 16px rgba(13,27,42,.22);transform:translateY(-1px)}
+    .sbtn:disabled{opacity:.55;cursor:not-allowed;transform:none}
 
-    .spinner {
-      width: 18px; height: 18px;
-      border: 2.5px solid rgba(255,255,255,.35);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin .6s linear infinite;
-    }
+    /* divider */
+    .divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--text-muted);font-size:.78rem}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
 
-    .divider {
-      display: flex; align-items: center; gap: 12px;
-      margin: 22px 0;
-      color: var(--text-muted); font-size: .8rem;
-    }
-    .divider::before, .divider::after {
-      content: ''; flex: 1;
-      height: 1px; background: var(--border);
-    }
+    /* demo buttons */
+    .demo-list{display:flex;flex-direction:column;gap:7px}
+    .demo-btn{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:var(--radius-md);background:var(--off-white);font-family:var(--font-body);font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all var(--tr);color:var(--text-mid)}
+    .demo-btn:hover{border-color:var(--gold);background:var(--gold-pale);color:var(--navy)}
+    .demo-tag{padding:2px 8px;border-radius:20px;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-left:auto}
+    .demo-tag.a{background:var(--navy);color:var(--white)}
+    .demo-tag.t{background:#e6f9f0;color:var(--teal)}
+    .demo-tag.s{background:var(--gold-pale);color:var(--gold)}
 
-    .demo-logins { display: flex; flex-direction: column; gap: 8px; }
-    .demo-btn {
-      width: 100%; padding: 9px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
-      background: var(--off-white);
-      font-family: var(--font-body);
-      font-size: .82rem;
-      cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
-      transition: all var(--transition);
-      color: var(--text-mid);
-    }
-    .demo-btn:hover { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
-    .demo-badge {
-      padding: 2px 8px; border-radius: 20px; font-size: .68rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .04em; margin-left: auto;
-    }
-    .demo-badge.admin   { background: var(--navy); color: var(--white); }
-    .demo-badge.teacher { background: #e6f9f0; color: var(--teal); }
-    .demo-badge.student { background: var(--gold-pale); color: var(--gold); }
+    /* spinner */
+    .spin{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:rot .6s linear infinite;display:inline-block}
 
-    .login-footer {
-      text-align: center;
-      margin-top: 28px;
-      font-size: .8rem;
-      color: var(--text-muted);
-    }
+    /* panel toggle */
+    .panel{display:none}.panel.active{display:block;animation:sld .2s ease}
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+    /* progress bar for password strength */
+    .pw-bar{height:4px;border-radius:2px;margin-top:5px;background:var(--border);overflow:hidden;transition:all var(--tr)}
+    .pw-fill{height:100%;border-radius:2px;transition:all .35s}
 
-    /* panel toggling */
-    .form-panel { display: none; }
-    .form-panel.active { display: block; animation: slideDown .2s ease; }
+    /* section preview card */
+    .preview-card{background:var(--off-white);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:12px 14px;margin-top:8px;font-size:.82rem;color:var(--text-mid);display:none}
+    .preview-card.show{display:block}
+    .preview-card strong{color:var(--navy)}
 
-    @media (max-width: 900px) {
-      body { grid-template-columns: 1fr; }
-      .left-panel { display: none; }
-      .right-panel { padding: 32px 24px; background: var(--off-white); }
-      .login-card { max-width: 480px; background: var(--white); padding: 32px; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); }
+    .login-foot{text-align:center;margin-top:22px;font-size:.76rem;color:var(--text-muted)}
+
+    @keyframes rot{to{transform:rotate(360deg)}}
+    @keyframes sld{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:900px){
+      body{grid-template-columns:1fr}
+      .left{display:none}
+      .right{padding:24px 18px;background:var(--off-white)}
+      .card{background:var(--white);padding:26px;border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);max-width:480px}
     }
   </style>
 </head>
 <body>
 
-<!-- ── Left decorative panel ──────────────────────────────────── -->
-<div class="left-panel">
-  <div class="panel-brand">
+<!-- ── Left decorative panel ── -->
+<div class="left">
+  <div class="brand">
     <div class="brand-icon">🏫</div>
     <div class="brand-name">High School<br/>Management</div>
     <div class="brand-sub">Classes 8 · 9 · 10</div>
   </div>
-
-  <div class="panel-features">
-    <div class="feature-item">
-      <div class="feature-dot">🔐</div>
-      <div class="feature-text">
-        <h4>Secure Role-Based Access</h4>
-        <p>Separate dashboards for Admin, Teachers, and Students with JWT authentication.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot">📚</div>
-      <div class="feature-text">
-        <h4>Subject Management</h4>
-        <p>Admin-controlled subject creation. Students select from predefined subjects only.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot">🔒</div>
-      <div class="feature-text">
-        <h4>End-to-End Encryption</h4>
-        <p>Academic records are encrypted client-side. The server never stores plaintext data.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot">📊</div>
-      <div class="feature-text">
-        <h4>Complete Academic Suite</h4>
-        <p>Attendance, marks, study materials, assignments, and instant notifications.</p>
-      </div>
-    </div>
+  <div class="features">
+    <div class="feat"><div class="feat-dot">🔐</div><div><h4>Role-Based Access</h4><p>Separate dashboards for Admin, Teachers, and Students with JWT authentication.</p></div></div>
+    <div class="feat"><div class="feat-dot">📚</div><div><h4>Admin-Controlled Subjects</h4><p>Only Admin creates subjects. Teachers &amp; students select from the approved list.</p></div></div>
+    <div class="feat"><div class="feat-dot">🔒</div><div><h4>End-to-End Encryption</h4><p>All academic records encrypted with AES-256-GCM. Server stores ciphertext only.</p></div></div>
+    <div class="feat"><div class="feat-dot">📊</div><div><h4>Complete Academic Suite</h4><p>Attendance, marks, study materials, notifications, and result cards — all in one place.</p></div></div>
   </div>
-
   <div class="panel-footer">
-    <div class="panel-footer-label">Available Roles</div>
-    <div class="role-chips">
-      <span class="role-chip admin">👨‍💼 Admin</span>
-      <span class="role-chip teacher">👩‍🏫 Teacher</span>
-      <span class="role-chip student">👨‍🎓 Student</span>
+    <div class="chips-label">Available roles</div>
+    <div class="chips">
+      <span class="chip a">👨‍💼 Admin</span>
+      <span class="chip t">👩‍🏫 Teacher</span>
+      <span class="chip s">👨‍🎓 Student</span>
     </div>
   </div>
 </div>
 
-<!-- ── Right login panel ───────────────────────────────────────── -->
-<div class="right-panel">
-  <div class="login-card">
+<!-- ── Right login/register panel ── -->
+<div class="right">
+  <div class="card">
     <div class="login-header">
+      <div class="enc-badge">🔒 AES-256-GCM Encrypted</div>
       <h2>Welcome back</h2>
-      <p>Sign in to your account to continue</p>
+      <p>Sign in to your account or register a new one</p>
     </div>
 
-    <!-- Tab switcher -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
-      <button class="tab-btn"        onclick="switchTab('register')">Register</button>
+      <button class="tab active" onclick="switchTab('login')">Sign In</button>
+      <button class="tab" onclick="switchTab('register')">Register</button>
     </div>
 
-    <!-- ── LOGIN FORM ── -->
-    <div id="loginPanel" class="form-panel active">
-      <div id="loginAlert" class="alert-box"></div>
+    <!-- ══════════════ LOGIN PANEL ══════════════ -->
+    <div id="loginPanel" class="panel active">
+      <div id="loginAlert" class="alert"></div>
 
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <div class="input-wrap">
-          <span class="input-icon">✉️</span>
-          <input type="email" id="loginEmail" class="form-control" placeholder="sbhuvan847@gmail.com" autocomplete="email" />
+      <div class="fg">
+        <label>Email Address</label>
+        <div class="iw"><span class="ii">✉️</span>
+          <input id="lEmail" class="fc" type="email" placeholder="admin@school.com" autocomplete="email"/>
         </div>
-        <div class="form-error" id="loginEmailErr">Please enter a valid email</div>
+        <div class="ferr" id="lEmailErr">Please enter a valid email address</div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <div class="input-wrap">
-          <span class="input-icon">🔒</span>
-          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" autocomplete="current-password" />
-          <button class="pw-toggle" type="button" onclick="togglePassword('loginPassword', this)">👁</button>
+      <div class="fg">
+        <label>Password</label>
+        <div class="iw"><span class="ii">🔒</span>
+          <input id="lPw" class="fc" type="password" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="pw-eye" type="button" onclick="toggleEye('lPw',this)">👁</button>
         </div>
-        <div class="form-error" id="loginPasswordErr">Password is required</div>
+        <div class="ferr" id="lPwErr">Password is required</div>
       </div>
 
-      <button class="submit-btn" id="loginBtn" onclick="handleLogin()">
-        Sign In →
-      </button>
+      <button class="sbtn" id="loginBtn" onclick="doLogin()">Sign In →</button>
 
-      <div class="divider">or try a demo account</div>
+      <div class="divider">or use a demo account</div>
 
-      <div class="demo-logins">
-        <button class="demo-btn" onclick="fillDemo('sbhuvan847@gmail.com','Admin@1234')">
-          👨‍💼 System Admin <span class="demo-badge admin">Admin</span>
+      <div class="demo-list">
+        <button class="demo-btn" onclick="fill('admin@school.com','Admin@1234')">
+          👨‍💼 System Admin
+          <span class="demo-tag a">Admin</span>
         </button>
-        <button class="demo-btn" onclick="fillDemo('teacher@school.com','Teacher@1234')">
-          👩‍🏫 Class Teacher <span class="demo-badge teacher">Teacher</span>
+        <button class="demo-btn" onclick="fill('teacher@school.com','Teacher@1234')">
+          👩‍🏫 Priya Sharma — Class 9A · Maths &amp; Science
+          <span class="demo-tag t">Teacher</span>
         </button>
-        <button class="demo-btn" onclick="fillDemo('student@school.com','Student@1234')">
-          👨‍🎓 Sample Student <span class="demo-badge student">Student</span>
+        <button class="demo-btn" onclick="fill('rajan@school.com','Teacher@1234')">
+          👨‍🏫 Rajan Mehta — Class 9A · English
+          <span class="demo-tag t">Teacher</span>
+        </button>
+        <button class="demo-btn" onclick="fill('student@school.com','Student@1234')">
+          👨‍🎓 Arjun Reddy — Class 9 Section A
+          <span class="demo-tag s">Student</span>
+        </button>
+        <button class="demo-btn" onclick="fill('divya@school.com','Student@1234')">
+          👩‍🎓 Divya Patel — Class 9 Section A
+          <span class="demo-tag s">Student</span>
         </button>
       </div>
     </div>
 
-    <!-- ── REGISTER FORM ── -->
-    <div id="registerPanel" class="form-panel">
-      <div id="registerAlert" class="alert-box"></div>
+    <!-- ══════════════ REGISTER PANEL ══════════════ -->
+    <div id="registerPanel" class="panel">
+      <div id="regAlert" class="alert"></div>
 
-      <div class="form-group">
-        <label class="form-label">Full Name</label>
-        <div class="input-wrap">
-          <span class="input-icon">👤</span>
-          <input type="text" id="regName" class="form-control" placeholder="Your full name" autocomplete="name" />
+      <!-- Base fields -->
+      <div class="row2">
+        <div class="fg">
+          <label>Full Name</label>
+          <div class="iw"><span class="ii">👤</span>
+            <input id="rName" class="fc" type="text" placeholder="Your full name" autocomplete="name"/>
+          </div>
+          <div class="ferr" id="rNameErr">Name is required</div>
         </div>
-        <div class="form-error" id="regNameErr">Name is required</div>
+        <div class="fg">
+          <label>Role</label>
+          <div class="iw"><span class="ii">🏷️</span>
+            <select id="rRole" class="fc" onchange="onRoleChange()">
+              <option value="">Select role…</option>
+              <option value="student">👨‍🎓 Student</option>
+              <option value="teacher">👩‍🏫 Teacher</option>
+            </select>
+          </div>
+          <div class="ferr" id="rRoleErr">Please select a role</div>
+          <div class="fhint">Admin accounts are system-created only.</div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <div class="input-wrap">
-          <span class="input-icon">✉️</span>
-          <input type="email" id="regEmail" class="form-control" placeholder="your@email.com" autocomplete="email" />
+      <div class="fg">
+        <label>Email Address</label>
+        <div class="iw"><span class="ii">✉️</span>
+          <input id="rEmail" class="fc" type="email" placeholder="your@email.com" autocomplete="email"/>
         </div>
-        <div class="form-error" id="regEmailErr">Valid email is required</div>
+        <div class="ferr" id="rEmailErr">Valid email address required</div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Role</label>
-        <div class="input-wrap">
-          <span class="input-icon">🏷️</span>
-          <select id="regRole" class="form-control" style="padding-left:40px">
-            <option value="">Select your role...</option>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-          </select>
+      <div class="fg">
+        <label>Password</label>
+        <div class="iw"><span class="ii">🔒</span>
+          <input id="rPw" class="fc" type="password" placeholder="Min 8 chars: A-z, 0-9 &amp; symbol" autocomplete="new-password" oninput="checkPwStrength(this.value)"/>
+          <button class="pw-eye" type="button" onclick="toggleEye('rPw',this)">👁</button>
         </div>
-        <div class="form-error" id="regRoleErr">Please select a role</div>
-        <div style="font-size:.76rem;color:#7A93AB;margin-top:4px">Note: Admin accounts are created by the system administrator only.</div>
+        <div class="pw-bar"><div class="pw-fill" id="pwFill" style="width:0%;background:var(--coral)"></div></div>
+        <div class="fhint" id="pwHint">Enter a strong password</div>
+        <div class="ferr" id="rPwErr">Password must be 8+ chars with uppercase, lowercase, number &amp; symbol</div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <div class="input-wrap">
-          <span class="input-icon">🔒</span>
-          <input type="password" id="regPassword" class="form-control" placeholder="Min 8 chars, upper+lower+number+symbol" autocomplete="new-password" />
-          <button class="pw-toggle" type="button" onclick="togglePassword('regPassword', this)">👁</button>
+      <!-- ══ STUDENT FIELDS ══ -->
+      <div id="studentBlock" style="display:none">
+        <div class="sep">Class &amp; Section Assignment</div>
+
+        <div class="row2">
+          <!-- Class selector -->
+          <div class="fg">
+            <label>Class <span style="color:var(--coral)">*</span></label>
+            <div class="iw"><span class="ii">🏫</span>
+              <select id="sClass" class="fc" onchange="onClassChange()" disabled>
+                <option value="">Loading classes…</option>
+              </select>
+            </div>
+            <div class="ferr" id="sClassErr">Please select your class</div>
+          </div>
+          <!-- Section selector -->
+          <div class="fg">
+            <label>Section <span style="color:var(--coral)">*</span></label>
+            <div class="iw"><span class="ii">🏛️</span>
+              <select id="sSection" class="fc" onchange="onSectionChange()" disabled>
+                <option value="">Select class first…</option>
+              </select>
+            </div>
+            <div class="ferr" id="sSectionErr">Please select your section</div>
+          </div>
         </div>
-        <div class="form-error" id="regPasswordErr">Password must have 8+ chars, uppercase, lowercase, number, special char</div>
+
+        <!-- Preview card — shown after section is selected -->
+        <div class="preview-card" id="sPreview">
+          <span style="font-size:.8rem;color:var(--text-muted)">You will be enrolled in:</span><br/>
+          <strong id="sPreviewText">—</strong>
+        </div>
+        <div class="fhint" style="margin-top:8px">⚠️ Your class &amp; section is assigned by the Admin. Select the one you were told to join.</div>
       </div>
 
-      <button class="submit-btn" id="registerBtn" onclick="handleRegister()">
-        Create Account →
-      </button>
+      <!-- ══ TEACHER FIELDS ══ -->
+      <div id="teacherBlock" style="display:none">
+        <div class="sep">Subjects You Teach <span style="color:var(--coral)">*</span></div>
+        <div class="chip-grid" id="subjectPicker"></div>
+        <div class="ferr" id="tSubErr">Select at least one subject</div>
+        <div class="fhint" style="margin-top:4px">These are Admin-created subjects. You cannot add new ones.</div>
+
+        <div class="sep">Classes &amp; Sections <span style="color:var(--coral)">*</span></div>
+        <div class="chip-grid" id="sectionPicker"></div>
+        <div class="ferr" id="tSecErr">Select at least one class/section</div>
+        <div class="fhint" style="margin-top:4px">Select every class section you will teach in.</div>
+      </div>
+
+      <button class="sbtn" id="regBtn" onclick="doRegister()">Create Account →</button>
     </div>
 
-    <div class="login-footer">
-      High School Management System &nbsp;·&nbsp; v1.0 &nbsp;·&nbsp; Phase 1
+    <div class="login-foot">
+      High School Management System &nbsp;·&nbsp; v1.0 &nbsp;·&nbsp; 🔒 Encrypted
     </div>
   </div>
 </div>
 
-<script src="../js/api.js"></script>
 <script>
-  // Redirect if already logged in
-  Auth.redirectIfLoggedIn();
+const API = 'http://localhost:5000/api';
 
-  // API_BASE is already declared in api.js
+/* ── Auth helpers ── */
+const Auth = {
+  set: u => localStorage.setItem('hs_user', JSON.stringify(u)),
+  get: () => { try{ return JSON.parse(localStorage.getItem('hs_user')); }catch{ return null; } },
+  redirectIfLoggedIn() {
+    const u = this.get(); if (!u) return;
+    location.href = { admin:'admin.html', teacher:'teacher.html', student:'student.html' }[u.role] || 'login.html';
+  }
+};
+Auth.redirectIfLoggedIn();
 
+/* ── Registration data ── */
+let RD = { classes:[], sections:[], subjects:[] };
 
-  // ── Tab switcher ────────────────────────────────────────────
-  function switchTab(tab) {
-    document.getElementById('loginPanel').classList.toggle('active',    tab === 'login');
-    document.getElementById('registerPanel').classList.toggle('active', tab === 'register');
-    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-      btn.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+async function loadRegData() {
+  try {
+    const r = await fetch(`${API}/health/registration-data`);
+    const d = await r.json();
+    if (!d.success) return;
+    RD = d.data;
+    buildClassDropdown();
+    // If teacher block is already visible, rebuild pickers
+    if (document.getElementById('rRole').value === 'teacher') buildTeacherPickers();
+  } catch(e) {
+    console.warn('Could not load registration data:', e.message);
+    // Show offline notice in dropdowns
+    ['sClass','sSection'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.innerHTML = '<option value="">⚠️ Server offline — start backend</option>'; el.disabled = true; }
     });
   }
+}
 
-  // ── Password visibility toggle ──────────────────────────────
-  function togglePassword(id, btn) {
-    const input = document.getElementById(id);
-    input.type = input.type === 'password' ? 'text' : 'password';
-    btn.textContent = input.type === 'password' ? '👁' : '🙈';
+function buildClassDropdown() {
+  const sel = document.getElementById('sClass');
+  if (!sel) return;
+  if (!RD.classes.length) {
+    sel.innerHTML = '<option value="">No classes found — run schema.sql</option>';
+    return;
+  }
+  sel.innerHTML = '<option value="">— Select your class —</option>' +
+    RD.classes.map(c => `<option value="${c.id}" data-name="${c.class_name}">Class ${c.class_name}</option>`).join('');
+  sel.disabled = false;
+}
+
+/* Called when student selects a class */
+function onClassChange() {
+  const classId   = document.getElementById('sClass').value;
+  const className = document.getElementById('sClass').selectedOptions[0]?.dataset.name || '';
+  const secSel    = document.getElementById('sSection');
+  const preview   = document.getElementById('sPreview');
+
+  // Reset section & preview
+  secSel.value = '';
+  preview.classList.remove('show');
+  document.getElementById('sSectionErr').classList.remove('show');
+  document.getElementById('sSection').classList.remove('err');
+
+  if (!classId) {
+    secSel.innerHTML = '<option value="">Select class first…</option>';
+    secSel.disabled  = true;
+    return;
   }
 
-  // ── Demo account fill ───────────────────────────────────────
-  function fillDemo(email, password) {
-    document.getElementById('loginEmail').value    = email;
-    document.getElementById('loginPassword').value = password;
-    showAlert('loginAlert', 'ℹ️ Demo credentials filled. Click Sign In.', 'info');
+  const filtered = RD.sections.filter(s => String(s.class_id) === String(classId));
+  if (!filtered.length) {
+    secSel.innerHTML = '<option value="">No sections in this class</option>';
+    secSel.disabled  = true;
+    return;
   }
 
-  // ── Alert helpers ───────────────────────────────────────────
-  function showAlert(id, msg, type = 'error') {
-    const el = document.getElementById(id);
-    el.className = `alert-box show alert-${type}`;
-    el.textContent = msg;
+  secSel.innerHTML = `<option value="">— Select section for Class ${className} —</option>` +
+    filtered.map(s => `<option value="${s.id}" data-sec="${s.section_name}" data-class="${className}">Section ${s.section_name}</option>`).join('');
+  secSel.disabled = false;
+}
+
+/* Called when student selects a section */
+function onSectionChange() {
+  const opt     = document.getElementById('sSection').selectedOptions[0];
+  const preview = document.getElementById('sPreview');
+  if (!opt || !opt.value) { preview.classList.remove('show'); return; }
+
+  const className   = opt.dataset.class;
+  const sectionName = opt.dataset.sec;
+
+  document.getElementById('sPreviewText').textContent =
+    `Class ${className} — Section ${sectionName}`;
+  preview.classList.add('show');
+}
+
+/* ── Teacher pickers ── */
+function buildTeacherPickers() {
+  const subEl = document.getElementById('subjectPicker');
+  const secEl = document.getElementById('sectionPicker');
+
+  if (!RD.subjects.length && !RD.sections.length) {
+    subEl.innerHTML = '<p style="color:var(--coral);font-size:.82rem;grid-column:1/-1">⚠️ Cannot load data — backend may be offline.</p>';
+    return;
   }
-  function hideAlert(id) {
-    const el = document.getElementById(id);
-    el.className = 'alert-box';
-    el.textContent = '';
+
+  subEl.innerHTML = RD.subjects.map(s => `
+    <div class="sel-chip" id="sc_${s.id}" onclick="toggleChip('sc_${s.id}','cb_sub_${s.id}')">
+      <div class="chip-check" id="ck_sub_${s.id}">✓</div>
+      <input type="checkbox" id="cb_sub_${s.id}" value="${s.id}"/>
+      📚 ${s.subject_name}
+    </div>`).join('');
+
+  secEl.innerHTML = RD.sections.map(s => `
+    <div class="sel-chip" id="ssc_${s.id}" onclick="toggleChip('ssc_${s.id}','cb_sec_${s.id}')">
+      <div class="chip-check" id="ck_sec_${s.id}">✓</div>
+      <input type="checkbox" id="cb_sec_${s.id}" value="${s.id}"/>
+      🏫 Cls ${s.class_name}-${s.section_name}
+    </div>`).join('');
+}
+
+function toggleChip(chipId, cbId) {
+  const chip = document.getElementById(chipId);
+  const cb   = document.getElementById(cbId);
+  cb.checked = !cb.checked;
+  chip.classList.toggle('on', cb.checked);
+}
+
+function getChecked(prefix) {
+  return [...document.querySelectorAll(`input[id^="${prefix}"]:checked`)].map(el => parseInt(el.value));
+}
+
+/* ── Role change ── */
+function onRoleChange() {
+  const role = document.getElementById('rRole').value;
+  const stuB = document.getElementById('studentBlock');
+  const teaB = document.getElementById('teacherBlock');
+
+  stuB.style.display = role === 'student' ? 'block' : 'none';
+  teaB.style.display = role === 'teacher' ? 'block' : 'none';
+
+  // Reset errors
+  ['sClassErr','sSectionErr','tSubErr','tSecErr'].forEach(id => {
+    document.getElementById(id)?.classList.remove('show');
+  });
+  document.getElementById('sPreview')?.classList.remove('show');
+
+  if (role === 'teacher' && (!document.getElementById('subjectPicker').children.length)) {
+    buildTeacherPickers();
   }
+}
 
-  function showErr(id, show) {
-    document.getElementById(id)?.classList.toggle('show', show);
-  }
-  function markField(inputId, errId, condition) {
-    const input = document.getElementById(inputId);
-    input.classList.toggle('error', !condition);
-    showErr(errId, !condition);
-    return condition;
-  }
+/* ── Tab switch ── */
+function switchTab(tab) {
+  ['login','register'].forEach(t => {
+    document.getElementById(`${t}Panel`).classList.toggle('active', t === tab);
+    document.querySelectorAll('.tab')[tab === 'login' ? 0 : 1].classList.toggle('active', true);
+    document.querySelectorAll('.tab')[tab === 'login' ? 1 : 0].classList.toggle('active', false);
+  });
+  // clear alerts
+  ['loginAlert','regAlert'].forEach(id => { const el=document.getElementById(id); el.className='alert'; el.textContent=''; });
+}
 
-  function setLoading(btnId, loading, label) {
-    const btn = document.getElementById(btnId);
-    btn.disabled = loading;
-    btn.innerHTML = loading
-      ? `<div class="spinner"></div> Please wait...`
-      : label;
-  }
+/* ── Password strength ── */
+function checkPwStrength(pw) {
+  const fill = document.getElementById('pwFill');
+  const hint = document.getElementById('pwHint');
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[a-z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pw)) score++;
 
-  // ── Login ───────────────────────────────────────────────────
-  async function handleLogin() {
-    hideAlert('loginAlert');
-    const email    = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
+  const w = (score / 5) * 100;
+  const colors = ['var(--coral)','var(--coral)','var(--gold)','var(--gold)','var(--teal)'];
+  const labels = ['Very weak','Weak','Fair','Good','Strong ✓'];
+  fill.style.width = w + '%';
+  fill.style.background = colors[score - 1] || 'var(--border)';
+  hint.textContent = score > 0 ? `Password strength: ${labels[score - 1]}` : 'Enter a strong password';
+  hint.style.color = colors[score - 1] || 'var(--text-muted)';
+}
 
-    const emailOk = markField('loginEmail',    'loginEmailErr',    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
-    const passOk  = markField('loginPassword', 'loginPasswordErr', password.length > 0);
-    if (!emailOk || !passOk) return;
+/* ── Helpers ── */
+function toggleEye(id, btn) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? '👁' : '🙈';
+}
 
-    setLoading('loginBtn', true, 'Sign In →');
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
+function fill(email, pw) {
+  document.getElementById('lEmail').value = email;
+  document.getElementById('lPw').value    = pw;
+  showAlert('loginAlert', 'ℹ️ Demo credentials filled. Click Sign In.', 'info');
+}
 
-      if (data.success) {
-        Auth.setUser(data.data.user);
-        showAlert('loginAlert', '✅ Login successful! Redirecting...', 'success');
-        setTimeout(() => {
-          const routes = { admin: 'admin.html', teacher: 'teacher.html', student: 'student.html' };
-          window.location.href = routes[data.data.user.role] || 'login.html';
-        }, 700);
-      } else {
-        showAlert('loginAlert', '❌ ' + (data.message || 'Login failed'), 'error');
-        setLoading('loginBtn', false, 'Sign In →');
-      }
-    } catch (err) {
-      showAlert('loginAlert', '❌ Cannot connect to server. Make sure the backend is running.', 'error');
+function showAlert(id, msg, type = 'error') {
+  const el = document.getElementById(id);
+  el.className = `alert show ${type}`;
+  el.textContent = msg;
+  if (type === 'success') setTimeout(() => { el.className = 'alert'; el.textContent = ''; }, 5000);
+}
+
+function setLoading(btnId, loading, label) {
+  const btn = document.getElementById(btnId);
+  btn.disabled  = loading;
+  btn.innerHTML = loading ? `<span class="spin"></span> Please wait…` : label;
+}
+
+function markField(inputId, errId, ok) {
+  document.getElementById(inputId)?.classList.toggle('err', !ok);
+  document.getElementById(errId)?.classList.toggle('show', !ok);
+  return ok;
+}
+
+/* ── Login ── */
+async function doLogin() {
+  const email = document.getElementById('lEmail').value.trim();
+  const pw    = document.getElementById('lPw').value;
+
+  let ok = true;
+  ok = markField('lEmail', 'lEmailErr', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) && ok;
+  ok = markField('lPw',    'lPwErr',    pw.length > 0)                              && ok;
+  if (!ok) return;
+
+  setLoading('loginBtn', true, 'Sign In →');
+  try {
+    const res  = await fetch(`${API}/auth/login`, {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pw })
+    });
+    const data = await res.json();
+    if (data.success) {
+      Auth.set(data.data.user);
+      showAlert('loginAlert', '✅ Login successful! Redirecting…', 'success');
+      setTimeout(() => {
+        const routes = { admin:'admin.html', teacher:'teacher.html', student:'student.html' };
+        location.href = routes[data.data.user.role] || 'login.html';
+      }, 700);
+    } else {
+      showAlert('loginAlert', '❌ ' + (data.message || 'Invalid email or password'));
       setLoading('loginBtn', false, 'Sign In →');
     }
+  } catch {
+    showAlert('loginAlert', '❌ Cannot connect to server. Make sure the backend is running on port 5000.');
+    setLoading('loginBtn', false, 'Sign In →');
+  }
+}
+
+/* ── Register ── */
+async function doRegister() {
+  const name  = document.getElementById('rName').value.trim();
+  const role  = document.getElementById('rRole').value;
+  const email = document.getElementById('rEmail').value.trim();
+  const pw    = document.getElementById('rPw').value;
+
+  const pwStrong = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{};':",.<>?/\\|`~]).{8,}$/.test(pw);
+
+  // Validate base fields
+  let ok = true;
+  ok = markField('rName',  'rNameErr',  name.length > 0)                            && ok;
+  ok = markField('rRole',  'rRoleErr',  role !== '')                                  && ok;
+  ok = markField('rEmail', 'rEmailErr', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))   && ok;
+  ok = markField('rPw',    'rPwErr',    pwStrong)                                     && ok;
+  if (!ok) { showAlert('regAlert', '❌ Please fix the errors above'); return; }
+
+  const body = { name, email, password: pw, role };
+
+  /* ── Student: class + section ── */
+  if (role === 'student') {
+    const classId   = document.getElementById('sClass').value;
+    const sectionId = document.getElementById('sSection').value;
+
+    let stuOk = true;
+    stuOk = markField('sClass',   'sClassErr',   classId !== '')   && stuOk;
+    stuOk = markField('sSection', 'sSectionErr', sectionId !== '') && stuOk;
+    if (!stuOk) { showAlert('regAlert', '❌ Please select your class and section'); return; }
+
+    body.section_id = parseInt(sectionId);
   }
 
-  // ── Register ────────────────────────────────────────────────
-  async function handleRegister() {
-    hideAlert('registerAlert');
-    const name     = document.getElementById('regName').value.trim();
-    const email    = document.getElementById('regEmail').value.trim();
-    const role     = document.getElementById('regRole').value;
-    const password = document.getElementById('regPassword').value;
+  /* ── Teacher: subjects + sections ── */
+  if (role === 'teacher') {
+    const subIds = getChecked('cb_sub_');
+    const secIds = getChecked('cb_sec_');
 
-    const pwStrong = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(password);
+    let teaOk = true;
+    if (!subIds.length) { document.getElementById('tSubErr').classList.add('show'); teaOk = false; }
+    else document.getElementById('tSubErr').classList.remove('show');
+    if (!secIds.length) { document.getElementById('tSecErr').classList.add('show'); teaOk = false; }
+    else document.getElementById('tSecErr').classList.remove('show');
+    if (!teaOk) { showAlert('regAlert', '❌ Select at least one subject and one section'); return; }
 
-    let ok = true;
-    ok = markField('regName',     'regNameErr',     name.length > 0)     && ok;
-    ok = markField('regEmail',    'regEmailErr',    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) && ok;
-    ok = markField('regRole',     'regRoleErr',     role !== '')           && ok;
-    ok = markField('regPassword', 'regPasswordErr', pwStrong)             && ok;
-    if (!ok) return;
+    body.subject_ids = subIds;
+    body.section_ids = secIds;
+  }
 
-    setLoading('registerBtn', true, 'Create Account →');
-    try {
-      const res = await fetch(`${API_BASE}/auth/register`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role }),
-      });
-      const data = await res.json();
+  setLoading('regBtn', true, 'Create Account →');
+  try {
+    const res  = await fetch(`${API}/auth/register`, {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    setLoading('regBtn', false, 'Create Account →');
 
-      if (data.success) {
-        showAlert('registerAlert', '✅ Account created! Switching to sign in...', 'success');
-        setTimeout(() => {
-          switchTab('login');
-          document.getElementById('loginEmail').value = email;
-          showAlert('loginAlert', 'ℹ️ Account created. Please sign in.', 'info');
-        }, 1500);
-      } else {
-        showAlert('registerAlert', '❌ ' + (data.message || 'Registration failed'), 'error');
-      }
-      setLoading('registerBtn', false, 'Create Account →');
-    } catch {
-      showAlert('registerAlert', '❌ Cannot connect to server.', 'error');
-      setLoading('registerBtn', false, 'Create Account →');
+    if (data.success) {
+      showAlert('regAlert', '✅ Account created successfully! Switching to sign in…', 'success');
+      setTimeout(() => {
+        switchTab('login');
+        document.getElementById('lEmail').value = email;
+        showAlert('loginAlert', 'ℹ️ Account created. Please sign in now.', 'info');
+      }, 1500);
+    } else {
+      showAlert('regAlert', '❌ ' + (data.message || 'Registration failed'));
     }
+  } catch {
+    setLoading('regBtn', false, 'Create Account →');
+    showAlert('regAlert', '❌ Server error — make sure the backend is running');
   }
+}
 
-  // ── Enter key support ───────────────────────────────────────
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return;
-    if (document.getElementById('loginPanel').classList.contains('active')) handleLogin();
-    else handleRegister();
-  });
+/* Enter key support */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('loginPanel').classList.contains('active')) doLogin();
+  else doRegister();
+});
+
+/* Load data on page open */
+loadRegData();
 </script>
 </body>
 </html>

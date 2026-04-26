@@ -355,10 +355,167 @@ const getAuditLogs = async (req, res) => {
   }
 };
 
+// ═══════════════════════════════════════════════════════════════
+// TEACHER ASSIGNMENT MANAGEMENT
+// ═══════════════════════════════════════════════════════════════
+
+// GET /api/admin/teacher-assignments
+const getAllTeacherAssignments = async (req, res) => {
+  try {
+    const [rows] = await pool.execute(
+      `SELECT ts.*, u.name AS teacher_name, u.email AS teacher_email,
+              sub.subject_name, sec.section_name, c.class_name, c.id AS class_id
+       FROM teacher_subjects ts
+       JOIN users u ON u.id = ts.teacher_id
+       JOIN subjects sub ON sub.id = ts.subject_id
+       JOIN sections sec ON sec.id = ts.section_id
+       JOIN classes c ON c.id = sec.class_id
+       ORDER BY u.name, c.class_name, sec.section_name`
+    );
+    return sendSuccess(res, { assignments: rows });
+  } catch (err) {
+    console.error('[getAllTeacherAssignments]', err.message);
+    return sendServerError(res);
+  }
+};
+
+// POST /api/admin/teacher-assignments
+const createTeacherAssignment = async (req, res) => {
+  try {
+    const { teacher_id, subject_id, section_id } = req.body;
+    if (!teacher_id || !subject_id || !section_id)
+      return sendValidationError(res, ['teacher_id, subject_id, section_id required']);
+
+    const teacher = await User.findById(teacher_id);
+    if (!teacher || teacher.role !== 'teacher') return sendNotFound(res, 'Teacher');
+
+    await pool.execute(
+      'INSERT IGNORE INTO teacher_subjects (teacher_id, subject_id, section_id) VALUES (?,?,?)',
+      [teacher_id, subject_id, section_id]
+    );
+
+    await logAction({
+      userId: req.user.id, action: 'TEACHER_ASSIGNED',
+      entityType: 'teacher_subjects', entityId: teacher_id,
+      ipAddress: getIp(req),
+      details: { teacher_name: teacher.name, subject_id, section_id },
+    });
+
+    return sendCreated(res, null, `${teacher.name} assigned successfully`);
+  } catch (err) {
+    console.error('[createTeacherAssignment]', err.message);
+    return sendServerError(res);
+  }
+};
+
+// DELETE /api/admin/teacher-assignments
+const removeTeacherAssignment = async (req, res) => {
+  try {
+    const { teacher_id, subject_id, section_id } = req.body;
+    await pool.execute(
+      'DELETE FROM teacher_subjects WHERE teacher_id=? AND subject_id=? AND section_id=?',
+      [teacher_id, subject_id, section_id]
+    );
+    return sendSuccess(res, null, 'Assignment removed');
+  } catch (err) {
+    console.error('[removeTeacherAssignment]', err.message);
+    return sendServerError(res);
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN — ALL MARKS VIEW
+// ═══════════════════════════════════════════════════════════════
+
+// GET /api/admin/marks?student_id=&subject_id=&exam_type=
+const getAllMarks = async (req, res) => {
+  try {
+    const { student_id, subject_id, exam_type, class_name, section_name } = req.query;
+    let query = `
+      SELECT m.*,
+             u.name AS student_name, u.email AS student_email,
+             sub.subject_name,
+             t.name AS teacher_name,
+             sec.section_name, c.class_name,
+             ROUND(m.marks_value / m.max_marks * 100, 1) AS percentage,
+             CASE
+               WHEN m.marks_value / m.max_marks >= 0.90 THEN 'A+'
+               WHEN m.marks_value / m.max_marks >= 0.80 THEN 'A'
+               WHEN m.marks_value / m.max_marks >= 0.70 THEN 'B'
+               WHEN m.marks_value / m.max_marks >= 0.60 THEN 'C'
+               WHEN m.marks_value / m.max_marks >= 0.50 THEN 'D'
+               ELSE 'F'
+             END AS grade
+      FROM marks m
+      JOIN users u ON u.id = m.student_id
+      JOIN subjects sub ON sub.id = m.subject_id
+      JOIN users t ON t.id = m.teacher_id
+      LEFT JOIN student_sections ss ON ss.student_id = m.student_id
+      LEFT JOIN sections sec ON sec.id = ss.section_id
+      LEFT JOIN classes c ON c.id = sec.class_id
+      WHERE 1=1
+    `;
+    const params = [];
+    if (student_id)  { query += ' AND m.student_id = ?';    params.push(student_id); }
+    if (subject_id)  { query += ' AND m.subject_id = ?';    params.push(subject_id); }
+    if (exam_type)   { query += ' AND m.exam_type = ?';     params.push(exam_type); }
+    if (class_name)  { query += ' AND c.class_name = ?';    params.push(class_name); }
+    if (section_name){ query += ' AND sec.section_name = ?'; params.push(section_name); }
+    query += ' ORDER BY u.name, sub.subject_name, m.exam_type';
+
+    const [rows] = await pool.execute(query, params);
+    return sendSuccess(res, { marks: rows, total: rows.length });
+  } catch (err) {
+    console.error('[getAllMarks]', err.message);
+    return sendServerError(res);
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN — ALL ATTENDANCE VIEW
+// ═══════════════════════════════════════════════════════════════
+
+// GET /api/admin/attendance?student_id=&subject_id=&date=&class_name=
+const getAllAttendance = async (req, res) => {
+  try {
+    const { student_id, subject_id, date, class_name, section_name } = req.query;
+    let query = `
+      SELECT a.*,
+             u.name AS student_name,
+             sub.subject_name,
+             t.name AS teacher_name,
+             sec.section_name, c.class_name
+      FROM attendance a
+      JOIN users u ON u.id = a.student_id
+      JOIN subjects sub ON sub.id = a.subject_id
+      JOIN users t ON t.id = a.teacher_id
+      LEFT JOIN student_sections ss ON ss.student_id = a.student_id
+      LEFT JOIN sections sec ON sec.id = ss.section_id
+      LEFT JOIN classes c ON c.id = sec.class_id
+      WHERE 1=1
+    `;
+    const params = [];
+    if (student_id)  { query += ' AND a.student_id = ?';    params.push(student_id); }
+    if (subject_id)  { query += ' AND a.subject_id = ?';    params.push(subject_id); }
+    if (date)        { query += ' AND a.date = ?';           params.push(date); }
+    if (class_name)  { query += ' AND c.class_name = ?';    params.push(class_name); }
+    if (section_name){ query += ' AND sec.section_name = ?'; params.push(section_name); }
+    query += ' ORDER BY a.date DESC, u.name LIMIT 500';
+
+    const [rows] = await pool.execute(query, params);
+    return sendSuccess(res, { attendance: rows, total: rows.length });
+  } catch (err) {
+    console.error('[getAllAttendance]', err.message);
+    return sendServerError(res);
+  }
+};
+
 module.exports = {
   getStats,
   getAllUsers, getUserById, updateUserRole, toggleUserStatus, resetUserPassword,
   getAllClasses, createClass,
   getAllSections, createSection, deleteSection, assignStudentToSection, getSectionStudents,
+  getAllTeacherAssignments, createTeacherAssignment, removeTeacherAssignment,
+  getAllMarks, getAllAttendance,
   getAuditLogs,
 };

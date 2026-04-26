@@ -262,59 +262,126 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ═══════════════════════════════════════════════════════════════
--- SEED DATA — Default Admin user
--- Password: Admin@1234  (hashed with bcrypt, 12 rounds)
--- CHANGE THIS PASSWORD immediately after first login!
+-- SEED DATA
 -- ═══════════════════════════════════════════════════════════════
-INSERT IGNORE INTO users (id, name, email, password_hash, role, is_active)
-VALUES (
-  'admin-uuid-0000-0000-000000000001',
-  'System Admin',
-  'sbhuvan847@gmail.com',
-  'Admin@1234',
-  'admin',
-  TRUE
-);
 
--- Seed: Classes 8, 9, 10
+-- Admin  →  admin@school.com  / Admin@1234
+INSERT IGNORE INTO users (id, name, email, password_hash, role, is_active) VALUES
+('admin-uuid-0000-0000-000000000001','System Admin','admin@school.com',
+ '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBdXIG4bZp6NqS','admin',TRUE);
+
+-- Demo Teacher  →  teacher@school.com  / Teacher@1234
+INSERT IGNORE INTO users (id, name, email, password_hash, role, is_active) VALUES
+('teach-uuid-0000-0000-000000000001','Priya Sharma','teacher@school.com',
+ '$2b$12$.CMLJ64hWDCRzhI5G.rrEuWZ2DP.9BttmNqMLXR8qKCFgZs28nmaS','teacher',TRUE),
+('teach-uuid-0000-0000-000000000002','Rajan Mehta','rajan@school.com',
+ '$2b$12$.CMLJ64hWDCRzhI5G.rrEuWZ2DP.9BttmNqMLXR8qKCFgZs28nmaS','teacher',TRUE);
+
+-- Demo Students  →  student@school.com  / Student@1234
+INSERT IGNORE INTO users (id, name, email, password_hash, role, is_active) VALUES
+('stud-uuid-0000-0000-000000000001','Arjun Reddy',  'student@school.com',
+ '$2b$12$Br74NOYPnubjhRnd0BDDMu.MMyycOoyxgs4IfFFNEYw7QO0/bYdR.','student',TRUE),
+('stud-uuid-0000-0000-000000000002','Divya Patel',  'divya@school.com',
+ '$2b$12$Br74NOYPnubjhRnd0BDDMu.MMyycOoyxgs4IfFFNEYw7QO0/bYdR.','student',TRUE),
+('stud-uuid-0000-0000-000000000003','Kiran Kumar',  'kiran@school.com',
+ '$2b$12$Br74NOYPnubjhRnd0BDDMu.MMyycOoyxgs4IfFFNEYw7QO0/bYdR.','student',TRUE),
+('stud-uuid-0000-0000-000000000004','Sneha Iyer',   'sneha@school.com',
+ '$2b$12$Br74NOYPnubjhRnd0BDDMu.MMyycOoyxgs4IfFFNEYw7QO0/bYdR.','student',TRUE),
+('stud-uuid-0000-0000-000000000005','Rahul Gupta',  'rahul@school.com',
+ '$2b$12$Br74NOYPnubjhRnd0BDDMu.MMyycOoyxgs4IfFFNEYw7QO0/bYdR.','student',TRUE);
+
+-- Classes 8, 9, 10
 INSERT IGNORE INTO classes (class_name, created_by) VALUES
-  ('8',  'admin-uuid-0000-0000-000000000001'),
-  ('9',  'admin-uuid-0000-0000-000000000001'),
-  ('10', 'admin-uuid-0000-0000-000000000001');
+('8','admin-uuid-0000-0000-000000000001'),
+('9','admin-uuid-0000-0000-000000000001'),
+('10','admin-uuid-0000-0000-000000000001');
 
--- Seed: Default sections for each class
+-- Sections A, B, C for each class
 INSERT IGNORE INTO sections (class_id, section_name, created_by)
-SELECT c.id, s.section_name, 'admin-uuid-0000-0000-000000000001'
-FROM classes c
-CROSS JOIN (
-  SELECT 'A' AS section_name UNION ALL
-  SELECT 'B' UNION ALL
-  SELECT 'C'
-) s;
+SELECT c.id, s.sec, 'admin-uuid-0000-0000-000000000001'
+FROM classes c CROSS JOIN (SELECT 'A' sec UNION ALL SELECT 'B' UNION ALL SELECT 'C') s;
 
--- Seed: Core subjects
+-- Core subjects (Admin-created — students/teachers cannot create new ones)
 INSERT IGNORE INTO subjects (subject_name, created_by) VALUES
-  ('Mathematics',        'admin-uuid-0000-0000-000000000001'),
-  ('Science',            'admin-uuid-0000-0000-000000000001'),
-  ('English',            'admin-uuid-0000-0000-000000000001'),
-  ('Social Studies',     'admin-uuid-0000-0000-000000000001'),
-  ('Hindi',              'admin-uuid-0000-0000-000000000001'),
-  ('Computer Science',   'admin-uuid-0000-0000-000000000001'),
-  ('Physical Education', 'admin-uuid-0000-0000-000000000001');
+('Mathematics',        'admin-uuid-0000-0000-000000000001'),
+('Science',            'admin-uuid-0000-0000-000000000001'),
+('English',            'admin-uuid-0000-0000-000000000001'),
+('Social Studies',     'admin-uuid-0000-0000-000000000001'),
+('Hindi',              'admin-uuid-0000-0000-000000000001'),
+('Computer Science',   'admin-uuid-0000-0000-000000000001'),
+('Physical Education', 'admin-uuid-0000-0000-000000000001');
 
--- Initial audit log entry
-INSERT INTO audit_logs (user_id, action, entity_type, entity_id, details)
-VALUES (
-  'admin-uuid-0000-0000-000000000001',
-  'DB_INITIALIZED',
-  'system',
-  NULL,
-  JSON_OBJECT('message', 'Database schema and seed data created successfully')
+-- Assign demo students to Class 9 Section A
+INSERT IGNORE INTO student_sections (student_id, section_id)
+SELECT s.id, sec.id
+FROM users s
+JOIN sections sec ON sec.section_name='A'
+JOIN classes c ON c.id=sec.class_id AND c.class_name='9'
+WHERE s.id IN (
+  'stud-uuid-0000-0000-000000000001','stud-uuid-0000-0000-000000000002',
+  'stud-uuid-0000-0000-000000000003','stud-uuid-0000-0000-000000000004',
+  'stud-uuid-0000-0000-000000000005'
 );
 
+-- Assign Math, Science, English to demo students
+INSERT IGNORE INTO student_subjects (student_id, subject_id)
+SELECT u.id, sub.id FROM users u, subjects sub
+WHERE u.role='student' AND sub.subject_name IN ('Mathematics','Science','English');
+
+-- Assign demo teachers to subjects+sections (Priya: Maths+Science / Class 9 Section A)
+INSERT IGNORE INTO teacher_subjects (teacher_id, subject_id, section_id)
+SELECT 'teach-uuid-0000-0000-000000000001', sub.id, sec.id
+FROM subjects sub, sections sec
+JOIN classes c ON c.id=sec.class_id
+WHERE sub.subject_name IN ('Mathematics','Science')
+  AND c.class_name='9' AND sec.section_name='A';
+
+-- Assign Rajan: English / Class 9 Section A
+INSERT IGNORE INTO teacher_subjects (teacher_id, subject_id, section_id)
+SELECT 'teach-uuid-0000-0000-000000000002', sub.id, sec.id
+FROM subjects sub, sections sec
+JOIN classes c ON c.id=sec.class_id
+WHERE sub.subject_name='English'
+  AND c.class_name='9' AND sec.section_name='A';
+
+-- Sample marks for demo students
+INSERT IGNORE INTO marks (student_id, subject_id, teacher_id, exam_type, marks_value, max_marks)
+SELECT s.id, sub.id, 'teach-uuid-0000-0000-000000000001', 'unit_test', 
+  FLOOR(65 + RAND()*30), 100
+FROM users s, subjects sub
+WHERE s.role='student' AND sub.subject_name IN ('Mathematics','Science');
+
+INSERT IGNORE INTO marks (student_id, subject_id, teacher_id, exam_type, marks_value, max_marks)
+SELECT s.id, sub.id, 'teach-uuid-0000-0000-000000000002', 'unit_test',
+  FLOOR(60 + RAND()*35), 100
+FROM users s, subjects sub
+WHERE s.role='student' AND sub.subject_name='English';
+
+-- Sample attendance
+INSERT IGNORE INTO attendance (student_id, subject_id, teacher_id, date, status)
+SELECT s.id, sub.id, 'teach-uuid-0000-0000-000000000001',
+  DATE_SUB(CURDATE(), INTERVAL n.n DAY),
+  ELT(1+FLOOR(RAND()*3),'present','present','absent')
+FROM users s, subjects sub,
+  (SELECT 0 n UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) n
+WHERE s.role='student' AND sub.subject_name IN ('Mathematics','Science');
+
+-- Seed notifications
+INSERT IGNORE INTO notifications (recipient_id, title, message, type) VALUES
+('stud-uuid-0000-0000-000000000001','Welcome to School Portal','Your account is set up. Select your subjects to get started!','system'),
+('teach-uuid-0000-0000-000000000001','Welcome, Teacher!','You have been assigned to Class 9A — Mathematics & Science.','system');
+
+-- Audit log
+INSERT INTO audit_logs (user_id, action, entity_type, details)
+VALUES ('admin-uuid-0000-0000-000000000001','DB_INITIALIZED','system',
+  JSON_OBJECT('message','Full schema + seed data loaded successfully'));
+
 -- ═══════════════════════════════════════════════════════════════
--- DONE
--- Default admin credentials:
---   Email:    sbhuvan847@gmail.com
---   Password: Admin@1234
+-- CREDENTIALS SUMMARY
+--   Admin:   admin@school.com     / Admin@1234
+--   Teacher: teacher@school.com  / Teacher@1234
+--            rajan@school.com    / Teacher@1234
+--   Student: student@school.com  / Student@1234
+--            divya@school.com    / Student@1234
+--            kiran@school.com    / Student@1234
 -- ═══════════════════════════════════════════════════════════════

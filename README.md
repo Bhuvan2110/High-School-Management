@@ -56,34 +56,13 @@ highschool-mgmt/
 - MySQL 8.0+ running locally
 - A MySQL client (MySQL Workbench, DBeaver, or CLI)
 
-### 🌐 Production Deployment
-
-The system is designed to be cloud-ready. To deploy:
-
-1.  **Backend**: Host the `backend` folder on platforms like **Render**, **Railway**, or **Google Cloud Run**. Ensure the `PORT` and `CORS_ORIGIN` environment variables are set.
-2.  **Database**: Use a managed MySQL service (e.g., Aiven, PlanetScale, or Google Cloud SQL) and update the `DB_*` variables in the production environment.
-3.  **Frontend**: The frontend is static and can be hosted on **Vercel**, **Netlify**, or **Firebase Hosting**.
-
-#### Environment Variables for Production:
-```env
-NODE_ENV=production
-PORT=5000
-DB_HOST=your-prod-db-host
-DB_USER=your-prod-db-user
-DB_PASSWORD=your-prod-db-password
-DB_NAME=highschool_db
-JWT_SECRET=your-long-secure-secret
-CORS_ORIGIN=https://your-frontend-domain.com
-```
-
-
 ### Step 2 — Database Setup
 ```sql
 -- Open your MySQL client and run:
 source /path/to/highschool-mgmt/database/schema.sql
 ```
 This creates the database, all 12 tables, and seeds:
-- Default admin account: `sbhuvan847@gmail.com` / `Admin@1234`
+- Default admin account: `admin@school.com` / `Admin@1234`
 - Classes 8, 9, 10 with sections A, B, C
 - 7 default subjects
 
@@ -122,7 +101,7 @@ curl http://localhost:5000/api/health
 # Login
 curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"sbhuvan847@gmail.com","password":"Admin@1234"}'
+  -d '{"email":"admin@school.com","password":"Admin@1234"}'
 
 # Register a new student
 curl -X POST http://localhost:5000/api/auth/register \
@@ -136,7 +115,7 @@ curl -X POST http://localhost:5000/api/auth/register \
 
 | Role    | Email                  | Password       |
 |---------|------------------------|----------------|
-| Admin   | sbhuvan847@gmail.com   | Admin@1234     |
+| Admin   | admin@school.com       | Admin@1234     |
 | Teacher | *(register one)*       | Teacher@1234   |
 | Student | *(register one)*       | Student@1234   |
 

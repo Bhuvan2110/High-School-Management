@@ -23,37 +23,62 @@ const COOKIE_OPTIONS = {
 // ────────────────────────────────────────────────────────────────
 const register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const {
+      name, email, password, role,
+      // Teacher extras
+      subject_ids, section_ids,
+      // Student extras
+      section_id,
+    } = req.body;
 
-    // 1. Validate input
+    // 1. Validate base fields
     const { valid, errors } = validateRegistration({ name, email, password, role });
     if (!valid) return sendValidationError(res, errors);
 
-    // 2. Check for duplicate email
+    // 2. Check duplicate email
     const exists = await User.emailExists(email);
     if (exists) return sendConflict(res, 'An account with this email already exists');
 
     // 3. Hash password
-    const saltRounds  = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 12;
+    const saltRounds    = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 12;
     const password_hash = await bcrypt.hash(password, saltRounds);
 
     // 4. Create user
-    const user = await User.create({
-      name: sanitize(name),
-      email,
-      password_hash,
-      role,
-    });
+    const user = await User.create({ name: sanitize(name), email, password_hash, role });
 
-    // 5. Audit log
+    // 5. Role-specific assignments
+    if (role === 'teacher') {
+      // Assign teacher to selected subjects + sections
+      if (Array.isArray(subject_ids) && Array.isArray(section_ids)) {
+        const { pool } = require('../config/db');
+        for (const subId of subject_ids) {
+          for (const secId of section_ids) {
+            await pool.execute(
+              'INSERT IGNORE INTO teacher_subjects (teacher_id, subject_id, section_id) VALUES (?,?,?)',
+              [user.id, subId, secId]
+            );
+          }
+        }
+      }
+    }
+
+    if (role === 'student') {
+      // Assign to class section if provided
+      if (section_id) {
+        const { pool } = require('../config/db');
+        await pool.execute(
+          'INSERT INTO student_sections (student_id, section_id) VALUES (?,?) ON DUPLICATE KEY UPDATE section_id=VALUES(section_id)',
+          [user.id, section_id]
+        );
+      }
+    }
+
+    // 6. Audit log
     await logAction({
-      userId:     user.id,
-      action:     ACTIONS.USER_REGISTER,
-      entityType: 'user',
-      entityId:   user.id,
-      ipAddress:  getIp(req),
-      userAgent:  req.headers['user-agent'],
-      details:    { role, email },
+      userId: user.id, action: ACTIONS.USER_REGISTER,
+      entityType: 'user', entityId: user.id,
+      ipAddress: getIp(req), userAgent: req.headers['user-agent'],
+      details: { role, email },
     });
 
     return sendCreated(res, {

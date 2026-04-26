@@ -1,596 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Admin Dashboard — High School Management</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
 </head>
 <body>
 <div class="page-wrapper">
 
-  <!-- ── Sidebar ───────────────────────────────────────────── -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div style="font-size:1.5rem;margin-bottom:8px">🏫</div>
-      <div class="school-name">High School<br/>Management</div>
-      <div class="school-tagline">Admin Panel</div>
-    </div>
-
+    <div class="sidebar-logo"><div style="font-size:1.5rem;margin-bottom:8px">🏫</div><div class="school-name">High School<br/>Management</div><div class="school-tagline">Admin Panel</div></div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Overview</div>
-      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
-        <span class="nav-icon">📊</span> Dashboard
-      </a>
-
-      <div class="nav-section-label">Management</div>
-      <a href="#" class="nav-item" onclick="showSection('users')">
-        <span class="nav-icon">👥</span> Users
-      </a>
-      <a href="#" class="nav-item" onclick="showSection('classes')">
-        <span class="nav-icon">🏛️</span> Classes & Sections
-      </a>
-      <a href="#" class="nav-item" onclick="showSection('subjects')">
-        <span class="nav-icon">📚</span> Subjects
-      </a>
-
-      <div class="nav-section-label">Reports</div>
-      <a href="#" class="nav-item" onclick="showSection('audit')">
-        <span class="nav-icon">📋</span> Audit Logs
-      </a>
-
+      <a href="#" class="nav-item active" onclick="show('dashboard',this)"><span class="nav-icon">📊</span> Dashboard</a>
+      <div class="nav-section-label">People</div>
+      <a href="#" class="nav-item" onclick="show('users',this)"><span class="nav-icon">👥</span> All Users</a>
+      <a href="#" class="nav-item" onclick="show('teachers',this)"><span class="nav-icon">👩‍🏫</span> Teachers</a>
+      <a href="#" class="nav-item" onclick="show('students',this)"><span class="nav-icon">👨‍🎓</span> Students</a>
+      <div class="nav-section-label">Academic</div>
+      <a href="#" class="nav-item" onclick="show('subjects',this)"><span class="nav-icon">📚</span> Subjects</a>
+      <a href="#" class="nav-item" onclick="show('classes',this)"><span class="nav-icon">🏛️</span> Classes &amp; Sections</a>
+      <a href="#" class="nav-item" onclick="show('assignments',this)"><span class="nav-icon">🔗</span> Teacher Assignments</a>
+      <div class="nav-section-label">Records</div>
+      <a href="#" class="nav-item" onclick="show('marks',this)"><span class="nav-icon">📝</span> All Marks</a>
+      <a href="#" class="nav-item" onclick="show('attendance',this)"><span class="nav-icon">📅</span> All Attendance</a>
       <div class="nav-section-label">System</div>
-      <a href="#" class="nav-item" id="logoutBtn">
-        <span class="nav-icon">🚪</span> Logout
-      </a>
+      <a href="#" class="nav-item" onclick="show('notifications',this)"><span class="nav-icon">📢</span> Broadcast</a>
+      <a href="#" class="nav-item" onclick="show('audit',this)"><span class="nav-icon">📋</span> Audit Logs</a>
+      <a href="#" class="nav-item" id="logoutBtn"><span class="nav-icon">🚪</span> Logout</a>
     </nav>
-
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="user-avatar">AD</div>
-        <div class="user-info">
-          <div class="user-name">Admin</div>
-          <div class="user-role">Administrator</div>
-        </div>
-      </div>
-    </div>
+    <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">AD</div><div class="user-info"><div class="user-name">Admin</div><div class="user-role">Administrator</div></div></div></div>
   </aside>
 
-  <!-- ── Main ──────────────────────────────────────────────── -->
+  <!-- MAIN -->
   <main class="main-content">
     <header class="topbar">
       <div class="topbar-title" id="topbarTitle">Dashboard Overview</div>
       <div class="topbar-right">
-        <button class="topbar-btn" title="Notifications">
-          🔔 <span class="badge-dot"></span>
-        </button>
+        <button class="topbar-btn" onclick="show('notifications',null)" title="Broadcast">📢</button>
         <div class="user-avatar" style="width:38px;height:38px;font-size:.82rem">AD</div>
       </div>
     </header>
 
     <div class="content-area">
-      <!-- ── DASHBOARD SECTION ──────────────────────────────── -->
+
+      <!-- DASHBOARD -->
       <section id="sec-dashboard" class="section fade-in">
-        <div class="page-header">
-          <div class="breadcrumb"><span>Home</span></div>
-          <h2>Dashboard Overview</h2>
-          <p>Welcome back! Here's what's happening in your school today.</p>
+        <div class="page-header"><h2>Dashboard Overview</h2><p>Complete school management at a glance.</p></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon navy">👨‍🎓</div><div class="stat-info"><div class="stat-value" id="s-students">—</div><div class="stat-label">Students</div></div></div>
+          <div class="stat-card"><div class="stat-icon teal">👩‍🏫</div><div class="stat-info"><div class="stat-value" id="s-teachers">—</div><div class="stat-label">Teachers</div></div></div>
+          <div class="stat-card"><div class="stat-icon gold">📚</div><div class="stat-info"><div class="stat-value" id="s-subjects">—</div><div class="stat-label">Subjects</div></div></div>
+          <div class="stat-card"><div class="stat-icon coral">🏛️</div><div class="stat-info"><div class="stat-value" id="s-sections">—</div><div class="stat-label">Sections</div></div></div>
         </div>
-
-        <div class="stats-grid" id="statsGrid">
-          <div class="stat-card">
-            <div class="stat-icon navy">👥</div>
-            <div class="stat-info">
-              <div class="stat-value" id="statStudents">—</div>
-              <div class="stat-label">Total Students</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon teal">👩‍🏫</div>
-            <div class="stat-info">
-              <div class="stat-value" id="statTeachers">—</div>
-              <div class="stat-label">Teachers</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon gold">📚</div>
-            <div class="stat-info">
-              <div class="stat-value" id="statSubjects">—</div>
-              <div class="stat-label">Active Subjects</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon coral">🏛️</div>
-            <div class="stat-info">
-              <div class="stat-value" id="statSections">—</div>
-              <div class="stat-label">Sections</div>
-            </div>
-          </div>
-        </div>
-
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-          <div class="card">
-            <div class="card-header">
-              <h3>Quick Actions</h3>
-            </div>
+          <div class="card"><div class="card-header"><h3>Quick Actions</h3></div>
             <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
-              <button class="btn btn-primary w-100" onclick="showSection('subjects');UI.openModal('addSubjectModal')">
-                ➕ Add New Subject
-              </button>
-              <button class="btn btn-outline w-100" onclick="showSection('classes')">
-                🏛️ Manage Sections
-              </button>
-              <button class="btn btn-outline w-100" onclick="showSection('users')">
-                👥 Manage Users
-              </button>
-              <button class="btn btn-outline w-100" onclick="showSection('audit')">
-                📋 View Audit Logs
-              </button>
+              <button class="btn btn-primary w-100" onclick="show('subjects',null);UI.openModal('addSubjectModal')">➕ Add Subject</button>
+              <button class="btn btn-outline w-100" onclick="show('assignments',null);UI.openModal('assignModal')">🔗 Assign Teacher</button>
+              <button class="btn btn-outline w-100" onclick="show('students',null)">👨‍🎓 View All Students</button>
+              <button class="btn btn-outline w-100" onclick="show('marks',null)">📝 View All Marks</button>
+              <button class="btn btn-outline w-100" onclick="show('attendance',null)">📅 View All Attendance</button>
             </div>
           </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3>System Status</h3>
-            </div>
-            <div class="card-body">
-              <div style="display:flex;flex-direction:column;gap:12px">
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <span style="font-size:.88rem;color:var(--text-mid)">API Server</span>
-                  <span class="badge badge-active" id="apiStatus">Checking...</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <span style="font-size:.88rem;color:var(--text-mid)">Database</span>
-                  <span class="badge badge-active" id="dbStatus">Checking...</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <span style="font-size:.88rem;color:var(--text-mid)">Auth System</span>
-                  <span class="badge badge-active">✅ Active</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                  <span style="font-size:.88rem;color:var(--text-mid)">Encryption</span>
-                  <span class="badge badge-warning">⏳ Phase 4</span>
-                </div>
-              </div>
+          <div class="card"><div class="card-header"><h3>System Status</h3></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.88rem;color:var(--text-mid)">API Server</span><span class="badge badge-active" id="apiStatus">Checking...</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.88rem;color:var(--text-mid)">Database</span><span class="badge badge-active" id="dbStatus">Checking...</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.88rem;color:var(--text-mid)">Encryption</span><span class="badge" style="background:#e6f9f0;color:var(--teal)">🔒 AES-256-GCM</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.88rem;color:var(--text-mid)">Auth System</span><span class="badge badge-active">✅ JWT Active</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ── USERS SECTION ─────────────────────────────────── -->
+      <!-- ALL USERS -->
       <section id="sec-users" class="section fade-in" style="display:none">
         <div class="page-header d-flex justify-between align-center">
-          <div>
-            <div class="breadcrumb"><span>Management</span> › <span>Users</span></div>
-            <h2>User Management</h2>
-            <p>View and manage all Admin, Teacher, and Student accounts.</p>
-          </div>
+          <div><div class="breadcrumb"><span>People</span> › <span>All Users</span></div><h2>All Users</h2><p>Every registered account in the system.</p></div>
           <button class="btn btn-gold" onclick="UI.openModal('addUserModal')">➕ Add User</button>
         </div>
-
         <div class="card">
           <div class="card-header">
             <div class="filter-bar" style="margin:0;flex:1">
-              <div class="search-input-wrap">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" id="userSearch" placeholder="Search by name or email..." oninput="filterUsers()" />
-              </div>
-              <select class="filter-select" id="roleFilter" onchange="filterUsers()">
-                <option value="">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="teacher">Teacher</option>
-                <option value="student">Student</option>
-              </select>
+              <div class="search-input-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" id="userSearch" placeholder="Search name or email..." oninput="filterUsers()" /></div>
+              <select class="filter-select" id="roleFilter" onchange="filterUsers()"><option value="">All Roles</option><option value="admin">Admin</option><option value="teacher">Teacher</option><option value="student">Student</option></select>
             </div>
           </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Joined</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="usersTable">
-                <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">
-                  Loading users...
-                </td></tr>
-              </tbody>
-            </table>
-          </div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Class/Section</th><th>Status</th><th>Last Login</th><th>Actions</th></tr></thead>
+            <tbody id="usersTable"><tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted)">Loading...</td></tr></tbody>
+          </table></div>
         </div>
       </section>
 
-      <!-- ── CLASSES & SECTIONS SECTION ──────────────────────── -->
-      <section id="sec-classes" class="section fade-in" style="display:none">
-        <div class="page-header">
-          <div class="breadcrumb"><span>Management</span> › <span>Classes</span></div>
-          <h2>Classes &amp; Sections</h2>
-          <p>Manage class sections and student assignments.</p>
+      <!-- TEACHERS -->
+      <section id="sec-teachers" class="section fade-in" style="display:none">
+        <div class="page-header d-flex justify-between align-center">
+          <div><h2>Teachers</h2><p>All registered teachers and their subject assignments.</p></div>
+          <button class="btn btn-gold" onclick="show('assignments',null);UI.openModal('assignModal')">🔗 Assign Teacher</button>
         </div>
-
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" id="classCards">
-          <!-- Populated by JS -->
+        <div class="card">
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Teacher Name</th><th>Email</th><th>Subjects Assigned</th><th>Classes</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="teachersTable"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">Loading...</td></tr></tbody>
+          </table></div>
         </div>
       </section>
 
-      <!-- ── SUBJECTS SECTION ──────────────────────────────── -->
+      <!-- STUDENTS -->
+      <section id="sec-students" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>Students</h2><p>All registered students with class, section, and marks overview.</p></div>
+        <div class="filter-bar">
+          <div class="search-input-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" id="stuSearch" placeholder="Search student..." oninput="filterStudents()" /></div>
+          <select class="filter-select" id="stuClassFilter" onchange="filterStudents()"><option value="">All Classes</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option></select>
+          <select class="filter-select" id="stuSecFilter" onchange="filterStudents()"><option value="">All Sections</option><option value="A">Section A</option><option value="B">Section B</option><option value="C">Section C</option></select>
+        </div>
+        <div class="card">
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Class</th><th>Section</th><th>Subjects</th><th>Avg Grade</th><th>Attendance</th><th>Actions</th></tr></thead>
+            <tbody id="studentsTable"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted)">Loading...</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- SUBJECTS -->
       <section id="sec-subjects" class="section fade-in" style="display:none">
         <div class="page-header d-flex justify-between align-center">
-          <div>
-            <div class="breadcrumb"><span>Management</span> › <span>Subjects</span></div>
-            <h2>Subject Management</h2>
-            <p>Only Admins can add, edit, or delete subjects.</p>
-          </div>
+          <div><h2>Subject Management</h2><p>Only Admins can add, edit, or delete subjects.</p></div>
           <button class="btn btn-gold" onclick="UI.openModal('addSubjectModal')">➕ Add Subject</button>
         </div>
-
         <div id="subjectAlert"></div>
-
         <div class="card">
-          <div class="card-header">
-            <h3>All Subjects</h3>
-            <span class="badge badge-active" id="subjectCount">—</span>
-          </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Subject Name</th>
-                  <th>Status</th>
-                  <th>Created By</th>
-                  <th>Created At</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="subjectsTable">
-                <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">Loading subjects...</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <div class="card-header"><h3>All Subjects</h3><span class="badge badge-active" id="subjectCount"></span></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>#</th><th>Subject Name</th><th>Students Selected</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody id="subjectsTable"></tbody>
+          </table></div>
         </div>
       </section>
 
-      <!-- ── AUDIT LOG SECTION ─────────────────────────────── -->
-      <section id="sec-audit" class="section fade-in" style="display:none">
-        <div class="page-header">
-          <div class="breadcrumb"><span>Reports</span> › <span>Audit Logs</span></div>
-          <h2>Audit Logs</h2>
-          <p>All sensitive actions recorded for security and compliance.</p>
+      <!-- CLASSES & SECTIONS -->
+      <section id="sec-classes" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>Classes &amp; Sections</h2><p>Manage class sections and student assignments.</p></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" id="classCards"></div>
+      </section>
+
+      <!-- TEACHER ASSIGNMENTS -->
+      <section id="sec-assignments" class="section fade-in" style="display:none">
+        <div class="page-header d-flex justify-between align-center">
+          <div><h2>Teacher Assignments</h2><p>Assign teachers to subjects and class sections.</p></div>
+          <button class="btn btn-gold" onclick="UI.openModal('assignModal')">🔗 New Assignment</button>
+        </div>
+        <div id="assignAlert"></div>
+        <div class="card">
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Teacher</th><th>Email</th><th>Subject</th><th>Class</th><th>Section</th><th>Actions</th></tr></thead>
+            <tbody id="assignTable"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">Loading...</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ALL MARKS -->
+      <section id="sec-marks" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>All Marks</h2><p>View every student's marks across all subjects and exams.</p></div>
+        <div class="filter-bar" style="flex-wrap:wrap">
+          <select class="filter-select" id="mClassFilter" onchange="loadAllMarks()"><option value="">All Classes</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option></select>
+          <select class="filter-select" id="mSecFilter" onchange="loadAllMarks()"><option value="">All Sections</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select>
+          <select class="filter-select" id="mSubjectFilter" onchange="loadAllMarks()"><option value="">All Subjects</option></select>
+          <select class="filter-select" id="mExamFilter" onchange="loadAllMarks()"><option value="">All Exam Types</option><option value="unit_test">Unit Test</option><option value="midterm">Midterm</option><option value="final">Final</option><option value="assignment">Assignment</option><option value="quiz">Quiz</option></select>
         </div>
         <div class="card">
+          <div class="card-header"><h3>Marks Register</h3><span class="badge badge-active" id="marksCount"></span></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Student</th><th>Class</th><th>Section</th><th>Subject</th><th>Exam</th><th>Marks</th><th>Max</th><th>%</th><th>Grade</th><th>Teacher</th></tr></thead>
+            <tbody id="marksTable"><tr><td colspan="10" style="text-align:center;padding:32px;color:var(--text-muted)">Select filters and load</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ALL ATTENDANCE -->
+      <section id="sec-attendance" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>All Attendance</h2><p>View attendance records for every student across all subjects.</p></div>
+        <div class="filter-bar" style="flex-wrap:wrap">
+          <input type="date" class="filter-select" id="attDateFilter" onchange="loadAllAttendance()" />
+          <select class="filter-select" id="attClassFilter" onchange="loadAllAttendance()"><option value="">All Classes</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option></select>
+          <select class="filter-select" id="attSecFilter" onchange="loadAllAttendance()"><option value="">All Sections</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select>
+          <select class="filter-select" id="attSubjectFilter" onchange="loadAllAttendance()"><option value="">All Subjects</option></select>
+          <button class="btn btn-outline" onclick="loadAllAttendance()">🔍 Load</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Attendance Register</h3><span class="badge badge-active" id="attCount"></span></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Date</th><th>Student</th><th>Class</th><th>Section</th><th>Subject</th><th>Status</th><th>Teacher</th><th>Remarks</th></tr></thead>
+          <tbody id="attTable"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted)">Select filters and load</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- BROADCAST NOTIFICATIONS -->
+      <section id="sec-notifications" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>Broadcast Notification</h2><p>Send announcements to all students, teachers, or everyone.</p></div>
+        <div class="card" style="max-width:600px">
+          <div class="card-header"><h3>📢 New Announcement</h3></div>
           <div class="card-body">
-            <div class="empty-state">
-              <div class="empty-icon">📋</div>
-              <h4>Audit Logs</h4>
-              <p>Audit log viewer will be fully active from Phase 2 once more actions are recorded.</p>
-            </div>
+            <div id="broadcastAlert"></div>
+            <div class="form-group"><label class="form-label">Send To</label>
+              <select id="broadcastTarget" class="form-control" style="padding-left:14px">
+                <option value="all">🌐 Everyone (All Users)</option>
+                <option value="student">👨‍🎓 All Students</option>
+                <option value="teacher">👩‍🏫 All Teachers</option>
+              </select></div>
+            <div class="form-group"><label class="form-label">Title</label>
+              <input type="text" id="broadcastTitle" class="form-control" style="padding-left:14px" placeholder="e.g. School Holiday Announcement" /></div>
+            <div class="form-group"><label class="form-label">Message</label>
+              <textarea id="broadcastMsg" class="form-control" style="padding-left:14px" rows="4" placeholder="Type your announcement here..."></textarea></div>
           </div>
+          <div class="card-footer"><button class="btn btn-gold" id="broadcastBtn" onclick="sendBroadcast()">📢 Send Announcement</button></div>
         </div>
       </section>
+
+      <!-- AUDIT LOGS -->
+      <section id="sec-audit" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>Audit Logs</h2><p>Append-only record of every sensitive action in the system.</p></div>
+        <div class="card">
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Entity</th><th>IP Address</th></tr></thead>
+            <tbody id="auditTable"><tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">Loading...</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
     </div>
   </main>
 </div>
 
-<!-- ── ADD SUBJECT MODAL ──────────────────────────────────────── -->
+<!-- ADD SUBJECT MODAL -->
 <div class="modal-overlay" id="addSubjectModal">
   <div class="modal">
-    <div class="modal-header">
-      <h3>📚 Add New Subject</h3>
-      <button class="modal-close" onclick="UI.closeModal('addSubjectModal')">✕</button>
-    </div>
+    <div class="modal-header"><h3>📚 Add New Subject</h3><button class="modal-close" onclick="UI.closeModal('addSubjectModal')">✕</button></div>
     <div class="modal-body">
       <div id="subjectModalAlert"></div>
-      <div class="form-group">
-        <label class="form-label">Subject Name</label>
-        <input type="text" id="newSubjectName" class="form-control" placeholder="e.g. Mathematics, Science, English..." maxlength="100" />
-        <div class="form-error" id="newSubjectNameErr">Subject name is required</div>
-      </div>
+      <div class="form-group"><label class="form-label">Subject Name</label>
+        <input type="text" id="newSubjectName" class="form-control" placeholder="e.g. Mathematics, Science..." maxlength="100" style="padding-left:14px"/></div>
       <div style="background:var(--gold-pale);border-radius:var(--radius-md);padding:12px 14px;font-size:.82rem;color:var(--text-mid)">
-        ⚠️ <strong>Admin Rule:</strong> Only Admins can add subjects. Students will be able to select from this list only.
-      </div>
+        ⚠️ <strong>Admin Rule:</strong> Only Admins can create subjects. Students and Teachers select from this list only.</div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="UI.closeModal('addSubjectModal')">Cancel</button>
-      <button class="btn btn-gold" id="addSubjectBtn" onclick="addSubject()">Add Subject</button>
-    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="UI.closeModal('addSubjectModal')">Cancel</button><button class="btn btn-gold" id="addSubjectBtn" onclick="addSubject()">Add Subject</button></div>
   </div>
 </div>
 
-<!-- ── ADD USER MODAL ────────────────────────────────────────── -->
+<!-- ADD USER MODAL -->
 <div class="modal-overlay" id="addUserModal">
   <div class="modal">
-    <div class="modal-header">
-      <h3>👤 Add New User</h3>
-      <button class="modal-close" onclick="UI.closeModal('addUserModal')">✕</button>
-    </div>
+    <div class="modal-header"><h3>👤 Add New User</h3><button class="modal-close" onclick="UI.closeModal('addUserModal')">✕</button></div>
     <div class="modal-body">
       <div id="userModalAlert"></div>
-      <div class="form-group">
-        <label class="form-label">Full Name</label>
-        <input type="text" id="newUserName" class="form-control" placeholder="Full name" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" id="newUserEmail" class="form-control" placeholder="user@school.com" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Role</label>
-        <select id="newUserRole" class="form-control">
-          <option value="">Select role...</option>
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" id="newUserPassword" class="form-control" placeholder="Min 8 chars with uppercase, number, symbol" />
-      </div>
+      <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="newUserName" class="form-control" placeholder="Full name" style="padding-left:14px"/></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" id="newUserEmail" class="form-control" placeholder="user@school.com" style="padding-left:14px"/></div>
+      <div class="form-group"><label class="form-label">Role</label>
+        <select id="newUserRole" class="form-control" style="padding-left:14px"><option value="">Select...</option><option value="student">Student</option><option value="teacher">Teacher</option><option value="admin">Admin</option></select></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="newUserPassword" class="form-control" placeholder="Min 8 chars" style="padding-left:14px"/></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="UI.closeModal('addUserModal')">Cancel</button>
-      <button class="btn btn-primary" id="addUserBtn" onclick="addUser()">Create User</button>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="UI.closeModal('addUserModal')">Cancel</button><button class="btn btn-primary" id="addUserBtn" onclick="addUser()">Create User</button></div>
+  </div>
+</div>
+
+<!-- ASSIGN TEACHER MODAL -->
+<div class="modal-overlay" id="assignModal">
+  <div class="modal">
+    <div class="modal-header"><h3>🔗 Assign Teacher to Subject</h3><button class="modal-close" onclick="UI.closeModal('assignModal')">✕</button></div>
+    <div class="modal-body">
+      <div id="assignModalAlert"></div>
+      <div class="form-group"><label class="form-label">Teacher</label>
+        <select id="asgTeacher" class="form-control" style="padding-left:14px"><option value="">Select teacher...</option></select></div>
+      <div class="form-group"><label class="form-label">Subject</label>
+        <select id="asgSubject" class="form-control" style="padding-left:14px"><option value="">Select subject...</option></select></div>
+      <div class="form-group"><label class="form-label">Class</label>
+        <select id="asgClass" class="form-control" style="padding-left:14px" onchange="loadAsgSections()"><option value="">Select class...</option></select></div>
+      <div class="form-group"><label class="form-label">Section</label>
+        <select id="asgSection" class="form-control" style="padding-left:14px"><option value="">Select section...</option></select></div>
     </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="UI.closeModal('assignModal')">Cancel</button><button class="btn btn-gold" id="assignBtn" onclick="doAssign()">Assign Teacher</button></div>
   </div>
 </div>
 
 <script src="../js/api.js"></script>
 <script>
-  // ── Auth guard ──────────────────────────────────────────────
-  const currentUser = Auth.requireRole('admin');
-  if (currentUser) initSidebar(currentUser);
+const currentUser = Auth.requireRole('admin');
+if (currentUser) initSidebar(currentUser);
 
-  // ── Section navigation ──────────────────────────────────────
-  const sections = ['dashboard','users','classes','subjects','audit'];
-  const titles   = { dashboard:'Dashboard Overview', users:'User Management', classes:'Classes & Sections', subjects:'Subject Management', audit:'Audit Logs' };
+let allUsersData=[], allSubjectsData=[], allStudentsData=[], allSectionsData=[], allClassesData=[];
+const SECS=['dashboard','users','teachers','students','subjects','classes','assignments','marks','attendance','notifications','audit'];
+const TITLES={dashboard:'Dashboard',users:'All Users',teachers:'Teachers',students:'Students',subjects:'Subjects',classes:'Classes & Sections',assignments:'Teacher Assignments',marks:'All Marks',attendance:'All Attendance',notifications:'Broadcast Notification',audit:'Audit Logs'};
 
-  function showSection(name) {
-    sections.forEach(s => {
-      document.getElementById(`sec-${s}`).style.display = s === name ? 'block' : 'none';
-    });
-    document.getElementById('topbarTitle').textContent = titles[name] || name;
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    event?.currentTarget?.classList.add('active');
+function show(name, el) {
+  SECS.forEach(s=>document.getElementById(`sec-${s}`).style.display=s===name?'block':'none');
+  document.getElementById('topbarTitle').textContent=TITLES[name];
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const loaders={dashboard:loadDashboard,users:loadUsers,teachers:loadTeachers,students:loadStudents,subjects:loadSubjects,classes:loadClasses,assignments:loadAssignments,marks:loadAllMarks,attendance:loadAllAttendance,audit:loadAudit};
+  loaders[name]?.();
+}
 
-    if (name === 'users')    loadUsers();
-    if (name === 'subjects') loadSubjects();
-    if (name === 'classes')  loadClasses();
-  }
+// ── Health ──
+async function checkHealth() {
+  try { const r=await fetch('http://localhost:5000/api/health'); const d=await r.json();
+    document.getElementById('apiStatus').textContent=d.status==='ok'?'✅ Online':'❌ Error';
+    document.getElementById('dbStatus').textContent=d.db==='connected'?'✅ Connected':'❌ Disconnected';
+  } catch { document.getElementById('apiStatus').textContent='❌ Offline'; document.getElementById('dbStatus').textContent='❌ Unknown'; }
+}
+checkHealth();
 
-  // ── Health check ────────────────────────────────────────────
-  async function checkHealth() {
-    try {
-      const res = await apiFetch('/health');
-      if (res.ok) {
-        document.getElementById('apiStatus').textContent = res.data.status === 'ok' ? '✅ Online' : '❌ Error';
-        document.getElementById('dbStatus').textContent  = res.data.db === 'connected' ? '✅ Connected' : '❌ Disconnected';
-      }
-    } catch {
-      document.getElementById('apiStatus').textContent = '❌ Offline';
-      document.getElementById('dbStatus').textContent  = '❌ Unknown';
-    }
-  }
-  checkHealth();
+// ── Dashboard ──
+async function loadDashboard() {
+  const res=await apiFetch('/admin/stats');
+  if(!res?.data?.success) return;
+  const d=res.data.data;
+  document.getElementById('s-students').textContent=d.students;
+  document.getElementById('s-teachers').textContent=d.teachers;
+  document.getElementById('s-subjects').textContent=d.subjects;
+  document.getElementById('s-sections').textContent=d.sections;
+}
+loadDashboard();
 
-  // ── Load stats (real API) ─────────────────────────────────────
-  async function loadStats() {
-    const res = await apiFetch('/admin/stats');
-    if (res?.data?.success) {
-      const d = res.data.data;
-      document.getElementById('statStudents').textContent = d.students;
-      document.getElementById('statTeachers').textContent = d.teachers;
-      document.getElementById('statSubjects').textContent = d.subjects;
-      document.getElementById('statSections').textContent = d.sections;
-    }
-  }
-  loadStats();
+// ── Users ──
+async function loadUsers() {
+  const tbody=document.getElementById('usersTable');
+  tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:24px"><span class="spinner dark"></span></td></tr>`;
+  const res=await apiFetch('/admin/users?limit=200');
+  if(!res?.data?.success){tbody.innerHTML=`<tr><td colspan="7" style="color:var(--coral);text-align:center;padding:24px">Failed to load</td></tr>`;return;}
+  allUsersData=res.data.data.users;
+  renderUsers(allUsersData);
+}
 
-  // ── Load users (real API) ────────────────────────────────────
-  let allUsers = [];
-  async function loadUsers() {
-    const tbody = document.getElementById('usersTable');
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)"><span class="spinner dark"></span> Loading...</td></tr>`;
-    const res = await apiFetch('/admin/users?limit=100');
-    if (!res?.data?.success) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--coral)">Failed to load users. Check your connection.</td></tr>`;
-      return;
-    }
-    allUsers = res.data.data.users;
-    renderUsers(allUsers);
-  }
+function renderUsers(users) {
+  const tbody=document.getElementById('usersTable');
+  if(!users.length){tbody.innerHTML=`<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">👥</div><h4>No users</h4></div></td></tr>`;return;}
+  tbody.innerHTML=users.map(u=>`
+    <tr data-id="${u.id}" data-role="${u.role}">
+      <td><strong>${u.name}</strong></td>
+      <td style="font-size:.82rem">${u.email}</td>
+      <td><span class="badge badge-${u.role}">${u.role}</span></td>
+      <td style="font-size:.8rem;color:var(--text-muted)">—</td>
+      <td><span class="badge ${u.is_active?'badge-active':'badge-inactive'}">${u.is_active?'Active':'Inactive'}</span></td>
+      <td style="font-size:.8rem">${UI.formatDate(u.last_login)||'Never'}</td>
+      <td style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="toggleStatus('${u.id}',${u.is_active})">${u.is_active?'⛔ Deactivate':'✅ Activate'}</button>
+        <button class="btn btn-danger btn-sm" onclick="resetPw('${u.id}','${u.name}')">🔑</button>
+      </td>
+    </tr>`).join('');
+}
 
-  function renderUsers(users) {
-    const tbody = document.getElementById('usersTable');
-    if (!users.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👥</div><h4>No users found</h4></div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = users.map(u => `
-      <tr data-id="${u.id}" data-role="${u.role}">
-        <td><strong>${u.name}</strong></td>
-        <td>${u.email}</td>
-        <td><span class="badge badge-${u.role}">${u.role}</span></td>
-        <td><span class="badge ${u.is_active ? 'badge-active' : 'badge-inactive'}">${u.is_active ? 'Active' : 'Inactive'}</span></td>
-        <td>${UI.formatDate(u.created_at)}</td>
-        <td style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn btn-outline btn-sm" onclick="toggleStatus('${u.id}','${u.is_active}')">
-            ${u.is_active ? '⛔ Deactivate' : '✅ Activate'}
-          </button>
-          <button class="btn btn-danger btn-sm" onclick="showResetPassword('${u.id}','${u.name}')">🔑 Reset PW</button>
-        </td>
-      </tr>
-    `).join('');
-  }
+function filterUsers() {
+  const q=document.getElementById('userSearch').value.toLowerCase();
+  const r=document.getElementById('roleFilter').value;
+  renderUsers(allUsersData.filter(u=>(!q||(u.name+u.email).toLowerCase().includes(q))&&(!r||u.role===r)));
+}
 
-  function filterUsers() {
-    const search = document.getElementById('userSearch').value.toLowerCase();
-    const role   = document.getElementById('roleFilter').value;
-    const rows   = document.querySelectorAll('#usersTable tr[data-id]');
-    rows.forEach(row => {
-      const text = row.textContent.toLowerCase();
-      const rowRole = row.getAttribute('data-role');
-      const visible = text.includes(search) && (!role || rowRole === role);
-      row.style.display = visible ? '' : 'none';
-    });
-  }
+async function addUser() {
+  const name=document.getElementById('newUserName').value.trim(),email=document.getElementById('newUserEmail').value.trim(),role=document.getElementById('newUserRole').value,pw=document.getElementById('newUserPassword').value;
+  if(!name||!email||!role||!pw){UI.showAlert('userModalAlert','All fields required','error');return;}
+  UI.setLoading('addUserBtn',true,'Create User');
+  const res=await apiFetch('/auth/register',{method:'POST',body:{name,email,password:pw,role}});
+  UI.setLoading('addUserBtn',false,'Create User');
+  if(res?.data?.success){UI.closeModal('addUserModal');loadUsers();loadDashboard();}
+  else UI.showAlert('userModalAlert',res?.data?.message||'Failed','error');
+}
 
-  async function addUser() {
-    const name     = document.getElementById('newUserName').value.trim();
-    const email    = document.getElementById('newUserEmail').value.trim();
-    const role     = document.getElementById('newUserRole').value;
-    const password = document.getElementById('newUserPassword').value;
-    if (!name || !email || !role || !password) {
-      UI.showAlert('userModalAlert', 'All fields are required', 'error'); return;
-    }
-    UI.setLoading('addUserBtn', true, 'Create User');
-    const result = await AuthAPI.register({ name, email, password, role });
-    UI.setLoading('addUserBtn', false, 'Create User');
-    if (result?.data?.success) {
-      UI.showAlert('userModalAlert', 'User created successfully!', 'success');
-      setTimeout(() => UI.closeModal('addUserModal'), 1500);
-      loadUsers();
-    } else {
-      UI.showAlert('userModalAlert', result?.data?.message || 'Failed to create user', 'error');
-    }
-  }
+async function toggleStatus(id,isActive) {
+  if(!confirm(isActive?'Deactivate this user?':'Reactivate this user?'))return;
+  const res=await apiFetch(`/admin/users/${id}/status`,{method:'PATCH'});
+  if(res?.data?.success)loadUsers(); else alert(res?.data?.message||'Failed');
+}
 
-  // ── Load classes ─────────────────────────────────────────────
-  function loadClasses() {
-    const container = document.getElementById('classCards');
-    const classes = [
-      { name: 'Class 8', sections: ['A','B','C'], color: 'var(--navy)' },
-      { name: 'Class 9', sections: ['A','B','C'], color: 'var(--teal)' },
-      { name: 'Class 10',sections: ['A','B','C'], color: 'var(--gold)' },
-    ];
-    container.innerHTML = classes.map(c => `
-      <div class="card">
-        <div class="card-header" style="background:${c.color};border-radius:var(--radius-lg) var(--radius-lg) 0 0">
-          <h3 style="color:white;font-family:var(--font-display)">${c.name}</h3>
-          <span class="badge" style="background:rgba(255,255,255,.2);color:white">${c.sections.length} Sections</span>
-        </div>
-        <div class="card-body">
-          <div style="display:flex;flex-direction:column;gap:8px">
-            ${c.sections.map(s => `
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--off-white);border-radius:var(--radius-md)">
-                <span style="font-weight:600;color:var(--navy)">Section ${s}</span>
-                <span style="font-size:.8rem;color:var(--text-muted)">0 students</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-outline btn-sm">Manage Students</button>
-        </div>
+async function resetPw(id,name) {
+  const pw=prompt(`New password for ${name} (min 8 chars):`);
+  if(!pw||pw.length<8){alert('Min 8 characters');return;}
+  const res=await apiFetch(`/admin/users/${id}/reset-password`,{method:'POST',body:{new_password:pw}});
+  alert(res?.data?.success?'Password reset successfully':res?.data?.message||'Failed');
+}
+
+// ── Teachers ──
+async function loadTeachers() {
+  const tbody=document.getElementById('teachersTable');
+  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:24px"><span class="spinner dark"></span></td></tr>`;
+  const [usersRes,assignRes]=await Promise.all([apiFetch('/admin/users?role=teacher&limit=100'),apiFetch('/admin/teacher-assignments')]);
+  if(!usersRes?.data?.success)return;
+  const teachers=usersRes.data.data.users;
+  const assignments=assignRes?.data?.data?.assignments||[];
+
+  if(!teachers.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👩‍🏫</div><h4>No teachers yet</h4></div></td></tr>`;return;}
+
+  tbody.innerHTML=teachers.map(t=>{
+    const myAssign=assignments.filter(a=>a.teacher_id===t.id);
+    const subjects=[...new Set(myAssign.map(a=>a.subject_name))].join(', ')||'None assigned';
+    const classes=[...new Set(myAssign.map(a=>`${a.class_name}-${a.section_name}`))].join(', ')||'—';
+    return `<tr>
+      <td><strong>${t.name}</strong></td>
+      <td style="font-size:.82rem">${t.email}</td>
+      <td style="font-size:.82rem">${subjects}</td>
+      <td style="font-size:.82rem">${classes}</td>
+      <td><span class="badge ${t.is_active?'badge-active':'badge-inactive'}">${t.is_active?'Active':'Inactive'}</span></td>
+      <td style="display:flex;gap:5px">
+        <button class="btn btn-outline btn-sm" onclick="toggleStatus('${t.id}',${t.is_active})">${t.is_active?'⛔ Deactivate':'✅ Activate'}</button>
+        <button class="btn btn-danger btn-sm" onclick="resetPw('${t.id}','${t.name}')">🔑</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Students ──
+async function loadStudents() {
+  const tbody=document.getElementById('studentsTable');
+  tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px"><span class="spinner dark"></span></td></tr>`;
+  const res=await apiFetch('/admin/users?role=student&limit=200');
+  if(!res?.data?.success)return;
+  allStudentsData=res.data.data.users;
+  renderStudents(allStudentsData);
+}
+
+function renderStudents(students) {
+  const tbody=document.getElementById('studentsTable');
+  if(!students.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">👨‍🎓</div><h4>No students</h4></div></td></tr>`;return;}
+  tbody.innerHTML=students.map(s=>`
+    <tr data-class="" data-section="">
+      <td><strong>${s.name}</strong></td>
+      <td style="font-size:.82rem">${s.email}</td>
+      <td>—</td><td>—</td><td>—</td>
+      <td>—</td><td>—</td>
+      <td style="display:flex;gap:5px">
+        <button class="btn btn-outline btn-sm" onclick="viewStudentDetail('${s.id}','${s.name}')">👁 View</button>
+        <button class="btn btn-danger btn-sm" onclick="toggleStatus('${s.id}',${s.is_active})">${s.is_active?'⛔':'✅'}</button>
+      </td>
+    </tr>`).join('');
+}
+function filterStudents(){ renderStudents(allStudentsData); }
+
+async function viewStudentDetail(id,name) {
+  const [marksRes,attRes]=await Promise.all([apiFetch(`/marks/student/${id}`),apiFetch(`/attendance/student/${id}`)]);
+  const marks=marksRes?.data?.data?.result_card||[];
+  const summary=attRes?.data?.data?.summary||[];
+  const info=marks.map(m=>`${m.subject_name}: ${m.overall_percentage}% (${m.grade})`).join('\n')||'No marks yet';
+  const attInfo=summary.map(s=>`${s.subject_name}: ${s.percentage}%`).join('\n')||'No attendance yet';
+  alert(`📊 ${name}\n\nMARKS:\n${info}\n\nATTENDANCE:\n${attInfo}`);
+}
+
+// ── Subjects ──
+async function loadSubjects() {
+  const res=await apiFetch('/subjects?all=true');
+  if(!res?.data?.success)return;
+  allSubjectsData=res.data.data.subjects;
+  populateSubjectFilters();
+  renderSubjects();
+}
+
+function populateSubjectFilters() {
+  ['mSubjectFilter','attSubjectFilter','asgSubject'].forEach(id=>{
+    const el=document.getElementById(id); if(!el)return;
+    const cur=el.value;
+    el.innerHTML='<option value="">All Subjects</option>'+allSubjectsData.map(s=>`<option value="${s.id}">${s.subject_name}</option>`).join('');
+    if(cur) el.value=cur;
+  });
+}
+
+function renderSubjects() {
+  const tbody=document.getElementById('subjectsTable');
+  document.getElementById('subjectCount').textContent=`${allSubjectsData.filter(s=>s.is_active).length} active`;
+  tbody.innerHTML=allSubjectsData.map((s,i)=>`
+    <tr>
+      <td>${i+1}</td><td><strong>${s.subject_name}</strong></td>
+      <td style="color:var(--text-muted)">—</td>
+      <td><span class="badge ${s.is_active?'badge-active':'badge-inactive'}">${s.is_active?'✅ Active':'⛔ Inactive'}</span></td>
+      <td>${UI.formatDate(s.created_at)||'Seeded'}</td>
+      <td style="display:flex;gap:5px">
+        <button class="btn btn-outline btn-sm" onclick="editSubject(${s.id},'${s.subject_name.replace(/'/g,"\\'")}')">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteSubject(${s.id},'${s.subject_name.replace(/'/g,"\\'")}')">🗑️</button>
+      </td>
+    </tr>`).join('');
+}
+
+async function addSubject() {
+  const name=document.getElementById('newSubjectName').value.trim();
+  if(!name){UI.showAlert('subjectModalAlert','Subject name required','error');return;}
+  UI.setLoading('addSubjectBtn',true,'Add Subject');
+  const res=await apiFetch('/subjects',{method:'POST',body:{subject_name:name}});
+  UI.setLoading('addSubjectBtn',false,'Add Subject');
+  if(res?.data?.success){document.getElementById('newSubjectName').value='';UI.closeModal('addSubjectModal');UI.showAlert('subjectAlert','✅ Subject added!','success');loadSubjects();loadDashboard();}
+  else UI.showAlert('subjectModalAlert',res?.data?.message||'Failed','error');
+}
+
+async function editSubject(id,cur) {
+  const n=prompt('Edit subject name:',cur); if(!n||!n.trim()||n===cur)return;
+  const res=await apiFetch(`/subjects/${id}`,{method:'PUT',body:{subject_name:n.trim()}});
+  if(res?.data?.success){UI.showAlert('subjectAlert','✅ Updated','success');loadSubjects();}
+  else UI.showAlert('subjectAlert',res?.data?.message||'Failed','error');
+}
+
+async function deleteSubject(id,name) {
+  if(!confirm(`Delete "${name}"?`))return;
+  const res=await apiFetch(`/subjects/${id}`,{method:'DELETE'});
+  if(res?.data?.success){UI.showAlert('subjectAlert','✅ '+res.data.message,'success');loadSubjects();loadDashboard();}
+  else UI.showAlert('subjectAlert',res?.data?.message||'Failed','error');
+}
+
+// ── Classes ──
+async function loadClasses() {
+  const res=await apiFetch('/admin/classes');
+  if(!res?.data?.success)return;
+  const classes=res.data.data.classes;
+  allClassesData=classes;
+  const asgClass=document.getElementById('asgClass');
+  if(asgClass){asgClass.innerHTML='<option value="">Select class...</option>'+classes.map(c=>`<option value="${c.id}">${c.class_name}</option>`).join('');}
+  document.getElementById('classCards').innerHTML=classes.map(c=>`
+    <div class="card">
+      <div class="card-header" style="background:var(--navy);border-radius:var(--radius-lg) var(--radius-lg) 0 0">
+        <h3 style="color:var(--gold-light);font-family:var(--font-display)">Class ${c.class_name}</h3>
+        <span class="badge" style="background:rgba(255,255,255,.15);color:white">${c.section_count} sections</span>
       </div>
-    `).join('');
-  }
+      <div class="card-body">${(c.sections||[]).map(s=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--off-white);border-radius:var(--radius-md);margin-bottom:8px">
+          <span style="font-weight:600;color:var(--navy)">Section ${s.section_name}</span>
+          <span style="font-size:.78rem;color:var(--text-muted)">${s.student_count} students</span>
+        </div>`).join('')||'<p style="font-size:.82rem;color:var(--text-muted)">No sections data</p>'}
+      </div>
+    </div>`).join('');
+}
 
-  // ── Load & manage subjects (real API) ───────────────────────
-  let subjects = [];
-  async function loadSubjects() {
-    const tbody = document.getElementById('subjectsTable');
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px"><span class="spinner dark"></span></td></tr>`;
-    const res = await apiFetch('/subjects?all=true');
-    if (!res?.data?.success) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--coral);padding:24px">Failed to load subjects.</td></tr>`;
-      return;
-    }
-    subjects = res.data.data.subjects;
-    renderSubjects();
-  }
+// ── Teacher Assignments ──
+async function loadAssignments() {
+  const tbody=document.getElementById('assignTable');
+  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:24px"><span class="spinner dark"></span></td></tr>`;
+  const [assignRes,teacherRes,classRes]=await Promise.all([apiFetch('/admin/teacher-assignments'),apiFetch('/admin/users?role=teacher&limit=100'),apiFetch('/admin/classes')]);
+  const assignments=assignRes?.data?.data?.assignments||[];
+  const teachers=teacherRes?.data?.data?.users||[];
+  const classes=classRes?.data?.data?.classes||[];
 
-  function renderSubjects() {
-    const tbody = document.getElementById('subjectsTable');
-    document.getElementById('subjectCount').textContent = `${subjects.filter(s=>s.is_active).length} active`;
-    if (!subjects.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📚</div><h4>No subjects yet</h4><p>Add the first subject using the button above.</p></div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = subjects.map((s, i) => `
-      <tr>
-        <td><strong>${i+1}</strong></td>
-        <td><strong>${s.subject_name}</strong></td>
-        <td><span class="badge ${s.is_active ? 'badge-active' : 'badge-inactive'}">${s.is_active ? '✅ Active' : '⛔ Inactive'}</span></td>
-        <td><span class="badge badge-admin">${s.created_by_name || 'Admin'}</span></td>
-        <td>${UI.formatDate(s.created_at) || 'Seeded'}</td>
-        <td style="display:flex;gap:6px">
-          <button class="btn btn-outline btn-sm" onclick="editSubject(${s.id},'${s.subject_name}')">✏️ Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteSubject(${s.id},'${s.subject_name}')">🗑️</button>
-        </td>
-      </tr>
-    `).join('');
-  }
+  // Populate assign modal dropdowns
+  const asgT=document.getElementById('asgTeacher');
+  asgT.innerHTML='<option value="">Select teacher...</option>'+teachers.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+  const asgC=document.getElementById('asgClass');
+  asgC.innerHTML='<option value="">Select class...</option>'+classes.map(c=>`<option value="${c.id}">Class ${c.class_name}</option>`).join('');
+  if(allSubjectsData.length) { const asgS=document.getElementById('asgSubject'); asgS.innerHTML='<option value="">Select subject...</option>'+allSubjectsData.map(s=>`<option value="${s.id}">${s.subject_name}</option>`).join(''); }
 
-  async function addSubject() {
-    const name = document.getElementById('newSubjectName').value.trim();
-    if (!name) {
-      document.getElementById('newSubjectNameErr').classList.add('visible');
-      document.getElementById('newSubjectName').classList.add('error');
-      return;
-    }
-    UI.setLoading('addSubjectBtn', true, 'Add Subject');
-    const res = await apiFetch('/subjects', { method: 'POST', body: { subject_name: name } });
-    UI.setLoading('addSubjectBtn', false, 'Add Subject');
-    if (res?.data?.success) {
-      document.getElementById('newSubjectName').value = '';
-      UI.closeModal('addSubjectModal');
-      UI.showAlert('subjectAlert', `✅ Subject "${name}" added successfully!`, 'success');
-      loadSubjects(); loadStats();
-    } else {
-      UI.showAlert('subjectModalAlert', res?.data?.message || 'Failed to add subject', 'error');
-    }
-  }
+  if(!assignments.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🔗</div><h4>No assignments yet</h4><p>Click "New Assignment" to assign a teacher.</p></div></td></tr>`;return;}
+  tbody.innerHTML=assignments.map(a=>`
+    <tr>
+      <td><strong>${a.teacher_name}</strong></td>
+      <td style="font-size:.82rem">${a.teacher_email}</td>
+      <td><span class="badge badge-student">${a.subject_name}</span></td>
+      <td>Class ${a.class_name}</td>
+      <td>Section ${a.section_name}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="removeAssign('${a.teacher_id}',${a.subject_id},${a.section_id})">🗑️ Remove</button></td>
+    </tr>`).join('');
+}
 
-  async function editSubject(id, currentName) {
-    const newName = prompt('Edit subject name:', currentName);
-    if (!newName || !newName.trim() || newName.trim() === currentName) return;
-    const res = await apiFetch(`/subjects/${id}`, { method: 'PUT', body: { subject_name: newName.trim() } });
-    if (res?.data?.success) {
-      UI.showAlert('subjectAlert', `✅ Subject renamed to "${newName.trim()}"`, 'success');
-      loadSubjects();
-    } else {
-      UI.showAlert('subjectAlert', res?.data?.message || 'Failed to update subject', 'error');
-    }
-  }
+async function loadAsgSections() {
+  const classId=document.getElementById('asgClass').value;
+  const res=await apiFetch(`/admin/sections?class_id=${classId}`);
+  const sections=res?.data?.data?.sections||[];
+  const sel=document.getElementById('asgSection');
+  sel.innerHTML='<option value="">Select section...</option>'+sections.map(s=>`<option value="${s.id}">Section ${s.section_name}</option>`).join('');
+}
 
-  async function deleteSubject(id, name) {
-    if (!confirm(`Delete subject "${name}"?\n\nIf students have selected it, it will be deactivated (not permanently deleted).`)) return;
-    const res = await apiFetch(`/subjects/${id}`, { method: 'DELETE' });
-    if (res?.data?.success) {
-      UI.showAlert('subjectAlert', `✅ ${res.data.message}`, 'success');
-      loadSubjects(); loadStats();
-    } else {
-      UI.showAlert('subjectAlert', res?.data?.message || 'Failed to delete', 'error');
-    }
-  }
+async function doAssign() {
+  const tid=document.getElementById('asgTeacher').value,sid=document.getElementById('asgSubject').value,secId=document.getElementById('asgSection').value;
+  if(!tid||!sid||!secId){UI.showAlert('assignModalAlert','All fields required','error');return;}
+  UI.setLoading('assignBtn',true,'Assign Teacher');
+  const res=await apiFetch('/admin/teacher-assignments',{method:'POST',body:{teacher_id:tid,subject_id:parseInt(sid),section_id:parseInt(secId)}});
+  UI.setLoading('assignBtn',false,'Assign Teacher');
+  if(res?.data?.success){UI.closeModal('assignModal');UI.showAlert('assignAlert','✅ '+res.data.message,'success');loadAssignments();}
+  else UI.showAlert('assignModalAlert',res?.data?.message||'Failed','error');
+}
 
-  async function toggleStatus(userId, isActive) {
-    const confirm_msg = isActive === 'true'
-      ? 'Deactivate this user? They will not be able to log in.'
-      : 'Reactivate this user?';
-    if (!confirm(confirm_msg)) return;
-    const res = await apiFetch(`/admin/users/${userId}/status`, { method: 'PATCH' });
-    if (res?.data?.success) loadUsers();
-    else alert(res?.data?.message || 'Action failed');
-  }
+async function removeAssign(tid,sid,secId) {
+  if(!confirm('Remove this assignment?'))return;
+  const res=await apiFetch('/admin/teacher-assignments',{method:'DELETE',body:{teacher_id:tid,subject_id:sid,section_id:secId}});
+  if(res?.data?.success){UI.showAlert('assignAlert','✅ Assignment removed','success');loadAssignments();}
+}
 
-  function showResetPassword(userId, name) {
-    const pw = prompt(`Enter new password for ${name}:\n(Min 8 characters)`);
-    if (!pw || pw.length < 8) { alert('Password must be at least 8 characters'); return; }
-    apiFetch(`/admin/users/${userId}/reset-password`, {
-      method: 'POST', body: { new_password: pw }
-    }).then(res => {
-      if (res?.data?.success) alert('Password reset successfully');
-      else alert(res?.data?.message || 'Failed');
-    });
-  }
+// ── All Marks ──
+async function loadAllMarks() {
+  const tbody=document.getElementById('marksTable');
+  tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:24px"><span class="spinner dark"></span></td></tr>`;
+  const cn=document.getElementById('mClassFilter').value,sn=document.getElementById('mSecFilter').value,
+        subId=document.getElementById('mSubjectFilter').value,et=document.getElementById('mExamFilter').value;
+  let url='/admin/marks?';
+  if(cn) url+=`class_name=${cn}&`;
+  if(sn) url+=`section_name=${sn}&`;
+  if(subId) url+=`subject_id=${subId}&`;
+  if(et) url+=`exam_type=${et}&`;
+  const res=await apiFetch(url);
+  if(!res?.data?.success){tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;color:var(--coral);padding:24px">Failed to load</td></tr>`;return;}
+  const marks=res.data.data.marks;
+  document.getElementById('marksCount').textContent=`${marks.length} records`;
+  if(!marks.length){tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--text-muted)">No records found for selected filters</td></tr>`;return;}
+  const gc={'A+':'badge-active','A':'badge-active','B':'badge-student','C':'badge-teacher','D':'badge-warning','F':'badge-danger'};
+  tbody.innerHTML=marks.map(m=>`
+    <tr>
+      <td><strong>${m.student_name}</strong></td>
+      <td>${m.class_name||'—'}</td><td>${m.section_name||'—'}</td>
+      <td>${m.subject_name}</td>
+      <td style="font-size:.8rem">${m.exam_type.replace('_',' ')}</td>
+      <td><strong>${m.marks_value}</strong></td><td>${m.max_marks}</td>
+      <td>${m.percentage}%</td>
+      <td><span class="badge ${gc[m.grade]||''}">${m.grade}</span></td>
+      <td style="font-size:.78rem;color:var(--text-muted)">${m.teacher_name}</td>
+    </tr>`).join('');
+}
+
+// ── All Attendance ──
+async function loadAllAttendance() {
+  const tbody=document.getElementById('attTable');
+  tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px"><span class="spinner dark"></span></td></tr>`;
+  const date=document.getElementById('attDateFilter').value,cn=document.getElementById('attClassFilter').value,
+        sn=document.getElementById('attSecFilter').value,subId=document.getElementById('attSubjectFilter').value;
+  let url='/admin/attendance?';
+  if(date) url+=`date=${date}&`;
+  if(cn) url+=`class_name=${cn}&`;
+  if(sn) url+=`section_name=${sn}&`;
+  if(subId) url+=`subject_id=${subId}&`;
+  const res=await apiFetch(url);
+  if(!res?.data?.success){tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:var(--coral);padding:24px">Failed to load</td></tr>`;return;}
+  const att=res.data.data.attendance;
+  document.getElementById('attCount').textContent=`${att.length} records`;
+  if(!att.length){tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted)">No records found</td></tr>`;return;}
+  const icons={present:'✅',absent:'❌',late:'⏰'};
+  tbody.innerHTML=att.map(a=>`
+    <tr>
+      <td><strong>${UI.formatDate(a.date)}</strong></td>
+      <td>${a.student_name}</td>
+      <td>${a.class_name||'—'}</td><td>${a.section_name||'—'}</td>
+      <td><span class="badge badge-student">${a.subject_name}</span></td>
+      <td><span class="badge ${a.status==='present'?'badge-active':a.status==='late'?'badge-warning':'badge-danger'}">${icons[a.status]} ${a.status}</span></td>
+      <td style="font-size:.78rem">${a.teacher_name}</td>
+      <td style="font-size:.78rem;color:var(--text-muted)">${a.remarks||'—'}</td>
+    </tr>`).join('');
+}
+
+// ── Broadcast ──
+async function sendBroadcast() {
+  const target=document.getElementById('broadcastTarget').value,title=document.getElementById('broadcastTitle').value.trim(),msg=document.getElementById('broadcastMsg').value.trim();
+  if(!title||!msg){UI.showAlert('broadcastAlert','Title and message required','error');return;}
+  UI.setLoading('broadcastBtn',true,'Send Announcement');
+  const res=await apiFetch('/notifications/broadcast',{method:'POST',body:{target_role:target,title,message:msg}});
+  UI.setLoading('broadcastBtn',false,'📢 Send Announcement');
+  if(res?.data?.success){UI.showAlert('broadcastAlert','✅ '+res.data.message,'success');document.getElementById('broadcastTitle').value='';document.getElementById('broadcastMsg').value='';}
+  else UI.showAlert('broadcastAlert',res?.data?.message||'Failed','error');
+}
+
+// ── Audit logs ──
+async function loadAudit() {
+  const tbody=document.getElementById('auditTable');
+  const res=await apiFetch('/admin/audit-logs?limit=100');
+  if(!res?.data?.success)return;
+  const logs=res.data.data.logs;
+  if(!logs.length){tbody.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">No logs yet</td></tr>`;return;}
+  tbody.innerHTML=logs.map(l=>`
+    <tr>
+      <td style="font-size:.78rem;color:var(--text-muted)">${UI.formatDate(l.performed_at)}</td>
+      <td style="font-size:.82rem">${l.user_name||'System'}</td>
+      <td><code style="font-size:.75rem;background:var(--off-white);padding:2px 6px;border-radius:4px">${l.action}</code></td>
+      <td style="font-size:.78rem">${l.entity_type||'—'}</td>
+      <td style="font-size:.78rem;color:var(--text-muted)">${l.ip_address||'—'}</td>
+    </tr>`).join('');
+}
+
+// Init — load subjects for filters on start
+loadSubjects();
 </script>
 </body>
 </html>

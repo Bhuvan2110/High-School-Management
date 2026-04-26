@@ -6,6 +6,8 @@ const {
   getAllUsers, getUserById, updateUserRole, toggleUserStatus, resetUserPassword,
   getAllClasses, createClass,
   getAllSections, createSection, deleteSection, assignStudentToSection, getSectionStudents,
+  getAllTeacherAssignments, createTeacherAssignment, removeTeacherAssignment,
+  getAllMarks, getAllAttendance,
   getAuditLogs,
 } = require('../controllers/adminController');
 const { verifyToken, adminOnly } = require('../middleware/auth');
@@ -33,6 +35,15 @@ router.post('/sections',                    createSection);
 router.delete('/sections/:id',              deleteSection);
 router.post('/sections/:id/assign',         assignStudentToSection);
 router.get('/sections/:id/students',        getSectionStudents);
+
+// Teacher assignments (admin can assign teachers)
+router.get('/teacher-assignments',          getAllTeacherAssignments);
+router.post('/teacher-assignments',         createTeacherAssignment);
+router.delete('/teacher-assignments',       removeTeacherAssignment);
+
+// Admin view: all marks, all attendance
+router.get('/marks',        getAllMarks);
+router.get('/attendance',   getAllAttendance);
 
 // Audit logs
 router.get('/audit-logs', getAuditLogs);

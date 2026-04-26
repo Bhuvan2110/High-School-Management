@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Dashboard — High School Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
@@ -10,291 +9,415 @@
 <body>
 <div class="page-wrapper">
   <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div style="font-size:1.5rem;margin-bottom:8px">🏫</div>
-      <div class="school-name">High School<br/>Management</div>
-      <div class="school-tagline">Student Portal</div>
-    </div>
+    <div class="sidebar-logo"><div style="font-size:1.5rem;margin-bottom:8px">🏫</div><div class="school-name">High School<br/>Management</div><div class="school-tagline">Student Portal</div></div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Overview</div>
-      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
-        <span class="nav-icon">🏠</span> Home
-      </a>
+      <a href="#" class="nav-item active" onclick="showSection('dashboard',this)"><span class="nav-icon">🏠</span> Home</a>
       <div class="nav-section-label">Academic</div>
-      <a href="#" class="nav-item" onclick="showSection('subjects')">
-        <span class="nav-icon">📚</span> My Subjects
-      </a>
-      <a href="#" class="nav-item" onclick="showSection('attendance')">
-        <span class="nav-icon">📅</span> Attendance
-      </a>
-      <a href="#" class="nav-item" onclick="showSection('results')">
-        <span class="nav-icon">📊</span> Results
-      </a>
-      <a href="#" class="nav-item" onclick="showSection('materials')">
-        <span class="nav-icon">📁</span> Study Materials
-      </a>
+      <a href="#" class="nav-item" onclick="showSection('subjects',this)"><span class="nav-icon">📚</span> My Subjects</a>
+      <a href="#" class="nav-item" onclick="showSection('attendance',this)"><span class="nav-icon">📅</span> Attendance</a>
+      <a href="#" class="nav-item" onclick="showSection('results',this)"><span class="nav-icon">📊</span> Results</a>
+      <a href="#" class="nav-item" onclick="showSection('materials',this)"><span class="nav-icon">📁</span> Study Materials</a>
+      <div class="nav-section-label">Communication</div>
+      <a href="#" class="nav-item" onclick="showSection('notifications',this)"><span class="nav-icon">🔔</span> Notifications <span id="navBadge" style="display:none;background:var(--coral);color:white;border-radius:10px;padding:1px 7px;font-size:.7rem;margin-left:auto"></span></a>
       <div class="nav-section-label">Account</div>
-      <a href="#" class="nav-item" id="logoutBtn">
-        <span class="nav-icon">🚪</span> Logout
-      </a>
+      <a href="#" class="nav-item" id="logoutBtn"><span class="nav-icon">🚪</span> Logout</a>
     </nav>
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="user-avatar">ST</div>
-        <div class="user-info">
-          <div class="user-name">Student</div>
-          <div class="user-role">Student</div>
-        </div>
-      </div>
-    </div>
+    <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">ST</div><div class="user-info"><div class="user-name">Student</div><div class="user-role">Student</div></div></div></div>
   </aside>
 
   <main class="main-content">
     <header class="topbar">
       <div class="topbar-title" id="topbarTitle">Student Home</div>
       <div class="topbar-right">
-        <button class="topbar-btn">🔔 <span class="badge-dot"></span></button>
+        <button class="topbar-btn" onclick="showSection('notifications',null)">🔔<span class="badge-dot" id="notifDot" style="display:none"></span></button>
         <div class="user-avatar" style="width:38px;height:38px;font-size:.82rem">ST</div>
       </div>
     </header>
 
     <div class="content-area">
 
-      <!-- Dashboard -->
+      <!-- DASHBOARD -->
       <section id="sec-dashboard" class="section fade-in">
-        <div class="page-header">
-          <h2 id="welcomeMsg">Welcome!</h2>
-          <p>Here's your academic summary for today.</p>
-        </div>
-
-        <div style="background:linear-gradient(135deg,var(--navy) 60%,var(--navy-light));border-radius:var(--radius-xl);padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;color:white">
+        <div class="page-header"><h2 id="welcomeMsg">Welcome!</h2><p>Your academic summary for today.</p></div>
+        <!-- Hero banner -->
+        <div id="heroBanner" style="background:linear-gradient(135deg,var(--navy) 60%,var(--navy-light));border-radius:var(--radius-xl);padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;color:white">
           <div>
             <div style="font-size:.8rem;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Your Class</div>
-            <div style="font-family:var(--font-display);font-size:2rem">Class — / Section —</div>
-            <div style="font-size:.88rem;color:rgba(255,255,255,.6);margin-top:4px">No section assigned yet. Contact your Admin.</div>
+            <div style="font-family:var(--font-display);font-size:2rem" id="heroBannerText">Loading...</div>
+            <div style="font-size:.88rem;color:rgba(255,255,255,.6);margin-top:4px" id="heroBannerSub"></div>
           </div>
-          <div style="font-size:4rem;opacity:.4">🎓</div>
+          <div style="font-size:4rem;opacity:.3">🎓</div>
         </div>
-
         <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon gold">📚</div>
-            <div class="stat-info">
-              <div class="stat-value">0</div>
-              <div class="stat-label">Selected Subjects</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon teal">📅</div>
-            <div class="stat-info">
-              <div class="stat-value">—%</div>
-              <div class="stat-label">Attendance</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon navy">📝</div>
-            <div class="stat-info">
-              <div class="stat-value">0</div>
-              <div class="stat-label">Assignments Due</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon coral">🔔</div>
-            <div class="stat-info">
-              <div class="stat-value">0</div>
-              <div class="stat-label">Notifications</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h3>Getting Started</h3>
-          </div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
-            <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--off-white);border-radius:var(--radius-md)">
-              <span style="font-size:1.4rem">1️⃣</span>
-              <div>
-                <div style="font-weight:600;font-size:.9rem;color:var(--navy)">Wait for section assignment</div>
-                <div style="font-size:.82rem;color:var(--text-muted)">Your Admin will assign you to a class and section.</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--off-white);border-radius:var(--radius-md)">
-              <span style="font-size:1.4rem">2️⃣</span>
-              <div>
-                <div style="font-weight:600;font-size:.9rem;color:var(--navy)">Select your subjects</div>
-                <div style="font-size:.82rem;color:var(--text-muted)">Choose from the subjects added by your Admin.</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--off-white);border-radius:var(--radius-md)">
-              <span style="font-size:1.4rem">3️⃣</span>
-              <div>
-                <div style="font-weight:600;font-size:.9rem;color:var(--navy)">Access study materials</div>
-                <div style="font-size:.82rem;color:var(--text-muted)">View notes, assignments, and check your results.</div>
-              </div>
-            </div>
-          </div>
+          <div class="stat-card"><div class="stat-icon gold">📚</div><div class="stat-info"><div class="stat-value" id="st-subjects">—</div><div class="stat-label">Selected Subjects</div></div></div>
+          <div class="stat-card"><div class="stat-icon teal">📅</div><div class="stat-info"><div class="stat-value" id="st-attendance">—%</div><div class="stat-label">Avg Attendance</div></div></div>
+          <div class="stat-card"><div class="stat-icon navy">📊</div><div class="stat-info"><div class="stat-value" id="st-grade">—</div><div class="stat-label">Overall Grade</div></div></div>
+          <div class="stat-card"><div class="stat-icon coral">🔔</div><div class="stat-info"><div class="stat-value" id="st-notif">0</div><div class="stat-label">Notifications</div></div></div>
         </div>
       </section>
 
-      <!-- My Subjects -->
+      <!-- MY SUBJECTS -->
       <section id="sec-subjects" class="section fade-in" style="display:none">
-        <div class="page-header">
-          <h2>My Subjects</h2>
-          <p>Select from the subjects added by your Admin. You cannot create new subjects.</p>
-        </div>
+        <div class="page-header"><h2>My Subjects</h2><p>Select from subjects added by Admin. You cannot create new subjects.</p></div>
         <div id="subjectAlert"></div>
         <div class="card">
-          <div class="card-header">
-            <h3>Available Subjects</h3>
-            <span style="font-size:.82rem;color:var(--text-muted)">Select the subjects you study</span>
-          </div>
-          <div class="card-body">
-            <div id="availableSubjects" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
-              <!-- Populated by JS -->
-            </div>
-          </div>
-          <div class="card-footer">
-            <button class="btn btn-gold" onclick="saveSubjects()">💾 Save Selection</button>
-          </div>
+          <div class="card-header"><h3>Available Subjects</h3><span style="font-size:.82rem;color:var(--text-muted)">Click to select/deselect</span></div>
+          <div class="card-body"><div id="availableSubjects" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px"></div></div>
+          <div class="card-footer"><button class="btn btn-gold" onclick="saveSubjects()">💾 Save Selection</button></div>
         </div>
       </section>
 
-      <!-- Attendance -->
+      <!-- ATTENDANCE -->
       <section id="sec-attendance" class="section fade-in" style="display:none">
-        <div class="page-header">
-          <h2>My Attendance</h2>
-          <p>View your attendance record per subject. (Phase 3)</p>
-        </div>
+        <div class="page-header"><h2>My Attendance</h2><p>Your attendance record per subject.</p></div>
+        <div id="attendanceSummary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:20px"></div>
         <div class="card">
-          <div class="card-body">
-            <div class="empty-state">
-              <div class="empty-icon">📅</div>
-              <h4>Attendance Records</h4>
-              <p>Your attendance will appear here once teachers start marking it in Phase 3.</p>
-            </div>
+          <div class="card-header"><h3>Detailed Records</h3>
+            <select id="attSubjectFilter" class="filter-select" onchange="filterAttRecords()"><option value="">All Subjects</option></select>
           </div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Date</th><th>Subject</th><th>Status</th><th>Teacher</th><th>Remarks</th></tr></thead>
+            <tbody id="attRecordsTable"></tbody>
+          </table></div>
         </div>
       </section>
 
-      <!-- Results -->
+      <!-- RESULTS -->
       <section id="sec-results" class="section fade-in" style="display:none">
-        <div class="page-header">
-          <h2>My Results</h2>
-          <p>View your marks and result card per subject. (Phase 3)</p>
+        <div class="page-header"><h2>My Results</h2><p>Your marks and result card per subject and exam type.</p></div>
+        <div id="resultAlert"></div>
+        <!-- Overall summary card -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><h3>Result Card</h3><span class="badge badge-active" id="overallBadge"></span></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Subject</th><th>Unit Test</th><th>Midterm</th><th>Final</th><th>Average %</th><th>Grade</th></tr></thead>
+            <tbody id="resultCardTable"></tbody>
+          </table></div>
         </div>
+        <!-- Detailed marks -->
         <div class="card">
-          <div class="card-body">
-            <div class="empty-state">
-              <div class="empty-icon">📊</div>
-              <h4>Results</h4>
-              <p>Your marks and results will appear here once entered by your teachers.</p>
-            </div>
-          </div>
+          <div class="card-header"><h3>All Marks</h3></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Subject</th><th>Exam Type</th><th>Marks</th><th>Max</th><th>%</th><th>Grade</th></tr></thead>
+            <tbody id="allMarksTable"></tbody>
+          </table></div>
         </div>
       </section>
 
-      <!-- Materials -->
+      <!-- STUDY MATERIALS -->
       <section id="sec-materials" class="section fade-in" style="display:none">
-        <div class="page-header">
-          <h2>Study Materials</h2>
-          <p>Access notes and assignments uploaded by your teachers. (Phase 3)</p>
+        <div class="page-header"><h2>Study Materials</h2><p>Notes and assignments uploaded by your teachers.</p></div>
+        <div class="filter-bar">
+          <div class="search-input-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" id="matSearch" placeholder="Search materials..." oninput="filterMaterials()" /></div>
+          <select class="filter-select" id="matSubjectFilter" onchange="filterMaterials()"><option value="">All Subjects</option></select>
+          <select class="filter-select" id="matTypeFilter" onchange="filterMaterials()"><option value="">All Types</option><option value="pdf">PDF</option><option value="docx">DOCX</option><option value="pptx">PPTX</option><option value="jpg">Image</option></select>
         </div>
-        <div class="card">
-          <div class="card-body">
-            <div class="empty-state">
-              <div class="empty-icon">📁</div>
-              <h4>Study Materials</h4>
-              <p>Materials uploaded by your teachers will appear here per subject.</p>
-            </div>
-          </div>
-        </div>
+        <div id="materialCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px"></div>
       </section>
+
+      <!-- NOTIFICATIONS -->
+      <section id="sec-notifications" class="section fade-in" style="display:none">
+        <div class="page-header d-flex justify-between align-center">
+          <div><h2>Notifications</h2></div>
+          <button class="btn btn-outline" onclick="markAllRead()">✅ Mark All Read</button>
+        </div>
+        <div id="notifList" style="display:flex;flex-direction:column;gap:10px"></div>
+      </section>
+
     </div>
   </main>
 </div>
 
 <script src="../js/api.js"></script>
 <script>
-  const currentUser = Auth.requireRole('student');
-  if (currentUser) {
-    initSidebar(currentUser);
-    document.getElementById('welcomeMsg').textContent = `Welcome, ${currentUser.name}!`;
-  }
+const currentUser = Auth.requireRole('student');
+if (currentUser) { initSidebar(currentUser); document.getElementById('welcomeMsg').textContent = `Welcome, ${currentUser.name}!`; }
 
-  const sections = ['dashboard','subjects','attendance','results','materials'];
-  const titles   = { dashboard:'Student Home', subjects:'My Subjects', attendance:'My Attendance', results:'My Results', materials:'Study Materials' };
+const SECS = ['dashboard','subjects','attendance','results','materials','notifications'];
+const TITLES = { dashboard:'Student Home', subjects:'My Subjects', attendance:'My Attendance', results:'My Results', materials:'Study Materials', notifications:'Notifications' };
+let allSubjects=[], selectedSubjects=new Set(), allAttRecords=[], allMaterials=[];
 
-  function showSection(name) {
-    sections.forEach(s => document.getElementById(`sec-${s}`).style.display = s === name ? 'block' : 'none');
-    document.getElementById('topbarTitle').textContent = titles[name];
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    event?.currentTarget?.classList.add('active');
-    if (name === 'subjects') loadAvailableSubjects();
-  }
+function showSection(name, el) {
+  SECS.forEach(s => document.getElementById(`sec-${s}`).style.display = s===name?'block':'none');
+  document.getElementById('topbarTitle').textContent = TITLES[name];
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  ({dashboard:loadDashboard, subjects:loadSubjects, attendance:loadAttendance, results:loadResults, materials:loadMaterials, notifications:loadNotifications})[name]?.();
+}
 
-  // Subjects — from real API
-  let allSubjects = [];
-  let selectedSubjects = new Set();
+// ── Dashboard ──
+async function loadDashboard() {
+  const [profileRes, attRes, marksRes, notifRes] = await Promise.all([
+    apiFetch('/students/profile'),
+    apiFetch(`/attendance/student/${currentUser.id}`),
+    apiFetch('/marks/my-results'),
+    apiFetch('/notifications'),
+  ]);
 
-  async function loadAvailableSubjects() {
-    const container = document.getElementById('availableSubjects');
-    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px"><span class="spinner dark"></span></div>`;
-
-    const res = await apiFetch('/students/subjects');
-    if (!res?.data?.success) {
-      container.innerHTML = `<p style="color:var(--coral)">Failed to load subjects. Make sure you're logged in.</p>`;
-      return;
-    }
-    allSubjects = res.data.data.subjects;
-    selectedSubjects = new Set(allSubjects.filter(s => s.is_selected).map(s => s.id));
-    renderSubjects();
-  }
-
-  function renderSubjects() {
-    const container = document.getElementById('availableSubjects');
-    if (!allSubjects.length) {
-      container.innerHTML = `<div style="grid-column:1/-1" class="empty-state"><div class="empty-icon">📚</div><h4>No subjects available</h4><p>The Admin hasn't added any subjects yet.</p></div>`;
-      return;
-    }
-    container.innerHTML = allSubjects.map(s => `
-      <label style="display:flex;align-items:center;gap:10px;padding:14px 16px;
-        background:var(--off-white);border-radius:var(--radius-md);cursor:pointer;
-        border:1.5px solid ${selectedSubjects.has(s.id) ? 'var(--gold)' : 'var(--border)'};
-        transition:all .2s;${!s.is_active ? 'opacity:.5;pointer-events:none' : ''}">
-        <input type="checkbox" ${selectedSubjects.has(s.id) ? 'checked' : ''} 
-          onchange="toggleSubject(${s.id}, this)" 
-          style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer" 
-          ${!s.is_active ? 'disabled' : ''} />
-        <span style="font-weight:500;color:var(--navy);font-size:.9rem">${s.subject_name}</span>
-        ${!s.is_active ? '<span class="badge badge-inactive" style="margin-left:auto">Inactive</span>' : ''}
-      </label>
-    `).join('');
-  }
-
-  function toggleSubject(id, checkbox) {
-    if (checkbox.checked) selectedSubjects.add(id);
-    else selectedSubjects.delete(id);
-    renderSubjects();
-  }
-
-  async function saveSubjects() {
-    UI.setLoading && null;
-    const btn = document.querySelector('[onclick="saveSubjects()"]');
-    if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
-
-    const res = await apiFetch('/students/subjects', {
-      method: 'POST',
-      body: { subject_ids: Array.from(selectedSubjects) }
-    });
-
-    if (btn) { btn.disabled = false; btn.textContent = '💾 Save Selection'; }
-    if (res?.data?.success) {
-      UI.showAlert('subjectAlert', `✅ ${res.data.message}`, 'success');
+  // Profile / section
+  if (profileRes?.data?.success) {
+    const { section, subjects } = profileRes.data.data;
+    if (section) {
+      document.getElementById('heroBannerText').textContent = `Class ${section.class_name} — Section ${section.section_name}`;
+      document.getElementById('heroBannerSub').textContent  = 'Section assigned by your Admin';
     } else {
-      UI.showAlert('subjectAlert', res?.data?.message || 'Failed to save subjects', 'error');
+      document.getElementById('heroBannerText').textContent = 'No section assigned';
+      document.getElementById('heroBannerSub').textContent  = 'Contact your Admin to assign you to a section';
     }
+    document.getElementById('st-subjects').textContent = subjects?.length || 0;
   }
+
+  // Attendance avg
+  if (attRes?.data?.success) {
+    const summary = attRes.data.data.summary;
+    const avg = summary.length ? (summary.reduce((s,r)=>s+(r.percentage||0),0)/summary.length).toFixed(1) : null;
+    document.getElementById('st-attendance').textContent = avg ? avg+'%' : '—%';
+  }
+
+  // Grade
+  if (marksRes?.data?.success) {
+    const pct = marksRes.data.data.overall_percentage;
+    const grade = !pct?'—':pct>=90?'A+':pct>=80?'A':pct>=70?'B':pct>=60?'C':pct>=50?'D':'F';
+    document.getElementById('st-grade').textContent = grade;
+  }
+
+  // Notifications
+  if (notifRes?.data?.success) {
+    const uc = notifRes.data.data.unread_count;
+    document.getElementById('st-notif').textContent = uc;
+    updateNotifBadge(uc);
+  }
+}
+loadDashboard();
+
+// ── Subjects ──
+async function loadSubjects() {
+  const container = document.getElementById('availableSubjects');
+  container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px"><span class="spinner dark"></span></div>`;
+  const res = await apiFetch('/students/subjects');
+  if (!res?.data?.success) { container.innerHTML=`<p style="color:var(--coral)">Failed to load subjects.</p>`; return; }
+  allSubjects = res.data.data.subjects;
+  selectedSubjects = new Set(allSubjects.filter(s=>s.is_selected).map(s=>s.id));
+  renderSubjectPicker();
+}
+
+function renderSubjectPicker() {
+  document.getElementById('availableSubjects').innerHTML = allSubjects.map(s=>`
+    <div onclick="${s.is_active?`toggleSubject(${s.id})`:'return'}" style="display:flex;align-items:center;gap:10px;padding:14px 16px;
+      background:var(--off-white);border-radius:var(--radius-md);cursor:${s.is_active?'pointer':'not-allowed'};
+      border:2px solid ${selectedSubjects.has(s.id)?'var(--gold)':'var(--border)'};transition:all .2s;
+      ${!s.is_active?'opacity:.5':''}">
+      <div style="width:20px;height:20px;border-radius:50%;border:2px solid ${selectedSubjects.has(s.id)?'var(--gold)':'var(--border)'};
+        background:${selectedSubjects.has(s.id)?'var(--gold)':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s">
+        ${selectedSubjects.has(s.id)?'<span style="color:var(--navy);font-size:.7rem;font-weight:700">✓</span>':''}
+      </div>
+      <span style="font-weight:500;color:var(--navy);font-size:.9rem">${s.subject_name}</span>
+      ${!s.is_active?'<span class="badge badge-inactive" style="margin-left:auto;font-size:.65rem">Inactive</span>':''}
+    </div>`).join('');
+}
+
+function toggleSubject(id) {
+  if (selectedSubjects.has(id)) selectedSubjects.delete(id); else selectedSubjects.add(id);
+  renderSubjectPicker();
+}
+
+async function saveSubjects() {
+  const btn = document.querySelector('[onclick="saveSubjects()"]');
+  if (btn) { btn.disabled=true; btn.textContent='Saving...'; }
+  const res = await apiFetch('/students/subjects',{method:'POST',body:{subject_ids:Array.from(selectedSubjects)}});
+  if (btn) { btn.disabled=false; btn.textContent='💾 Save Selection'; }
+  if (res?.data?.success) { UI.showAlert('subjectAlert','✅ '+res.data.message,'success'); loadDashboard(); }
+  else UI.showAlert('subjectAlert',res?.data?.message||'Failed to save','error');
+}
+
+// ── Attendance ──
+async function loadAttendance() {
+  const res = await apiFetch(`/attendance/student/${currentUser.id}`);
+  if (!res?.data?.success) return;
+  const { records, summary } = res.data.data;
+  allAttRecords = records;
+
+  // Summary cards
+  const sc = document.getElementById('attendanceSummary');
+  if (!summary.length) { sc.innerHTML=`<p style="color:var(--text-muted);grid-column:1/-1">No attendance records yet.</p>`; }
+  else {
+    sc.innerHTML = summary.map(s=>`
+      <div class="stat-card" style="flex-direction:column;gap:8px">
+        <div style="font-weight:600;color:var(--navy)">${s.subject_name}</div>
+        <div style="font-size:1.8rem;font-weight:700;color:${s.percentage>=75?'var(--teal)':'var(--coral)'};font-family:var(--font-display)">${s.percentage}%</div>
+        <div style="font-size:.78rem;color:var(--text-muted)">${s.present} present · ${s.absent} absent · ${s.late} late</div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:${s.percentage}%;background:${s.percentage>=75?'var(--teal)':'var(--coral)'};border-radius:3px"></div>
+        </div>
+        ${s.percentage<75?`<div style="font-size:.75rem;color:var(--coral);font-weight:600">⚠️ Below 75% threshold</div>`:''}
+      </div>`).join('');
+
+    // Populate filter
+    const filter = document.getElementById('attSubjectFilter');
+    const unique = [...new Map(records.map(r=>[r.subject_id,r])).values()];
+    filter.innerHTML = '<option value="">All Subjects</option>' + unique.map(r=>`<option value="${r.subject_id}">${r.subject_name}</option>`).join('');
+  }
+
+  renderAttRecords(records);
+}
+
+function renderAttRecords(records) {
+  const tbody = document.getElementById('attRecordsTable');
+  if (!records.length) { tbody.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">No records found</td></tr>`; return; }
+  const icons = { present:'✅', absent:'❌', late:'⏰' };
+  tbody.innerHTML = records.map(r=>`
+    <tr>
+      <td><strong>${UI.formatDate(r.date)}</strong></td>
+      <td><span class="badge badge-student">${r.subject_name}</span></td>
+      <td><span class="badge ${r.status==='present'?'badge-active':r.status==='late'?'badge-warning':'badge-danger'}">${icons[r.status]} ${r.status}</span></td>
+      <td>${r.teacher_name}</td>
+      <td style="color:var(--text-muted)">${r.remarks||'—'}</td>
+    </tr>`).join('');
+}
+
+function filterAttRecords() {
+  const sid = document.getElementById('attSubjectFilter').value;
+  renderAttRecords(sid ? allAttRecords.filter(r=>String(r.subject_id)===sid) : allAttRecords);
+}
+
+// ── Results ──
+async function loadResults() {
+  const res = await apiFetch('/marks/my-results');
+  if (!res?.data?.success) { UI.showAlert('resultAlert','Failed to load results','error'); return; }
+  const { marks, result_card, overall_percentage } = res.data.data;
+
+  // Overall badge
+  const ob = document.getElementById('overallBadge');
+  if (overall_percentage) {
+    const grade = overall_percentage>=90?'A+':overall_percentage>=80?'A':overall_percentage>=70?'B':overall_percentage>=60?'C':overall_percentage>=50?'D':'F';
+    ob.textContent = `Overall: ${overall_percentage}% — Grade ${grade}`;
+  }
+
+  // Result card
+  const rct = document.getElementById('resultCardTable');
+  if (!result_card.length) { rct.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">No results published yet</td></tr>`; }
+  else {
+    const gc={'A+':'var(--teal)','A':'var(--teal)','B':'#185FA5','C':'var(--gold)','D':'var(--coral)','F':'var(--coral)'};
+    rct.innerHTML = result_card.map(r=>`
+      <tr>
+        <td><strong>${r.subject_name}</strong></td>
+        <td>${r.unit_test??'—'}</td><td>${r.midterm??'—'}</td><td>${r.final??'—'}</td>
+        <td><strong>${r.overall_percentage??'—'}%</strong></td>
+        <td><span style="font-weight:700;color:${gc[r.grade]||'var(--navy)'}">${r.grade}</span></td>
+      </tr>`).join('');
+  }
+
+  // All marks
+  const amt = document.getElementById('allMarksTable');
+  if (!marks.length) { amt.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted)">No marks yet</td></tr>`; }
+  else {
+    const gc2={'A+':'badge-active','A':'badge-active','B':'badge-student','C':'badge-teacher','D':'badge-warning','F':'badge-danger'};
+    amt.innerHTML = marks.map(m=>`
+      <tr>
+        <td>${m.subject_name}</td>
+        <td>${m.exam_type.replace('_',' ')}</td>
+        <td><strong>${m.marks_value}</strong></td>
+        <td>${m.max_marks}</td>
+        <td>${m.percentage}%</td>
+        <td><span class="badge ${gc2[m.grade]||'badge-student'}">${m.grade}</span></td>
+      </tr>`).join('');
+  }
+}
+
+// ── Materials ──
+async function loadMaterials() {
+  const container = document.getElementById('materialCards');
+  container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px"><span class="spinner dark"></span></div>`;
+  const res = await apiFetch('/materials/my-materials');
+  if (!res?.data?.success) { container.innerHTML=`<p style="color:var(--coral)">Failed to load materials.</p>`; return; }
+  allMaterials = res.data.data.materials;
+
+  // Populate subject filter
+  const sf = document.getElementById('matSubjectFilter');
+  const unique = [...new Map(allMaterials.map(m=>[m.subject_id,m])).values()];
+  sf.innerHTML = '<option value="">All Subjects</option>' + unique.map(m=>`<option value="${m.subject_id}">${m.subject_name}</option>`).join('');
+
+  renderMaterialCards(allMaterials);
+}
+
+function filterMaterials() {
+  const search = document.getElementById('matSearch').value.toLowerCase();
+  const sid    = document.getElementById('matSubjectFilter').value;
+  const type   = document.getElementById('matTypeFilter').value;
+  const filtered = allMaterials.filter(m =>
+    (!search || m.title.toLowerCase().includes(search) || m.subject_name.toLowerCase().includes(search)) &&
+    (!sid    || String(m.subject_id)===sid) &&
+    (!type   || m.file_type===type)
+  );
+  renderMaterialCards(filtered);
+}
+
+function renderMaterialCards(materials) {
+  const container = document.getElementById('materialCards');
+  if (!materials.length) { container.innerHTML=`<div style="grid-column:1/-1"><div class="empty-state"><div class="empty-icon">📁</div><h4>No materials found</h4><p>Your teachers haven't uploaded any materials yet, or select subjects first.</p></div></div>`; return; }
+  const icons = {pdf:'📄',docx:'📝',pptx:'📊',jpg:'🖼️',png:'🖼️'};
+  const colors= {pdf:'var(--coral)',docx:'#185FA5',pptx:'var(--gold)',jpg:'var(--teal)',png:'var(--teal)'};
+  container.innerHTML = materials.map(m=>`
+    <div class="card scale-in" style="transition:all .2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div style="padding:20px 20px 12px;display:flex;gap:14px;align-items:flex-start">
+        <div style="width:44px;height:44px;border-radius:var(--radius-md);background:${colors[m.file_type]||'var(--navy)'}22;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">
+          ${icons[m.file_type]||'📎'}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:600;color:var(--navy);font-size:.92rem;line-height:1.3">${m.title}</div>
+          <div style="font-size:.78rem;color:var(--text-muted);margin-top:2px">${m.description||''}</div>
+        </div>
+      </div>
+      <div style="padding:0 20px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div>
+          <span class="badge badge-student" style="margin-right:4px">${m.subject_name}</span>
+          <span class="badge" style="background:${colors[m.file_type]||'var(--navy)'}22;color:${colors[m.file_type]||'var(--navy)'}">${m.file_type?.toUpperCase()}</span>
+        </div>
+        <div style="font-size:.76rem;color:var(--text-muted)">${m.file_size_kb?m.file_size_kb+'KB':''} · ${UI.formatDate(m.uploaded_at)}</div>
+      </div>
+      <div style="padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:.78rem;color:var(--text-muted)">by ${m.teacher_name}</span>
+        <a href="http://localhost:5000/api/materials/${m.id}/download" target="_blank" class="btn btn-gold btn-sm">⬇️ Download</a>
+      </div>
+    </div>`).join('');
+}
+
+// ── Notifications ──
+function updateNotifBadge(count) {
+  document.getElementById('notifDot').style.display=count>0?'block':'none';
+  const b=document.getElementById('navBadge'); b.style.display=count>0?'inline':'none'; b.textContent=count;
+}
+
+async function loadNotifications() {
+  const res=await apiFetch('/notifications');
+  if (!res?.data?.success) return;
+  const { notifications, unread_count }=res.data.data;
+  updateNotifBadge(unread_count);
+  document.getElementById('st-notif').textContent = unread_count;
+  const container=document.getElementById('notifList');
+  if (!notifications.length) { container.innerHTML=`<div class="card"><div class="card-body"><div class="empty-state"><div class="empty-icon">🔔</div><h4>All caught up!</h4></div></div></div>`; return; }
+  const icons={assignment:'📁',marks:'📝',attendance:'📅',announcement:'📢',system:'🔔'};
+  container.innerHTML=notifications.map(n=>`
+    <div class="card" style="border-left:3px solid ${n.is_read?'var(--border)':'var(--gold)'}">
+      <div class="card-body" style="padding:14px 20px;display:flex;gap:14px;align-items:flex-start">
+        <div style="font-size:1.3rem;flex-shrink:0">${icons[n.type]||'🔔'}</div>
+        <div style="flex:1">
+          <div style="font-weight:600;color:var(--navy);font-size:.92rem">${n.title}</div>
+          <div style="font-size:.85rem;color:var(--text-mid);margin-top:2px">${n.message}</div>
+          <div style="font-size:.76rem;color:var(--text-muted);margin-top:4px">${UI.formatDate(n.created_at)}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          ${!n.is_read?`<button class="btn btn-outline btn-sm" onclick="markRead(${n.id})">Mark Read</button>`:''}
+          <button class="btn btn-danger btn-sm" onclick="deleteNotif(${n.id})">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function markRead(id) { await apiFetch(`/notifications/${id}/read`,{method:'PATCH'}); loadNotifications(); }
+async function markAllRead() { await apiFetch('/notifications/mark-all-read',{method:'PATCH'}); loadNotifications(); }
+async function deleteNotif(id) { await apiFetch(`/notifications/${id}`,{method:'DELETE'}); loadNotifications(); }
 </script>
 </body>
 </html>

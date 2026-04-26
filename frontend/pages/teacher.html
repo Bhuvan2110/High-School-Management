@@ -1,599 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher Dashboard — High School Management</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
 </head>
-
 <body>
-  <div class="page-wrapper">
-    <aside class="sidebar">
-      <div class="sidebar-logo">
-        <div style="font-size:1.5rem;margin-bottom:8px">🏫</div>
-        <div class="school-name">High School<br />Management</div>
-        <div class="school-tagline">Teacher Panel</div>
+<div class="page-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div style="font-size:1.5rem;margin-bottom:8px">🏫</div><div class="school-name">High School<br/>Management</div><div class="school-tagline">Teacher Panel</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a href="#" class="nav-item active" onclick="showSection('dashboard',this)"><span class="nav-icon">📊</span> Dashboard</a>
+      <div class="nav-section-label">Academic</div>
+      <a href="#" class="nav-item" onclick="showSection('subjects',this)"><span class="nav-icon">📚</span> My Subjects</a>
+      <a href="#" class="nav-item" onclick="showSection('attendance',this)"><span class="nav-icon">📅</span> Mark Attendance</a>
+      <a href="#" class="nav-item" onclick="showSection('marks',this)"><span class="nav-icon">📝</span> Enter Marks</a>
+      <a href="#" class="nav-item" onclick="showSection('materials',this)"><span class="nav-icon">📁</span> Study Materials</a>
+      <div class="nav-section-label">Communication</div>
+      <a href="#" class="nav-item" onclick="showSection('notifications',this)"><span class="nav-icon">🔔</span> Notifications <span id="navBadge" style="display:none;background:var(--coral);color:white;border-radius:10px;padding:1px 7px;font-size:.7rem;margin-left:auto"></span></a>
+      <div class="nav-section-label">Account</div>
+      <a href="#" class="nav-item" id="logoutBtn"><span class="nav-icon">🚪</span> Logout</a>
+    </nav>
+    <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">TC</div><div class="user-info"><div class="user-name">Teacher</div><div class="user-role">Teacher</div></div></div></div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-title" id="topbarTitle">Teacher Dashboard</div>
+      <div class="topbar-right">
+        <button class="topbar-btn" onclick="showSection('notifications',null)">🔔<span class="badge-dot" id="notifDot" style="display:none"></span></button>
+        <div class="user-avatar" style="width:38px;height:38px;font-size:.82rem">TC</div>
       </div>
-      <nav class="sidebar-nav">
-        <div class="nav-section-label">Overview</div>
-        <a href="#" class="nav-item active" onclick="showSection('dashboard',this)"><span class="nav-icon">📊</span>
-          Dashboard</a>
-        <div class="nav-section-label">Academic</div>
-        <a href="#" class="nav-item" onclick="showSection('subjects',this)"><span class="nav-icon">📚</span> My
-          Subjects</a>
-        <a href="#" class="nav-item" onclick="showSection('attendance',this)"><span class="nav-icon">📅</span> Mark
-          Attendance</a>
-        <a href="#" class="nav-item" onclick="showSection('marks',this)"><span class="nav-icon">📝</span> Enter
-          Marks</a>
-        <a href="#" class="nav-item" onclick="showSection('materials',this)"><span class="nav-icon">📁</span> Study
-          Materials</a>
-        <div class="nav-section-label">Communication</div>
-        <a href="#" class="nav-item" onclick="showSection('notifications',this)"><span class="nav-icon">🔔</span>
-          Notifications <span id="navBadge"
-            style="display:none;background:var(--coral);color:white;border-radius:10px;padding:1px 7px;font-size:.7rem;margin-left:auto"></span></a>
-        <div class="nav-section-label">Account</div>
-        <a href="#" class="nav-item" id="logoutBtn"><span class="nav-icon">🚪</span> Logout</a>
-      </nav>
-      <div class="sidebar-footer">
-        <div class="sidebar-user">
-          <div class="user-avatar">TC</div>
-          <div class="user-info">
-            <div class="user-name">Teacher</div>
-            <div class="user-role">Teacher</div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- DASHBOARD -->
+      <section id="sec-dashboard" class="section fade-in">
+        <div class="page-header"><h2>Welcome back!</h2><p>Here's your teaching summary for today.</p></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon gold">📚</div><div class="stat-info"><div class="stat-value" id="st-subjects">—</div><div class="stat-label">Subjects</div></div></div>
+          <div class="stat-card"><div class="stat-icon navy">🏛️</div><div class="stat-info"><div class="stat-value" id="st-sections">—</div><div class="stat-label">Sections</div></div></div>
+          <div class="stat-card"><div class="stat-icon teal">👨‍🎓</div><div class="stat-info"><div class="stat-value" id="st-students">—</div><div class="stat-label">Students</div></div></div>
+          <div class="stat-card"><div class="stat-icon coral">📁</div><div class="stat-info"><div class="stat-value" id="st-materials">—</div><div class="stat-label">Materials Uploaded</div></div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="card"><div class="card-header"><h3>Quick Actions</h3></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <button class="btn btn-primary w-100" onclick="showSection('attendance',null)">📅 Mark Today's Attendance</button>
+              <button class="btn btn-outline w-100" onclick="showSection('marks',null)">📝 Enter Marks</button>
+              <button class="btn btn-outline w-100" onclick="showSection('materials',null);UI.openModal('uploadModal')">📁 Upload Study Material</button>
+            </div>
+          </div>
+          <div class="card"><div class="card-header"><h3>Recent Uploads</h3></div>
+            <div class="card-body" id="recentUploads"><div class="empty-state" style="padding:16px"><div class="empty-icon" style="font-size:1.5rem">📁</div><p style="font-size:.82rem">No uploads yet</p></div></div>
           </div>
         </div>
-      </div>
-    </aside>
+      </section>
 
-    <main class="main-content">
-      <header class="topbar">
-        <div class="topbar-title" id="topbarTitle">Teacher Dashboard</div>
-        <div class="topbar-right">
-          <button class="topbar-btn" onclick="showSection('notifications',null)">🔔<span class="badge-dot" id="notifDot"
-              style="display:none"></span></button>
-          <div class="user-avatar" style="width:38px;height:38px;font-size:.82rem">TC</div>
+      <!-- MY SUBJECTS -->
+      <section id="sec-subjects" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>My Subjects</h2><p>Subjects and sections assigned by Admin.</p></div>
+        <div id="subjectCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px"></div>
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section id="sec-attendance" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>Mark Attendance</h2><p>Select subject and date, then mark each student's status.</p></div>
+        <div class="card" style="margin-bottom:20px"><div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end">
+            <div class="form-group" style="margin:0"><label class="form-label">Subject</label>
+              <select id="attSubject" class="form-control" onchange="loadStudentsForAtt()"><option value="">Select subject...</option></select></div>
+            <div class="form-group" style="margin:0"><label class="form-label">Date</label>
+              <input type="date" id="attDate" class="form-control" /></div>
+            <div class="form-group" style="margin:0"><label class="form-label">Quick Set All</label>
+              <select id="quickSet" class="form-control" onchange="quickSetAll(this.value)">
+                <option value="">— Set All —</option><option value="present">✅ All Present</option><option value="absent">❌ All Absent</option>
+              </select></div>
+            <button class="btn btn-gold" onclick="submitAttendance()" id="attSubmitBtn">Save Attendance</button>
+          </div>
+        </div></div>
+        <div id="attAlert"></div>
+        <div class="card" id="attStudentCard" style="display:none">
+          <div class="card-header"><h3 id="attCardTitle">Students</h3><span class="badge badge-active" id="attCount"></span></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>#</th><th>Student</th><th>Status</th><th>Remarks</th></tr></thead>
+            <tbody id="attStudentList"></tbody>
+          </table></div>
         </div>
-      </header>
+      </section>
 
-      <div class="content-area">
-
-        <!-- DASHBOARD -->
-        <section id="sec-dashboard" class="section fade-in">
-          <div class="page-header">
-            <h2>Welcome back!</h2>
-            <p>Here's your teaching summary for today.</p>
+      <!-- MARKS -->
+      <section id="sec-marks" class="section fade-in" style="display:none">
+        <div class="page-header"><h2>Enter Marks</h2><p>Enter marks for an exam or assignment across all your students.</p></div>
+        <div class="card" style="margin-bottom:20px"><div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end">
+            <div class="form-group" style="margin:0"><label class="form-label">Subject</label>
+              <select id="marksSubject" class="form-control" onchange="loadStudentsForMarks()"><option value="">Select subject...</option></select></div>
+            <div class="form-group" style="margin:0"><label class="form-label">Exam Type</label>
+              <select id="marksExamType" class="form-control">
+                <option value="unit_test">Unit Test</option><option value="midterm">Midterm</option>
+                <option value="final">Final</option><option value="assignment">Assignment</option><option value="quiz">Quiz</option>
+              </select></div>
+            <div class="form-group" style="margin:0"><label class="form-label">Max Marks</label>
+              <input type="number" id="maxMarks" class="form-control" value="100" min="1" max="1000" oninput="updateAllGrades()" /></div>
+            <button class="btn btn-gold" onclick="submitMarks()" id="marksSubmitBtn">Save Marks</button>
           </div>
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-icon gold">📚</div>
-              <div class="stat-info">
-                <div class="stat-value" id="st-subjects">—</div>
-                <div class="stat-label">Subjects</div>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon navy">🏛️</div>
-              <div class="stat-info">
-                <div class="stat-value" id="st-sections">—</div>
-                <div class="stat-label">Sections</div>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon teal">👨‍🎓</div>
-              <div class="stat-info">
-                <div class="stat-value" id="st-students">—</div>
-                <div class="stat-label">Students</div>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon coral">📁</div>
-              <div class="stat-info">
-                <div class="stat-value" id="st-materials">—</div>
-                <div class="stat-label">Materials Uploaded</div>
-              </div>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-            <div class="card">
-              <div class="card-header">
-                <h3>Quick Actions</h3>
-              </div>
-              <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
-                <button class="btn btn-primary w-100" onclick="showSection('attendance',null)">📅 Mark Today's
-                  Attendance</button>
-                <button class="btn btn-outline w-100" onclick="showSection('marks',null)">📝 Enter Marks</button>
-                <button class="btn btn-outline w-100"
-                  onclick="showSection('materials',null);UI.openModal('uploadModal')">📁 Upload Study Material</button>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header">
-                <h3>Recent Uploads</h3>
-              </div>
-              <div class="card-body" id="recentUploads">
-                <div class="empty-state" style="padding:16px">
-                  <div class="empty-icon" style="font-size:1.5rem">📁</div>
-                  <p style="font-size:.82rem">No uploads yet</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- MY SUBJECTS -->
-        <section id="sec-subjects" class="section fade-in" style="display:none">
-          <div class="page-header">
-            <h2>My Subjects</h2>
-            <p>Subjects and sections assigned by Admin.</p>
-          </div>
-          <div id="subjectCards"
-            style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px"></div>
-        </section>
-
-        <!-- ATTENDANCE -->
-        <section id="sec-attendance" class="section fade-in" style="display:none">
-          <div class="page-header">
-            <h2>Mark Attendance</h2>
-            <p>Select subject and date, then mark each student's status.</p>
-          </div>
-          <div class="card" style="margin-bottom:20px">
-            <div class="card-body">
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end">
-                <div class="form-group" style="margin:0"><label class="form-label">Subject</label>
-                  <select id="attSubject" class="form-control" onchange="loadStudentsForAtt()">
-                    <option value="">Select subject...</option>
-                  </select>
-                </div>
-                <div class="form-group" style="margin:0"><label class="form-label">Date</label>
-                  <input type="date" id="attDate" class="form-control" />
-                </div>
-                <div class="form-group" style="margin:0"><label class="form-label">Quick Set All</label>
-                  <select id="quickSet" class="form-control" onchange="quickSetAll(this.value)">
-                    <option value="">— Set All —</option>
-                    <option value="present">✅ All Present</option>
-                    <option value="absent">❌ All Absent</option>
-                  </select>
-                </div>
-                <button class="btn btn-gold" onclick="submitAttendance()" id="attSubmitBtn">Save Attendance</button>
-              </div>
-            </div>
-          </div>
-          <div id="attAlert"></div>
-          <div class="card" id="attStudentCard" style="display:none">
-            <div class="card-header">
-              <h3 id="attCardTitle">Students</h3><span class="badge badge-active" id="attCount"></span>
-            </div>
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Student</th>
-                    <th>Status</th>
-                    <th>Remarks</th>
-                  </tr>
-                </thead>
-                <tbody id="attStudentList"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- MARKS -->
-        <section id="sec-marks" class="section fade-in" style="display:none">
-          <div class="page-header">
-            <h2>Enter Marks</h2>
-            <p>Enter marks for an exam or assignment across all your students.</p>
-          </div>
-          <div class="card" style="margin-bottom:20px">
-            <div class="card-body">
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end">
-                <div class="form-group" style="margin:0"><label class="form-label">Subject</label>
-                  <select id="marksSubject" class="form-control" onchange="loadStudentsForMarks()">
-                    <option value="">Select subject...</option>
-                  </select>
-                </div>
-                <div class="form-group" style="margin:0"><label class="form-label">Exam Type</label>
-                  <select id="marksExamType" class="form-control">
-                    <option value="unit_test">Unit Test</option>
-                    <option value="midterm">Midterm</option>
-                    <option value="final">Final</option>
-                    <option value="assignment">Assignment</option>
-                    <option value="quiz">Quiz</option>
-                  </select>
-                </div>
-                <div class="form-group" style="margin:0"><label class="form-label">Max Marks</label>
-                  <input type="number" id="maxMarks" class="form-control" value="100" min="1" max="1000"
-                    oninput="updateAllGrades()" />
-                </div>
-                <button class="btn btn-gold" onclick="submitMarks()" id="marksSubmitBtn">Save Marks</button>
-              </div>
-            </div>
-          </div>
-          <div id="marksAlert"></div>
-          <div class="card" id="marksStudentCard" style="display:none">
-            <div class="card-header">
-              <h3 id="marksCardTitle">Students</h3>
-            </div>
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Student</th>
-                    <th>Marks Obtained</th>
-                    <th>Out of</th>
-                    <th>Grade</th>
-                  </tr>
-                </thead>
-                <tbody id="marksStudentList"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- MATERIALS -->
-        <section id="sec-materials" class="section fade-in" style="display:none">
-          <div class="page-header d-flex justify-between align-center">
-            <div>
-              <h2>Study Materials</h2>
-              <p>Upload notes, assignments, and reference files for your students.</p>
-            </div>
-            <button class="btn btn-gold" onclick="UI.openModal('uploadModal')">⬆️ Upload File</button>
-          </div>
-          <div id="matAlert"></div>
-          <div class="card">
-            <div class="card-header">
-              <h3>My Uploads</h3>
-            </div>
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Subject</th>
-                    <th>Type</th>
-                    <th>Size</th>
-                    <th>Uploaded</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="materialsTable">
-                  <tr>
-                    <td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">Loading...</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- NOTIFICATIONS -->
-        <section id="sec-notifications" class="section fade-in" style="display:none">
-          <div class="page-header d-flex justify-between align-center">
-            <div>
-              <h2>Notifications</h2>
-            </div>
-            <button class="btn btn-outline" onclick="markAllRead()">✅ Mark All Read</button>
-          </div>
-          <div id="notifList" style="display:flex;flex-direction:column;gap:10px"></div>
-        </section>
-
-      </div>
-    </main>
-  </div>
-
-  <!-- Upload Modal -->
-  <div class="modal-overlay" id="uploadModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>📁 Upload Study Material</h3><button class="modal-close" onclick="UI.closeModal('uploadModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <div id="uploadAlert"></div>
-        <div class="form-group"><label class="form-label">Subject</label><select id="uploadSubject"
-            class="form-control">
-            <option value="">Select subject...</option>
-          </select></div>
-        <div class="form-group"><label class="form-label">Title</label><input type="text" id="uploadTitle"
-            class="form-control" placeholder="e.g. Chapter 3 — Algebra Notes" /></div>
-        <div class="form-group"><label class="form-label">Description (optional)</label><textarea id="uploadDesc"
-            class="form-control" rows="2" placeholder="Brief description..."></textarea></div>
-        <div class="form-group"><label class="form-label">File</label>
-          <input type="file" id="uploadFile" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png" />
-          <div class="form-hint">Allowed: PDF, DOCX, PPTX, JPG, PNG — Max 10MB</div>
+        </div></div>
+        <div id="marksAlert"></div>
+        <div class="card" id="marksStudentCard" style="display:none">
+          <div class="card-header"><h3 id="marksCardTitle">Students</h3></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>#</th><th>Student</th><th>Marks Obtained</th><th>Out of</th><th>Grade</th></tr></thead>
+            <tbody id="marksStudentList"></tbody>
+          </table></div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="UI.closeModal('uploadModal')">Cancel</button>
-        <button class="btn btn-gold" id="uploadBtn" onclick="uploadMaterial()">Upload File</button>
-      </div>
+      </section>
+
+      <!-- MATERIALS -->
+      <section id="sec-materials" class="section fade-in" style="display:none">
+        <div class="page-header d-flex justify-between align-center">
+          <div><h2>Study Materials</h2><p>Upload notes, assignments, and reference files for your students.</p></div>
+          <button class="btn btn-gold" onclick="UI.openModal('uploadModal')">⬆️ Upload File</button>
+        </div>
+        <div id="matAlert"></div>
+        <div class="card">
+          <div class="card-header"><h3>My Uploads</h3></div>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>Title</th><th>Subject</th><th>Type</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
+            <tbody id="materialsTable"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">Loading...</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section id="sec-notifications" class="section fade-in" style="display:none">
+        <div class="page-header d-flex justify-between align-center">
+          <div><h2>Notifications</h2></div>
+          <button class="btn btn-outline" onclick="markAllRead()">✅ Mark All Read</button>
+        </div>
+        <div id="notifList" style="display:flex;flex-direction:column;gap:10px"></div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal">
+    <div class="modal-header"><h3>📁 Upload Study Material</h3><button class="modal-close" onclick="UI.closeModal('uploadModal')">✕</button></div>
+    <div class="modal-body">
+      <div id="uploadAlert"></div>
+      <div class="form-group"><label class="form-label">Subject</label><select id="uploadSubject" class="form-control"><option value="">Select subject...</option></select></div>
+      <div class="form-group"><label class="form-label">Title</label><input type="text" id="uploadTitle" class="form-control" placeholder="e.g. Chapter 3 — Algebra Notes" /></div>
+      <div class="form-group"><label class="form-label">Description (optional)</label><textarea id="uploadDesc" class="form-control" rows="2" placeholder="Brief description..."></textarea></div>
+      <div class="form-group"><label class="form-label">File</label>
+        <input type="file" id="uploadFile" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png" />
+        <div class="form-hint">Allowed: PDF, DOCX, PPTX, JPG, PNG — Max 10MB</div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="UI.closeModal('uploadModal')">Cancel</button>
+      <button class="btn btn-gold" id="uploadBtn" onclick="uploadMaterial()">Upload File</button>
     </div>
   </div>
+</div>
 
-  <script src="../js/api.js"></script>
-  <script>
-    const currentUser = Auth.requireRole('teacher');
-    if (currentUser) initSidebar(currentUser);
+<script src="../js/api.js"></script>
+<script>
+const currentUser = Auth.requireRole('teacher');
+if (currentUser) initSidebar(currentUser);
 
-    const SECS = ['dashboard', 'subjects', 'attendance', 'marks', 'materials', 'notifications'];
-    const TITLES = { dashboard: 'Teacher Dashboard', subjects: 'My Subjects', attendance: 'Mark Attendance', marks: 'Enter Marks', materials: 'Study Materials', notifications: 'Notifications' };
-    let mySubjects = [], attStudents = [], marksStudents = [];
+const SECS = ['dashboard','subjects','attendance','marks','materials','notifications'];
+const TITLES = { dashboard:'Teacher Dashboard', subjects:'My Subjects', attendance:'Mark Attendance', marks:'Enter Marks', materials:'Study Materials', notifications:'Notifications' };
+let mySubjects = [], attStudents = [], marksStudents = [];
 
-    function showSection(name, el) {
-      SECS.forEach(s => document.getElementById(`sec-${s}`).style.display = s === name ? 'block' : 'none');
-      document.getElementById('topbarTitle').textContent = TITLES[name];
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      if (el) el.classList.add('active');
-      ({ dashboard: loadDashboard, subjects: loadMySubjects, materials: loadMaterials, notifications: loadNotifications })[name]?.();
-    }
+function showSection(name, el) {
+  SECS.forEach(s => document.getElementById(`sec-${s}`).style.display = s===name?'block':'none');
+  document.getElementById('topbarTitle').textContent = TITLES[name];
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  ({dashboard:loadDashboard, subjects:loadMySubjects, materials:loadMaterials, notifications:loadNotifications})[name]?.();
+}
 
-    async function loadDashboard() {
-      const res = await apiFetch('/teachers/dashboard');
-      if (!res?.data?.success) return;
-      const { stats, recent_materials } = res.data.data;
-      document.getElementById('st-subjects').textContent = stats.subjects;
-      document.getElementById('st-sections').textContent = stats.sections;
-      document.getElementById('st-students').textContent = stats.students;
-      document.getElementById('st-materials').textContent = stats.materials;
-      updateNotifBadge(stats.notifications);
-      const el = document.getElementById('recentUploads');
-      if (!recent_materials?.length) return;
-      el.innerHTML = recent_materials.map(m => `
+async function loadDashboard() {
+  const res = await apiFetch('/teachers/dashboard');
+  if (!res?.data?.success) return;
+  const { stats, recent_materials } = res.data.data;
+  document.getElementById('st-subjects').textContent  = stats.subjects;
+  document.getElementById('st-sections').textContent  = stats.sections;
+  document.getElementById('st-students').textContent  = stats.students;
+  document.getElementById('st-materials').textContent = stats.materials;
+  updateNotifBadge(stats.notifications);
+  const el = document.getElementById('recentUploads');
+  if (!recent_materials?.length) return;
+  el.innerHTML = recent_materials.map(m=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
       <div><div style="font-size:.88rem;font-weight:600;color:var(--navy)">${m.title}</div>
            <div style="font-size:.76rem;color:var(--text-muted)">${m.subject_name} · ${m.file_type?.toUpperCase()}</div></div>
       <span class="badge badge-teacher">${m.file_type}</span>
     </div>`).join('');
-    }
-    loadDashboard();
+}
+loadDashboard();
 
-    async function loadMySubjects() {
-      const res = await apiFetch('/teachers/my-subjects');
-      if (!res?.data?.success) return;
-      mySubjects = res.data.data.subjects;
-      const c = document.getElementById('subjectCards');
-      if (!mySubjects.length) { c.innerHTML = `<div class="card"><div class="card-body"><div class="empty-state"><div class="empty-icon">📚</div><h4>No subjects assigned</h4><p>Contact Admin to assign subjects.</p></div></div></div>`; return; }
-      c.innerHTML = mySubjects.map(s => `
+async function loadMySubjects() {
+  const res = await apiFetch('/teachers/my-subjects');
+  if (!res?.data?.success) return;
+  mySubjects = res.data.data.subjects;
+  const c = document.getElementById('subjectCards');
+  if (!mySubjects.length) { c.innerHTML=`<div class="card"><div class="card-body"><div class="empty-state"><div class="empty-icon">📚</div><h4>No subjects assigned</h4><p>Contact Admin to assign subjects.</p></div></div></div>`; return; }
+  c.innerHTML = mySubjects.map(s=>`
     <div class="card">
       <div class="card-header" style="background:var(--navy);border-radius:var(--radius-lg) var(--radius-lg) 0 0">
         <h3 style="color:var(--gold-light);font-family:var(--font-display)">${s.subject_name}</h3>
         <span class="badge" style="background:rgba(255,255,255,.15);color:white">${s.sections.length} section(s)</span>
       </div>
-      <div class="card-body">${s.sections.map(sec => `
+      <div class="card-body">${s.sections.map(sec=>`
         <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--off-white);border-radius:var(--radius-md);margin-bottom:8px">
           <span style="font-weight:600;color:var(--navy)">Class ${sec.class_name} — Section ${sec.section_name}</span>
         </div>`).join('')}
       </div>
     </div>`).join('');
-      populateSubjectDropdowns();
-    }
+  populateSubjectDropdowns();
+}
 
-    function populateSubjectDropdowns() {
-      ['attSubject', 'marksSubject', 'uploadSubject'].forEach(id => {
-        const sel = document.getElementById(id), cur = sel.value;
-        sel.innerHTML = '<option value="">Select subject...</option>' + mySubjects.map(s => `<option value="${s.subject_id}">${s.subject_name}</option>`).join('');
-        if (cur) sel.value = cur;
-      });
-    }
+function populateSubjectDropdowns() {
+  ['attSubject','marksSubject','uploadSubject'].forEach(id => {
+    const sel = document.getElementById(id), cur = sel.value;
+    sel.innerHTML = '<option value="">Select subject...</option>' + mySubjects.map(s=>`<option value="${s.subject_id}">${s.subject_name}</option>`).join('');
+    if (cur) sel.value = cur;
+  });
+}
 
-    // ── Attendance ──
-    async function loadStudentsForAtt() {
-      const sid = document.getElementById('attSubject').value;
-      if (!sid) return;
-      const res = await apiFetch(`/teachers/students?subject_id=${sid}`);
-      if (!res?.data?.success) return;
-      attStudents = res.data.data.students;
-      renderAttList();
-    }
+// ── Attendance ──
+async function loadStudentsForAtt() {
+  const sid = document.getElementById('attSubject').value;
+  if (!sid) return;
+  const res = await apiFetch(`/teachers/students?subject_id=${sid}`);
+  if (!res?.data?.success) return;
+  attStudents = res.data.data.students;
+  renderAttList();
+}
 
-    function renderAttList() {
-      const card = document.getElementById('attStudentCard');
-      if (!attStudents.length) { card.style.display = 'none'; return; }
-      card.style.display = 'block';
-      document.getElementById('attCount').textContent = `${attStudents.length} students`;
-      const subName = document.getElementById('attSubject').options[document.getElementById('attSubject').selectedIndex]?.text || '';
-      document.getElementById('attCardTitle').textContent = `Students — ${subName}`;
-      document.getElementById('attStudentList').innerHTML = attStudents.map((s, i) => `
+function renderAttList() {
+  const card = document.getElementById('attStudentCard');
+  if (!attStudents.length) { card.style.display='none'; return; }
+  card.style.display='block';
+  document.getElementById('attCount').textContent = `${attStudents.length} students`;
+  const subName = document.getElementById('attSubject').options[document.getElementById('attSubject').selectedIndex]?.text||'';
+  document.getElementById('attCardTitle').textContent = `Students — ${subName}`;
+  document.getElementById('attStudentList').innerHTML = attStudents.map((s,i)=>`
     <tr>
-      <td>${i + 1}</td>
+      <td>${i+1}</td>
       <td><strong>${s.name}</strong><br><small>${s.class_name} — ${s.section_name}</small></td>
       <td>
         <div style="display:flex;gap:6px">
-          ${['present', 'absent', 'late'].map(st => `
+          ${['present','absent','late'].map(st=>`
             <div id="atb_${s.id}_${st}" onclick="setStatus('${s.id}','${st}')"
               style="padding:5px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);cursor:pointer;font-size:.82rem;transition:all .15s;user-select:none">
-              ${st === 'present' ? '✅ Present' : st === 'absent' ? '❌ Absent' : '⏰ Late'}
+              ${st==='present'?'✅ Present':st==='absent'?'❌ Absent':'⏰ Late'}
             </div>`).join('')}
         </div>
         <input type="hidden" id="att_${s.id}" value="present" />
       </td>
       <td><input type="text" id="rem_${s.id}" class="form-control" placeholder="Remark (optional)" style="padding:6px 10px;font-size:.82rem" /></td>
     </tr>`).join('');
-      attStudents.forEach(s => setStatus(s.id, 'present'));
-    }
+  attStudents.forEach(s => setStatus(s.id,'present'));
+}
 
-    function setStatus(studentId, status) {
-      document.getElementById(`att_${studentId}`).value = status;
-      const colors = { present: ['var(--teal)', 'var(--teal-light)'], absent: ['var(--coral)', 'var(--coral-light)'], late: ['#BA7517', '#FAEEDA'] };
-      ['present', 'absent', 'late'].forEach(st => {
-        const el = document.getElementById(`atb_${studentId}_${st}`);
-        if (!el) return;
-        if (st === status) { el.style.borderColor = colors[st][0]; el.style.background = colors[st][1]; el.style.color = colors[st][0]; el.style.fontWeight = '600'; }
-        else { el.style.borderColor = 'var(--border)'; el.style.background = 'white'; el.style.color = 'var(--text-mid)'; el.style.fontWeight = '400'; }
-      });
-    }
+function setStatus(studentId, status) {
+  document.getElementById(`att_${studentId}`).value = status;
+  const colors = { present:['var(--teal)','var(--teal-light)'], absent:['var(--coral)','var(--coral-light)'], late:['#BA7517','#FAEEDA'] };
+  ['present','absent','late'].forEach(st => {
+    const el = document.getElementById(`atb_${studentId}_${st}`);
+    if (!el) return;
+    if (st===status) { el.style.borderColor=colors[st][0]; el.style.background=colors[st][1]; el.style.color=colors[st][0]; el.style.fontWeight='600'; }
+    else { el.style.borderColor='var(--border)'; el.style.background='white'; el.style.color='var(--text-mid)'; el.style.fontWeight='400'; }
+  });
+}
 
-    function quickSetAll(status) {
-      if (!status) return;
-      attStudents.forEach(s => setStatus(s.id, status));
-      document.getElementById('quickSet').value = '';
-    }
+function quickSetAll(status) {
+  if (!status) return;
+  attStudents.forEach(s => setStatus(s.id, status));
+  document.getElementById('quickSet').value='';
+}
 
-    async function submitAttendance() {
-      const subjectId = document.getElementById('attSubject').value;
-      const date = document.getElementById('attDate').value;
-      if (!subjectId) return UI.showAlert('attAlert', 'Please select a subject', 'error');
-      if (!date) return UI.showAlert('attAlert', 'Please select a date', 'error');
-      if (!attStudents.length) return UI.showAlert('attAlert', 'No students loaded', 'error');
-      const records = attStudents.map(s => ({ student_id: s.id, status: document.getElementById(`att_${s.id}`)?.value || 'present', remarks: document.getElementById(`rem_${s.id}`)?.value?.trim() || null }));
-      UI.setLoading('attSubmitBtn', true, 'Save Attendance');
-      const res = await apiFetch('/attendance', { method: 'POST', body: { subject_id: parseInt(subjectId), date, records } });
-      UI.setLoading('attSubmitBtn', false, 'Save Attendance');
-      if (res?.data?.success) UI.showAlert('attAlert', '✅ ' + res.data.message, 'success');
-      else UI.showAlert('attAlert', res?.data?.message || 'Failed', 'error');
-    }
+async function submitAttendance() {
+  const subjectId = document.getElementById('attSubject').value;
+  const date      = document.getElementById('attDate').value;
+  if (!subjectId) return UI.showAlert('attAlert','Please select a subject','error');
+  if (!date)      return UI.showAlert('attAlert','Please select a date','error');
+  if (!attStudents.length) return UI.showAlert('attAlert','No students loaded','error');
+  const records = attStudents.map(s=>({ student_id:s.id, status:document.getElementById(`att_${s.id}`)?.value||'present', remarks:document.getElementById(`rem_${s.id}`)?.value?.trim()||null }));
+  UI.setLoading('attSubmitBtn',true,'Save Attendance');
+  const res = await apiFetch('/attendance',{method:'POST',body:{subject_id:parseInt(subjectId),date,records}});
+  UI.setLoading('attSubmitBtn',false,'Save Attendance');
+  if (res?.data?.success) UI.showAlert('attAlert','✅ '+res.data.message,'success');
+  else UI.showAlert('attAlert',res?.data?.message||'Failed','error');
+}
 
-    // ── Marks ──
-    async function loadStudentsForMarks() {
-      const sid = document.getElementById('marksSubject').value;
-      if (!sid) return;
-      const res = await apiFetch(`/teachers/students?subject_id=${sid}`);
-      if (!res?.data?.success) return;
-      marksStudents = res.data.data.students;
-      renderMarksList();
-    }
+// ── Marks ──
+async function loadStudentsForMarks() {
+  const sid = document.getElementById('marksSubject').value;
+  if (!sid) return;
+  const res = await apiFetch(`/teachers/students?subject_id=${sid}`);
+  if (!res?.data?.success) return;
+  marksStudents = res.data.data.students;
+  renderMarksList();
+}
 
-    function renderMarksList() {
-      const card = document.getElementById('marksStudentCard');
-      if (!marksStudents.length) { card.style.display = 'none'; return; }
-      card.style.display = 'block';
-      const subName = document.getElementById('marksSubject').options[document.getElementById('marksSubject').selectedIndex]?.text || '';
-      document.getElementById('marksCardTitle').textContent = `Students — ${subName}`;
-      document.getElementById('marksStudentList').innerHTML = marksStudents.map((s, i) => `
+function renderMarksList() {
+  const card = document.getElementById('marksStudentCard');
+  if (!marksStudents.length) { card.style.display='none'; return; }
+  card.style.display='block';
+  const subName = document.getElementById('marksSubject').options[document.getElementById('marksSubject').selectedIndex]?.text||'';
+  document.getElementById('marksCardTitle').textContent = `Students — ${subName}`;
+  document.getElementById('marksStudentList').innerHTML = marksStudents.map((s,i)=>`
     <tr>
-      <td>${i + 1}</td>
+      <td>${i+1}</td>
       <td><strong>${s.name}</strong></td>
       <td><input type="number" id="mk_${s.id}" class="form-control" min="0" max="1000" placeholder="—"
           style="width:110px;padding:6px 10px" oninput="updateGrade('${s.id}')" /></td>
       <td style="color:var(--text-muted)" id="maxD_${s.id}">/ 100</td>
       <td><span id="grade_${s.id}" style="font-size:1.1rem;font-weight:700">—</span></td>
     </tr>`).join('');
-    }
+}
 
-    function updateAllGrades() {
-      const max = parseInt(document.getElementById('maxMarks').value) || 100;
-      marksStudents.forEach(s => { const el = document.getElementById(`maxD_${s.id}`); if (el) el.textContent = `/ ${max}`; updateGrade(s.id); });
-    }
+function updateAllGrades() {
+  const max = parseInt(document.getElementById('maxMarks').value)||100;
+  marksStudents.forEach(s => { const el=document.getElementById(`maxD_${s.id}`); if(el) el.textContent=`/ ${max}`; updateGrade(s.id); });
+}
 
-    function updateGrade(sid) {
-      const max = parseInt(document.getElementById('maxMarks').value) || 100, marks = parseFloat(document.getElementById(`mk_${sid}`)?.value);
-      const el = document.getElementById(`grade_${sid}`); if (!el) return;
-      if (isNaN(marks)) { el.textContent = '—'; el.style.color = 'var(--text-muted)'; return; }
-      const pct = marks / max, grade = pct >= .9 ? 'A+' : pct >= .8 ? 'A' : pct >= .7 ? 'B' : pct >= .6 ? 'C' : pct >= .5 ? 'D' : 'F';
-      const gc = { 'A+': 'var(--teal)', 'A': 'var(--teal)', 'B': '#185FA5', 'C': 'var(--gold)', 'D': 'var(--coral)', 'F': 'var(--coral)' };
-      el.textContent = grade; el.style.color = gc[grade];
-    }
+function updateGrade(sid) {
+  const max=parseInt(document.getElementById('maxMarks').value)||100, marks=parseFloat(document.getElementById(`mk_${sid}`)?.value);
+  const el=document.getElementById(`grade_${sid}`); if(!el) return;
+  if (isNaN(marks)) { el.textContent='—'; el.style.color='var(--text-muted)'; return; }
+  const pct=marks/max, grade=pct>=.9?'A+':pct>=.8?'A':pct>=.7?'B':pct>=.6?'C':pct>=.5?'D':'F';
+  const gc={'A+':'var(--teal)','A':'var(--teal)','B':'#185FA5','C':'var(--gold)','D':'var(--coral)','F':'var(--coral)'};
+  el.textContent=grade; el.style.color=gc[grade];
+}
 
-    async function submitMarks() {
-      const sid = document.getElementById('marksSubject').value, et = document.getElementById('marksExamType').value, max = parseInt(document.getElementById('maxMarks').value) || 100;
-      if (!sid) return UI.showAlert('marksAlert', 'Please select a subject', 'error');
-      if (!marksStudents.length) return UI.showAlert('marksAlert', 'No students loaded', 'error');
-      const records = [];
-      for (const s of marksStudents) {
-        const val = document.getElementById(`mk_${s.id}`)?.value;
-        if (val === '' || val === null || val === undefined) continue;
-        const mv = parseFloat(val); if (isNaN(mv)) continue;
-        records.push({ student_id: s.id, marks_value: mv, max_marks: max });
-      }
-      if (!records.length) return UI.showAlert('marksAlert', 'No marks entered', 'error');
-      UI.setLoading('marksSubmitBtn', true, 'Save Marks');
-      const res = await apiFetch('/marks', { method: 'POST', body: { subject_id: parseInt(sid), exam_type: et, records } });
-      UI.setLoading('marksSubmitBtn', false, 'Save Marks');
-      if (res?.data?.success) UI.showAlert('marksAlert', '✅ ' + res.data.message, 'success');
-      else UI.showAlert('marksAlert', res?.data?.message || 'Failed', 'error');
-    }
+async function submitMarks() {
+  const sid=document.getElementById('marksSubject').value, et=document.getElementById('marksExamType').value, max=parseInt(document.getElementById('maxMarks').value)||100;
+  if (!sid) return UI.showAlert('marksAlert','Please select a subject','error');
+  if (!marksStudents.length) return UI.showAlert('marksAlert','No students loaded','error');
+  const records=[];
+  for (const s of marksStudents) {
+    const val=document.getElementById(`mk_${s.id}`)?.value;
+    if (val===''||val===null||val===undefined) continue;
+    const mv=parseFloat(val); if (isNaN(mv)) continue;
+    records.push({student_id:s.id,marks_value:mv,max_marks:max});
+  }
+  if (!records.length) return UI.showAlert('marksAlert','No marks entered','error');
+  UI.setLoading('marksSubmitBtn',true,'Save Marks');
+  const res=await apiFetch('/marks',{method:'POST',body:{subject_id:parseInt(sid),exam_type:et,records}});
+  UI.setLoading('marksSubmitBtn',false,'Save Marks');
+  if (res?.data?.success) UI.showAlert('marksAlert','✅ '+res.data.message,'success');
+  else UI.showAlert('marksAlert',res?.data?.message||'Failed','error');
+}
 
-    // ── Materials ──
-    async function loadMaterials() {
-      const tbody = document.getElementById('materialsTable');
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px"><span class="spinner dark"></span></td></tr>`;
-      const res = await apiFetch('/materials/my-materials');
-      if (!res?.data?.success) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--coral);padding:24px">Failed to load</td></tr>`; return; }
-      const mats = res.data.data.materials;
-      if (!mats.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📁</div><h4>No materials yet</h4><p>Click "Upload File" to add your first material.</p></div></td></tr>`; return; }
-      const icons = { pdf: '📄', docx: '📝', pptx: '📊', jpg: '🖼️', png: '🖼️' };
-      tbody.innerHTML = mats.map(m => `
+// ── Materials ──
+async function loadMaterials() {
+  const tbody=document.getElementById('materialsTable');
+  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:32px"><span class="spinner dark"></span></td></tr>`;
+  const res=await apiFetch('/materials/my-materials');
+  if (!res?.data?.success) { tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--coral);padding:24px">Failed to load</td></tr>`; return; }
+  const mats=res.data.data.materials;
+  if (!mats.length) { tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📁</div><h4>No materials yet</h4><p>Click "Upload File" to add your first material.</p></div></td></tr>`; return; }
+  const icons={pdf:'📄',docx:'📝',pptx:'📊',jpg:'🖼️',png:'🖼️'};
+  tbody.innerHTML=mats.map(m=>`
     <tr>
-      <td><strong>${icons[m.file_type] || '📎'} ${m.title}</strong>${m.description ? `<br><small style="color:var(--text-muted)">${m.description}</small>` : ''}</td>
+      <td><strong>${icons[m.file_type]||'📎'} ${m.title}</strong>${m.description?`<br><small style="color:var(--text-muted)">${m.description}</small>`:''}</td>
       <td><span class="badge badge-student">${m.subject_name}</span></td>
       <td><span class="badge badge-teacher">${m.file_type?.toUpperCase()}</span></td>
-      <td>${m.file_size_kb ? m.file_size_kb + 'KB' : '—'}</td>
+      <td>${m.file_size_kb?m.file_size_kb+'KB':'—'}</td>
       <td>${UI.formatDate(m.uploaded_at)}</td>
       <td style="display:flex;gap:6px">
         <a href="http://localhost:5000/api/materials/${m.id}/download" target="_blank" class="btn btn-outline btn-sm">⬇️</a>
-        <button class="btn btn-danger btn-sm" onclick="deleteMat(${m.id},'${m.title.replace(/'/g, "\\'")}')">🗑️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteMat(${m.id},'${m.title.replace(/'/g,"\\'")}')">🗑️</button>
       </td>
     </tr>`).join('');
-    }
+}
 
-    async function uploadMaterial() {
-      const sid = document.getElementById('uploadSubject').value, title = document.getElementById('uploadTitle').value.trim();
-      const desc = document.getElementById('uploadDesc').value.trim(), file = document.getElementById('uploadFile').files[0];
-      if (!sid) return UI.showAlert('uploadAlert', 'Please select a subject', 'error');
-      if (!title) return UI.showAlert('uploadAlert', 'Title is required', 'error');
-      if (!file) return UI.showAlert('uploadAlert', 'Please select a file', 'error');
-      const fd = new FormData();
-      fd.append('subject_id', sid); fd.append('title', title); if (desc) fd.append('description', desc); fd.append('file', file);
-      UI.setLoading('uploadBtn', true, 'Upload File');
-      try {
-        const res = await fetch('http://localhost:5000/api/materials', { method: 'POST', credentials: 'include', body: fd });
-        const data = await res.json();
-        UI.setLoading('uploadBtn', false, 'Upload File');
-        if (data.success) { UI.closeModal('uploadModal'); UI.showAlert('matAlert', '✅ ' + data.message, 'success'); document.getElementById('uploadTitle').value = ''; document.getElementById('uploadDesc').value = ''; document.getElementById('uploadFile').value = ''; loadMaterials(); loadDashboard(); }
-        else UI.showAlert('uploadAlert', data.message || 'Upload failed', 'error');
-      } catch { UI.setLoading('uploadBtn', false, 'Upload File'); UI.showAlert('uploadAlert', 'Server error', 'error'); }
-    }
+async function uploadMaterial() {
+  const sid=document.getElementById('uploadSubject').value, title=document.getElementById('uploadTitle').value.trim();
+  const desc=document.getElementById('uploadDesc').value.trim(), file=document.getElementById('uploadFile').files[0];
+  if (!sid)   return UI.showAlert('uploadAlert','Please select a subject','error');
+  if (!title) return UI.showAlert('uploadAlert','Title is required','error');
+  if (!file)  return UI.showAlert('uploadAlert','Please select a file','error');
+  const fd=new FormData();
+  fd.append('subject_id',sid); fd.append('title',title); if(desc) fd.append('description',desc); fd.append('file',file);
+  UI.setLoading('uploadBtn',true,'Upload File');
+  try {
+    const res=await fetch('http://localhost:5000/api/materials',{method:'POST',credentials:'include',body:fd});
+    const data=await res.json();
+    UI.setLoading('uploadBtn',false,'Upload File');
+    if (data.success) { UI.closeModal('uploadModal'); UI.showAlert('matAlert','✅ '+data.message,'success'); document.getElementById('uploadTitle').value=''; document.getElementById('uploadDesc').value=''; document.getElementById('uploadFile').value=''; loadMaterials(); loadDashboard(); }
+    else UI.showAlert('uploadAlert',data.message||'Upload failed','error');
+  } catch { UI.setLoading('uploadBtn',false,'Upload File'); UI.showAlert('uploadAlert','Server error','error'); }
+}
 
-    async function deleteMat(id, title) {
-      if (!confirm(`Delete "${title}"?`)) return;
-      const res = await apiFetch(`/materials/${id}`, { method: 'DELETE' });
-      if (res?.data?.success) { UI.showAlert('matAlert', '✅ ' + res.data.message, 'success'); loadMaterials(); }
-      else UI.showAlert('matAlert', res?.data?.message || 'Delete failed', 'error');
-    }
+async function deleteMat(id, title) {
+  if (!confirm(`Delete "${title}"?`)) return;
+  const res=await apiFetch(`/materials/${id}`,{method:'DELETE'});
+  if (res?.data?.success) { UI.showAlert('matAlert','✅ '+res.data.message,'success'); loadMaterials(); }
+  else UI.showAlert('matAlert',res?.data?.message||'Delete failed','error');
+}
 
-    // ── Notifications ──
-    function updateNotifBadge(count) {
-      document.getElementById('notifDot').style.display = count > 0 ? 'block' : 'none';
-      const b = document.getElementById('navBadge'); b.style.display = count > 0 ? 'inline' : 'none'; b.textContent = count;
-    }
+// ── Notifications ──
+function updateNotifBadge(count) {
+  document.getElementById('notifDot').style.display=count>0?'block':'none';
+  const b=document.getElementById('navBadge'); b.style.display=count>0?'inline':'none'; b.textContent=count;
+}
 
-    async function loadNotifications() {
-      const res = await apiFetch('/notifications');
-      if (!res?.data?.success) return;
-      const { notifications, unread_count } = res.data.data;
-      updateNotifBadge(unread_count);
-      const container = document.getElementById('notifList');
-      if (!notifications.length) { container.innerHTML = `<div class="card"><div class="card-body"><div class="empty-state"><div class="empty-icon">🔔</div><h4>All caught up!</h4></div></div></div>`; return; }
-      const icons = { assignment: '📁', marks: '📝', attendance: '📅', announcement: '📢', system: '🔔' };
-      container.innerHTML = notifications.map(n => `
-    <div class="card" style="border-left:3px solid ${n.is_read ? 'var(--border)' : 'var(--gold)'}">
+async function loadNotifications() {
+  const res=await apiFetch('/notifications');
+  if (!res?.data?.success) return;
+  const { notifications, unread_count }=res.data.data;
+  updateNotifBadge(unread_count);
+  const container=document.getElementById('notifList');
+  if (!notifications.length) { container.innerHTML=`<div class="card"><div class="card-body"><div class="empty-state"><div class="empty-icon">🔔</div><h4>All caught up!</h4></div></div></div>`; return; }
+  const icons={assignment:'📁',marks:'📝',attendance:'📅',announcement:'📢',system:'🔔'};
+  container.innerHTML=notifications.map(n=>`
+    <div class="card" style="border-left:3px solid ${n.is_read?'var(--border)':'var(--gold)'}">
       <div class="card-body" style="padding:14px 20px;display:flex;gap:14px;align-items:flex-start">
-        <div style="font-size:1.3rem;flex-shrink:0">${icons[n.type] || '🔔'}</div>
+        <div style="font-size:1.3rem;flex-shrink:0">${icons[n.type]||'🔔'}</div>
         <div style="flex:1">
           <div style="font-weight:600;color:var(--navy);font-size:.92rem">${n.title}</div>
           <div style="font-size:.85rem;color:var(--text-mid);margin-top:2px">${n.message}</div>
-          <div style="font-size:.76rem;color:var(--text-muted);margin-top:4px">${UI.formatDate(n.created_at)}${n.sender_name ? ' · from ' + n.sender_name : ''}</div>
+          <div style="font-size:.76rem;color:var(--text-muted);margin-top:4px">${UI.formatDate(n.created_at)}${n.sender_name?' · from '+n.sender_name:''}</div>
         </div>
         <div style="display:flex;gap:6px;flex-shrink:0">
-          ${!n.is_read ? `<button class="btn btn-outline btn-sm" onclick="markRead(${n.id})">Mark Read</button>` : ''}
+          ${!n.is_read?`<button class="btn btn-outline btn-sm" onclick="markRead(${n.id})">Mark Read</button>`:''}
           <button class="btn btn-danger btn-sm" onclick="deleteNotif(${n.id})">🗑️</button>
         </div>
       </div>
     </div>`).join('');
-    }
+}
 
-    async function markRead(id) { await apiFetch(`/notifications/${id}/read`, { method: 'PATCH' }); loadNotifications(); }
-    async function markAllRead() { await apiFetch('/notifications/mark-all-read', { method: 'PATCH' }); loadNotifications(); }
-    async function deleteNotif(id) { await apiFetch(`/notifications/${id}`, { method: 'DELETE' }); loadNotifications(); }
+async function markRead(id) { await apiFetch(`/notifications/${id}/read`,{method:'PATCH'}); loadNotifications(); }
+async function markAllRead() { await apiFetch('/notifications/mark-all-read',{method:'PATCH'}); loadNotifications(); }
+async function deleteNotif(id) { await apiFetch(`/notifications/${id}`,{method:'DELETE'}); loadNotifications(); }
 
-    document.getElementById('attDate').valueAsDate = new Date();
-  </script>
+document.getElementById('attDate').valueAsDate = new Date();
+</script>
 </body>
-
 </html>
